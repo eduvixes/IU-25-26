@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- css -->
+	<link rel="stylesheet" type="text/css" href="./Base/css/IU.css" media="screen" />
+	<!-- clases generales -->
+	<script type="text/javascript" src="./Core/Validations_Class.js"></script>
+	<!-- clases dom -->
+	<script type="text/javascript" src="./Core/Dom_Class.js"></script>
+	<!-- clases entidades -->
+	<script type="text/javascript" src="./app/persona_Class.js"></script>
+
+</head>
+
+<body>
+
+	<header id='header_page' class='bordeado'>TEXTO TITULO GESTION ENTIDAD</header>
+	<nav class='bordeado'><span onclick="menu_work();">Opciones de ménu</span>
+	</nav>
+	<aside id='div-menu'>
+		<ol>
+		    <li class="opcionmenu"><span onclick="entidad = new persona();">Gestionar persona</span></li>
+		    <li class="opcionmenu"><span onclick="entidad = new entidad();">Gestionar otra entidad</span></li>
+	  	</ol>
+	</aside>
+	<section id="IU_form" class='bordeado'>
+		
+	</section>
+
+	<article class='bordeado'>Sección article</article>
+
+	<footer class='bordeado'>Pie de página</footer>
+	
+	<script type="text/javascript">
+		document.getElementById('div-menu').style.display = 'none';
+		document.getElementById('IU_form').style.display = 'none';
+		/*	hide the text error box if is necessary	
+		document.getElementById('span_error_name').style.display = 'none';
+		*/
+		function menu_work(){
+			if (document.getElementById('div-menu').style.display == 'none'){
+				document.getElementById('div-menu').style.display = 'block';
+			}
+			else{
+				document.getElementById('div-menu').style.display = 'none';
+			}
+		}
+	</script>
+
+</body>
+
+
+</html>

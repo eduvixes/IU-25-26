@@ -9,7 +9,7 @@ class persona extends Validations{
 		fields validations for ADD
 	*/
 
-	/*
+	/**
 		
 		@param 
 		@return
@@ -21,15 +21,15 @@ class persona extends Validations{
 
 	ADD_dni_validation(){
 		
-		if (!(this.min_size('dni',4))){
+		if (!(this.min_size('dni',9))){
 			this.dom.mostrar_error_campo('dni','dni_min_size_KO');
 			return "dni_min_size_KO";
 		}
-		if (!(this.max_size('dni',8))){
+		if (!(this.max_size('dni',9))){
 			this.dom.mostrar_error_campo('dni','dni_max_size_KO');
 			return "dni_max_size_KO";
 		}
-		if (!(this.format('dni', 'xxx'))){
+		if (!(this.format('dni', '[0-9]{8}[A-Z]{1}'))){
 			this.dom.mostrar_error_campo('dni','dni_format_KO');
 			return "dni_format_KO";
 		}
@@ -38,7 +38,7 @@ class persona extends Validations{
 
 	}
 
-	/*
+	/** 
 		
 		@param 
 		@return
@@ -67,7 +67,7 @@ class persona extends Validations{
 		return true;
 	}
 
-	/*
+	/**
 		
 		@param 
 		@return
