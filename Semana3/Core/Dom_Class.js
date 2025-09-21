@@ -1,7 +1,7 @@
-class dom {
+class dom extends dom_table {
 
 	constructor(){
-		
+		super()
 	}
 
 	show_element(id){

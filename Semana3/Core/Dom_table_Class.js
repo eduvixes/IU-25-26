@@ -38,6 +38,7 @@ class dom_table {
 		
 		for (var i=0;i<datosfila.length;i++){
 			var colelement = document.createElement(tag);
+			colelement.style.border = '1px solid black';
 			colelement.innerText = datosfila[i];
 			trelement.append(colelement);
 		}
@@ -57,7 +58,7 @@ class dom_table {
 		switch_display_mode(idcomponente,'block','on');
 
 		var mitabla = document.createElement('table');
-		
+
 		document.getElementById(idcomponente).append(mitabla);
 		
 		var micabeceratabla = document.createElement('thead');

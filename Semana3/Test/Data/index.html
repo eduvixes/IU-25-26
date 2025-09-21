@@ -12,20 +12,25 @@
 	<!-- clases entidades -->
 	<script type="text/javascript" src="../../app/persona_Class.js"></script>
     <!-- clases test -->
-	<script type="text/javascript" src="./Unit_Test_Class.js"></script>
+	<script type="text/javascript" src="./Data_Test_Class.js"></script>
+	<!-- pruebas -->
+	<script type="text/javascript" src="../../app/ET1_persona_infotest.js"></script>
 
 </head>
 
-<body onload="var entidad=new Unit_Test()">
+<body onload="var entidad = new Data_Test(persona)">
 	
-	<header id='header_page' class='bordeado'>Unit Test clase ENTIDAD</header>
+	<header id='header_page' class='bordeado'>Data Test clase ENTIDAD</header>
 	<nav id="titulomenu" class='bordeado'><span onclick="switch_display_mode('div-menu','block');">Opciones de ménu</span>
 	</nav>
 	<aside id='div-menu'>
 		<ol>
-		    <li class="opcionmenu"><span onclick="entidad = new Unit_Test();">Test clase persona</span></li>
+		    <li class="opcionmenu"><span onclick="entidad = new Data_Test();">Test clase persona</span></li>
 	  	</ol>
 	</aside>
+	
+	<section id="form">
+	</section>
 	
     <section id="IU_Test_result" class='bordeado'>
 	</section>

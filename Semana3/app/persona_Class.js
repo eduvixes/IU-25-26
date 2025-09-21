@@ -1,14 +1,15 @@
 class persona extends Validations{
 
-	constructor(invocation){
+	constructor(esTest){
 		super();
 		this.dom = new dom();
+		this.nombreentidad = 'persona';
 
-		if (invocation == 'unit_test'){
-
+		if (esTest == 'test'){
+			
 		}
 		else{
-			this.manual_form_creation();
+			this.dom.fillform(this.manual_form_creation(),'IU_form');
 		}
 	}	
 
@@ -69,14 +70,15 @@ class persona extends Validations{
 
 		</form>
 		`;
-		this.dom.fillform(form_content,'IU_form');
+		return form_content;
 		
 	}
-	/*
-		fields validations for ADD
-	*/
 
-	/*
+	/**********************************************************************************************
+		fields validations for ADD
+	***********************************************************************************************/
+
+	/** 
 		
 		@param 
 		@return
@@ -85,7 +87,6 @@ class persona extends Validations{
 			{bool} true due the field value is correct
 
 	*/
-
 	ADD_dni_validation(){
 		
 		if (!(this.min_size('dni',9))){
@@ -96,13 +97,7 @@ class persona extends Validations{
 			this.dom.mostrar_error_campo('dni','dni_max_size_KO');
 			return "dni_max_size_KO";
 		}
-		/*
-		if (!(this.personalize_dni_format('dni','[0-9]{8}[A-Z]'))){
-			this.dom.mostrar_error_campo('dni','dni_format_KO');
-			return "dni_format_KO";
-		}
-		*/
-		
+				
 		var resp = this.personalize_dni_nie();
 		console.log(resp);
 		if (!(resp === true)){
@@ -115,7 +110,7 @@ class persona extends Validations{
 
 	}
 
-	/*
+	/**
 		
 		@param 
 		@return
@@ -144,19 +139,39 @@ class persona extends Validations{
 		return true;
 	}
 
-	/*
+	ADD_nuevo_foto_persona_validation(){
+
+		if (!(this.max_size_file('nuevo_foto_persona',2000))){
+			this.dom.mostrar_error_campo('nuevo_foto_persona','nuevo_foto_persona_max_size_file_KO');
+			return "nuevo_foto_persona_max_size_file_KO";
+		}
+		if (!(this.type_file('nuevo_foto_persona',['image/jpg']))){
+			this.dom.mostrar_error_campo('nuevo_foto_persona','nuevo_foto_persona_type_file_KO');
+			return "nuevo_foto_persona_type_file_KO";
+		}
+		if (!(this.format_name_file('nuevo_foto_persona','[a-zA-Z.]'))){
+			this.dom.mostrar_error_campo('nuevo_foto_persona','nuevo_foto_persona_format_name_file_KO');
+			return "nuevo_foto_persona_format_name_file_KO";
+		}
+		this.dom.mostrar_exito_campo('nuevo_foto_persona');
+		return true;
+
+
+	}
+
+	/**
 		
 		@param 
 		@return
 			{bool} true if all field validations are correct or false if any field validation is false
 
 	*/
-
 	ADD_submit_persona(){
 
 		let result = (
 					(this.ADD_dni_validation()) &
 					(this.ADD_nombre_persona_validation())
+					(this.ADD_nuevo_foto_persona_validation())
 					)
 		
 		result = Boolean(result);
@@ -251,5 +266,7 @@ class persona extends Validations{
 		return this.personalize_validate_dni( nie_prefix + nie.substr(1) );
 	
 	}
+
+
 
 }

@@ -74,7 +74,7 @@ class Validations{
 
 	}
 
-	/*
+	/**
 	@param {string} id of html element
 	@param {string} regular expression to testing id html element value
 	@return {bool} result of regular expression testing  
@@ -82,6 +82,34 @@ class Validations{
 	format(id, exprreg){
 		let expresionregular = new RegExp(exprreg);
 		let valor = document.getElementById(id).value;
+		return expresionregular.test(valor);
+	}
+
+	/**
+	@param {string} id of html file element
+	@param {number} maxsize max size allowed for fiel
+	@return {bool} result of size comparison
+	*/
+	max_size_file(id, maxsize){
+		let objfile = document.getElementById(id);
+		if (objfile.files[0].size>maxsize){
+			return false;
+		}
+		return true;
+	}
+
+	type_file(id, array_tipos){
+		let objfile = document.getElementById(id);
+		if (!(array_tipos.includes(objfile.files[0].type))){
+			return false;
+		}
+		return true;
+	}
+
+	format_name_file(id, exprreg){
+		let objfile = document.getElementById(id);
+		let expresionregular = new RegExp(exprreg);
+		let valor = objfile.files[0].name;
 		return expresionregular.test(valor);
 	}
 

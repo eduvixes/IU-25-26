@@ -5,7 +5,7 @@ class Unit_Test {
         this.clases = [
             {
                 stringclase : 'persona',
-                attributes : ['dni','nombre_persona'],
+                attributes : ['dni','nombre_persona','apellidos_persona','fechanacimiento_persona','direccion_persona','telefono_persona','email_persona','foto_persona'],
             },
             /*{
                 stringclase : "alumnograduacion",
@@ -18,7 +18,7 @@ class Unit_Test {
         var test_result = this.test_class_and_method_validation();
 
         this.dom = new dom;
-        this.dom_table = new dom_table;
+        //this.dom_table = new dom_table;
 
         /**
          * datosbotones = {
@@ -35,7 +35,7 @@ class Unit_Test {
          * }
          * 
          */
-        this.dom_table.showtestresult('IU_Test_result', test_result, /*datosbotones*/);
+        this.dom.showtestresult('IU_Test_result', test_result, /*datosbotones*/);
 
         //this.comprobar_metodo_funciona('nada');
 
@@ -92,7 +92,7 @@ class Unit_Test {
             if (validclass){
                 // para instanciar la clase necesita que el eval del string que la identifica
                 var claseacrear =  eval(entidad[i].stringclase);               
-                this.objetocomprobar = new claseacrear('unit_test');
+                this.objetocomprobar = new claseacrear('test');
                 
 
                 // el metodo __proto__ devuelve un array con todos los metodos que tiene el objeto
@@ -112,7 +112,7 @@ class Unit_Test {
                             accion : action,
                             metodo : misubmitfunction,
                             existe : false,
-                            error : 'x'
+                            error : 'No verificado'
                         };
                     // si el metodo de submit de accion esta en los metodos de la clase actualizo la propiedad existe
                     if (misubmitfunction in listametodos){
@@ -149,10 +149,10 @@ class Unit_Test {
                         partial_output.clase = entidad[i].stringclase;
                         partial_output.accion = action;
                         partial_output.metodo = mifunction;
-                        partial_output.error = "x";
+                        partial_output.error = "No verificado";
                         output[output_count] = partial_output;
                         
-                        partial_output = {clase: "",accion: "",metodo : "",existe: "", error:"x"};
+                        partial_output = {clase: "",accion: "",metodo : "",existe: "", error:"No verificado"};
                         output_count++;
 
                     }
