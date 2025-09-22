@@ -88,7 +88,7 @@ class Validations{
 	/**
 	 * 
 	 */
-	empty_file(id){
+	not_exist_file(id){
 		let objfile = document.getElementById(id);
 		if (objfile.files.length == 0){
 			return false;

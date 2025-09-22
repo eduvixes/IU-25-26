@@ -9,7 +9,7 @@ let persona_def_tests = Array(
     ['persona','nombre_persona',7,'cumple formato','EDIT','nombre_persona_format_KO','Formato inválido. Debe estar entre 4 y 20 caracteres alfabéticos'],
     ['persona','nombre_persona',8,'es correcto','EDIT',true,'Nombre persona correcto'],
     // ficheros
-    Array('persona','nuevo_foto_persona',11,'existe fichero','ADD','nuevo_foto_persona_empty_file_KO','El fichero no existe. Debe subir una foto'),
+    Array('persona','nuevo_foto_persona',11,'existe fichero','ADD','nuevo_foto_persona_not_exist_file_KO','El fichero no existe. Debe subir una foto'),
     Array('persona','nuevo_foto_persona',12,'cumple nombre fichero','ADD','nuevo_foto_persona_format_name_file_KO','el nombre de fichero no cumple formato.'),
     Array('persona','nuevo_foto_persona',13,'cumple tipo fichero','ADD','nuevo_foto_persona_type_file_KO','el tipo de fichero no esta permitido'),
     Array('persona','nuevo_foto_persona',14,'cumple tamaño maximo fichero','ADD','nuevo_foto_persona_max_size_file_KO','el tamaño del fichero es muy grande.'),
@@ -32,7 +32,7 @@ let persona_tests_fields = Array(
     Array('persona','nombre_persona',1,1,'ADD',[{nombre_persona:'aa'}],'nombre_persona_min_size_KO'),
     Array('persona','nombre_persona',2,2,'ADD',[{nombre_persona:'a'.repeat(20)}],'nombre_persona_max_size_KO'),
     Array('persona','nombre_persona',3,3,'ADD',[{nombre_persona:'aaaaaa1'}],'nombre_persona_format_KO'),
-    Array('persona','nombre_persona',4,4,'ADD',[{nombre_persona:'javi1'}],true),
+    Array('persona','nombre_persona',4,4,'ADD',[{nombre_persona:'javi'}],true),
     ['persona','nombre_persona',5,5,'EDIT',[{nombre_persona:'aa'}],'nombre_persona_min_size_KO'],
     ['persona','nombre_persona',6,6,'EDIT',[{nombre_persona:'aaaaaaaaaaaaaaaaaaaaa'}],'nombre_persona_max_size_KO'],
     ['persona','nombre_persona',7,7,'EDIT',[{nombre_persona:'aaaaaa1'}],'nombre_persona_format_KO'],
@@ -53,7 +53,7 @@ el valor de parámetro a probar
 el codigo asociado de error/valor true de exito
 */
 let persona_tests_files = Array(
-   Array('persona','nuevo_foto_persona',11,5,'ADD','existe',[],'nuevo_foto_persona_empty_file_KO'),
+   Array('persona','nuevo_foto_persona',11,5,'ADD','existe',[],'nuevo_foto_persona_not_exist_file_KO'),
  /*   Array('persona','nuevo_foto_persona',6,6,'ADD','cumple nombre fichero',Array('1111','image/jpeg',20000),'nuevo_foto_persona_format_name_file_KO'),
     Array('persona','nuevo_foto_persona',7,6,'ADD','type_file',Array('nombrejpg','img/pdf',20000),'nuevo_foto_persona_type_file_KO'),
  */   ['persona','nuevo_foto_persona',14,8,'ADD','max_size_name',Array({format_name_file:'nombrejpg.jpg'},{type_file:'image/jpeg'},{max_size_file:2000000000}),'nuevo_foto_persona_max_size_file_KO'],

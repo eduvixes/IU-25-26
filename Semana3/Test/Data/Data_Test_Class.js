@@ -265,16 +265,16 @@ class Data_Test {
 
         var salidapruebasnofile = this.data_test_data_nofile();
          // se invoca la muestra del resultado de las pruebas
-        /*let marcados =	{
+        let marcados =	{
 					pruebastatus: {value:'INCORRECTO', style:'background-color: red'}
         };
-        */
-        this.dom.showData('IU_Test_result_nofile', salidapruebasnofile);
+        
+        this.dom.showData('IU_Test_result_nofile', salidapruebasnofile, marcados);
        
         var salidapruebasfile = this.data_test_data_file();
        
         // se invoca la muestra del resultado de las pruebas
-        this.dom.showData('IU_Test_result_file', salidapruebasfile);
+        this.dom.showData('IU_Test_result_file', salidapruebasfile, marcados);
 
         return true;
 
