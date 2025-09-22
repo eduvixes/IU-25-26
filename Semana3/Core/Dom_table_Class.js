@@ -31,7 +31,7 @@ class dom_table {
 	 * @param {object} marked [to implement] iterable object with information for changing the aspect of a column 
 	 */
 
-	showtestresult(idcomponente, test_result, marked){
+	showData(idcomponente, test_result, marked=null){
 		
 		switch_display_mode(idcomponente,'block','on');
 
@@ -57,15 +57,18 @@ class dom_table {
 
 			var trelement = document.createElement('tr');
 			
-			var marcados = Object.keys(marked);
+			
 
 			for (let clave in datosfila) {
 				var colelement = document.createElement(tag);
 				colelement.innerHTML = datosfila[clave];
-				if (marcados.includes(clave)){
-					if (marked[clave].value == datosfila[clave])
-					{
-						colelement.setAttribute('style',marked[clave].style);
+				if (!(marked === null)){
+					var marcados = Object.keys(marked);
+					if (marcados.includes(clave)){
+						if (marked[clave].value == datosfila[clave])
+						{
+							colelement.setAttribute('style',marked[clave].style);
+						}
 					}
 				} 
 				trelement.append(colelement); 
