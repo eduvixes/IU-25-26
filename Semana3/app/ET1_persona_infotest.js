@@ -25,7 +25,7 @@ let persona_def_tests = Array(
 );
 
 let persona_tests_fields = Array(
-    Array('persona','nombre_persona',1,1,'ADD',[{nombre_persona:'aa'},{apellidos_persona:'aa'}],'nombre_persona_min_size_KO'),
+    Array('persona','nombre_persona',1,1,'ADD',[{nombre_persona:'aa'}],'nombre_persona_min_size_KO'),
     Array('persona','nombre_persona',2,2,'ADD',[{nombre_persona:'aaaaaaaaaaaaaaaaaaaaa'}],'nombre_persona_max_size_KO'),
     Array('persona','nombre_persona',3,3,'ADD',[{nombre_persona:'aaaaaa1'}],'nombre_persona_format_KO'),
     Array('persona','nombre_persona',4,4,'ADD',[{nombre_persona:'javi'}],true),
@@ -48,8 +48,8 @@ let persona_tests_files = Array(
  /*   Array('persona','nuevo_foto_persona',5,5,'ADD','existe',Array(),'nuevo_foto_persona_empty_KO'),
     Array('persona','nuevo_foto_persona',6,6,'ADD','cumple nombre fichero',Array('1111','image/jpeg',20000),'nuevo_foto_persona_format_name_file_KO'),
     Array('persona','nuevo_foto_persona',7,6,'ADD','type_file',Array('nombrejpg','img/pdf',20000),'nuevo_foto_persona_type_file_KO'),
- */   Array('persona','nuevo_foto_persona',8,8,'ADD','max_size_name',Array({nombrefichero:'nombrejpg.jpg'},{tipomime:'image/jpg'},{maxsize:2000000000}),'nuevo_foto_persona_max_size_file_KO'),
- Array('persona','nuevo_foto_persona',11,8,'ADD','max_size_name',Array({nombrefichero:'nombrejpg.jpg'},{tipomime:'image/jpg'},{maxsize:200}),true),
+ */   Array('persona','nuevo_foto_persona',8,8,'ADD','max_size_name',Array({format_name_file:'nombrejpg.jpg'},{type_file:'image/jpg'},{max_size_file:2000000000}),'nuevo_foto_persona_max_size_file_KO'),
+ Array('persona','nuevo_foto_persona',11,9,'ADD','max_size_name',Array({format_name_file:'nombrejpg.jpg'},{type_file:'image/jpg'},{max_size_file:200}),true),
  /*   Array('persona','nuevo_foto_persona',9,9,'ADD','min_size_name',Array('g','image/jpeg',20000),'nuevo_foto_persona_min_size_name_KO'),
     Array('persona','nuevo_foto_persona',10,10,'ADD','max_size_name',Array('a'.repeat(101),'image/jpeg',20000),'nuevo_foto_persona_max_size_name_KO'),
     Array('persona','nuevo_foto_persona',11,11,'ADD','fichero ok',Array('nombrejpg','image/jpeg',20000),true),

@@ -131,7 +131,7 @@ class persona extends Validations{
 			return "nombre_persona_max_size_KO";
 		}
 		// allowed format aA to zZ letter
-		if (!(this.format('nombre_persona', '^[XYZ]{1}[0-9]{7}[A-Z]{1}'))){
+		if (!(this.format('nombre_persona', '^[A-Za-z]*$'))){
 			this.dom.mostrar_error_campo('nombre_persona','nombre_persona_format_KO');
 			return "nombre_persona_format_KO";
 		}

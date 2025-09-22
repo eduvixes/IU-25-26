@@ -194,9 +194,9 @@ class Data_Test {
              //construyo objeto file y relleno valor para prueba
             if (pruebas[i][6].length != 0){
                               
-                var nombrefichero = pruebas[i][6][0].nombrefichero;
-                var tipomime = pruebas[i][6][1].tipomime;
-                var maxsize = pruebas[i][6][2].maxsize;   
+                var nombrefichero = pruebas[i][6][0].format_name_file;
+                var tipomime = pruebas[i][6][1].type_file;
+                var maxsize = pruebas[i][6][2].max_size_file;   
 
 
                 var file = new File([new ArrayBuffer(maxsize)], nombrefichero ,{type:tipomime, webkitRelativePath:"C:\\fakepath\\"+nombrefichero});
@@ -262,13 +262,14 @@ class Data_Test {
     data_test_class(){
 
 
-        //var salidapruebasnofile = this.data_test_data_nofile();
+        var salidapruebasnofile = this.data_test_data_nofile();
+         // se invoca la muestra del resultado de las pruebas
+        this.dom.showtestresult('IU_Test_result_nofile', salidapruebasnofile);
        
-
         var salidapruebasfile = this.data_test_data_file();
        
-         // se invoca la muestra del resultado de las pruebas
-        this.dom.showtestresult('IU_Test_result', salidapruebasfile);
+        // se invoca la muestra del resultado de las pruebas
+        this.dom.showtestresult('IU_Test_result_file', salidapruebasfile);
 
         return true;
 
