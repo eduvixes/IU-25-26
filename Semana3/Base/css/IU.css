@@ -12,3 +12,9 @@ divs
 		font-size: 60;
 		text-align: center;
 	}
+
+	#tablaresultadostest tbody tr th{
+		width: 10%;
+		word-wrap: break-word;
+	}
+

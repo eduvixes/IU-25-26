@@ -44,7 +44,11 @@ class Unit_Test {
          * }
          * 
          */
-        this.dom.showtestresult('IU_Test_result', test_result, /*datosbotones*/);
+        let marcados =	{
+					existe: {value:false, style:'background-color: red'}
+        };
+
+        this.dom.showtestresult('IU_Test_result', test_result, marcados);
 
         //this.comprobar_metodo_funciona('nada');
 

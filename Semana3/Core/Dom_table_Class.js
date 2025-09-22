@@ -28,14 +28,15 @@ class dom_table {
 	 * 
 	 * @param {string} idcomponente id where the table is placed
 	 * @param {object} test_result iterable object with object with associatives keys and data
-	 * @param {*} datosbotones [to implement] iterable object with information for creating a column with a image, event and function invokation if is necessary
+	 * @param {object} marked [to implement] iterable object with information for changing the aspect of a column 
 	 */
 
-	showtestresult(idcomponente, test_result, datosbotones=null){
-				
+	showtestresult(idcomponente, test_result, marked){
+		
 		switch_display_mode(idcomponente,'block','on');
 
 		var mitabla = document.createElement('table');
+		mitabla.id = 'tablaresultadostest';
 
 		document.getElementById(idcomponente).append(mitabla);
 		
@@ -52,13 +53,21 @@ class dom_table {
 		 * @param {object} datosfila
 		 * @param {string} tag 
 		 */
-		const filadatos = (datosfila,tag, datosbotones=null) => {
+		const filadatos = (datosfila,tag, marked) => {
 
 			var trelement = document.createElement('tr');
 			
+			var marcados = Object.keys(marked);
+
 			for (let clave in datosfila) {
 				var colelement = document.createElement(tag);
 				colelement.innerHTML = datosfila[clave];
+				if (marcados.includes(clave)){
+					if (marked[clave].value == datosfila[clave])
+					{
+						colelement.setAttribute('style',marked[clave].style);
+					}
+				} 
 				trelement.append(colelement); 
 			};	
 
@@ -73,11 +82,11 @@ class dom_table {
 			var titulos = Object.keys(datostitulo);
 
 			// incluyo fila cabecera
-			micabeceratabla.append(filadatos(titulos, 'th'));
+			micabeceratabla.append(filadatos(titulos, 'th', {}));
 			
 			// incluyo filas datos
 			for (var i=0;i<datos.length;i++){
-				micuerpotabla.append(filadatos(datos[i],'td'));
+				micuerpotabla.append(filadatos(datos[i],'td', marked));
 			}
 			
 		}
