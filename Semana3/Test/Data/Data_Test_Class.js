@@ -23,7 +23,7 @@ class Data_Test {
         this.array_pruebas_file = eval(this.entidad.nombreentidad+'_tests_files');
 
         // se invoca la realizacion de pruebas
-        var test_result = this.data_test_class();
+        this.data_test_class();
 
         
         
@@ -72,7 +72,7 @@ class Data_Test {
                 
                     var nombrecampo = clave;
                     var valorcampo = pruebas[i][5][j][nombrecampo];
-                    resultadopruebas.valorprueba += nombrecampo+':'+valorcampo+'<br>';
+                    resultadopruebas.valorprueba += nombrecampo+'='+valorcampo+'<br>';
 
                 }
 
@@ -215,6 +215,7 @@ class Data_Test {
 
                 
             }
+           
                     
 
             //llamo a la funcion de validacion del campo según su accion

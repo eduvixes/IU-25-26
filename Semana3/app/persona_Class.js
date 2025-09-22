@@ -141,6 +141,10 @@ class persona extends Validations{
 
 	ADD_nuevo_foto_persona_validation(){
 
+		if (!(this.empty_file('nuevo_foto_persona'))){
+			this.dom.mostrar_error_campo('nuevo_foto_persona','nuevo_foto_persona_empty_file_KO');
+			return "nuevo_foto_persona_empty_file_KO";
+		}
 		if (!(this.max_size_file('nuevo_foto_persona',2000))){
 			this.dom.mostrar_error_campo('nuevo_foto_persona','nuevo_foto_persona_max_size_file_KO');
 			return "nuevo_foto_persona_max_size_file_KO";

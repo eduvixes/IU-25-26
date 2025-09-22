@@ -5,7 +5,16 @@ class Unit_Test {
         this.clases = [
             {
                 stringclase : 'persona',
-                attributes : ['dni','nombre_persona','apellidos_persona','fechanacimiento_persona','direccion_persona','telefono_persona','email_persona','foto_persona'],
+                attributes : [  'dni',
+                                'nombre_persona',
+                                'apellidos_persona',
+                                'fechanacimiento_persona',
+                                'direccion_persona',
+                                'telefono_persona',
+                                'email_persona',
+                                'foto_persona',
+                                'nuevo_foto_persona'
+                            ],
             },
             /*{
                 stringclase : "alumnograduacion",

@@ -86,6 +86,18 @@ class Validations{
 	}
 
 	/**
+	 * 
+	 */
+	empty_file(id){
+		let objfile = document.getElementById(id);
+		if (objfile.files.length == 0){
+			return false;
+		}
+		return true;
+	}
+
+
+	/**
 	@param {string} id of html file element
 	@param {number} maxsize max size allowed for fiel
 	@return {bool} result of size comparison

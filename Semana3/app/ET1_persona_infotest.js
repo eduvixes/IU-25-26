@@ -5,7 +5,7 @@ let persona_def_tests = Array(
     Array('persona','nombre_persona',3,'cumple formato','ADD','nombre_persona_format_KO','Formato inválido. Debe estar entre 4 y 20 caracteres alfabéticos'),
     Array('persona','nombre_persona',4,'es correcto','ADD',true,'Nombre persona correcto'),
     // ficheros
-    Array('persona','nuevo_foto_persona',5,'existe fichero','ADD','nuevo_foto_persona_empty_KO','El fichero no existe. Debe subir una foto'),
+    Array('persona','nuevo_foto_persona',5,'existe fichero','ADD','nuevo_foto_persona_empty_file_KO','El fichero no existe. Debe subir una foto'),
     Array('persona','nuevo_foto_persona',6,'cumple nombre fichero','ADD','nuevo_foto_persona_format_name_file_KO','el nombre de fichero no cumple formato.'),
     Array('persona','nuevo_foto_persona',7,'cumple tipo fichero','ADD','nuevo_foto_persona_type_file_KO','el tipo de fichero no esta permitido'),
     Array('persona','nuevo_foto_persona',8,'cumple tamaño maximo fichero','ADD','nuevo_foto_persona_max_size_file_KO','el tamaño del fichero es muy grande.'),
@@ -45,10 +45,10 @@ el valor de parámetro a probar
 el codigo asociado de error/valor true de exito
 */
 let persona_tests_files = Array(
- /*   Array('persona','nuevo_foto_persona',5,5,'ADD','existe',Array(),'nuevo_foto_persona_empty_KO'),
-    Array('persona','nuevo_foto_persona',6,6,'ADD','cumple nombre fichero',Array('1111','image/jpeg',20000),'nuevo_foto_persona_format_name_file_KO'),
+   Array('persona','nuevo_foto_persona',5,5,'ADD','existe',Array(),'nuevo_foto_persona_empty_file_KO'),
+ /*   Array('persona','nuevo_foto_persona',6,6,'ADD','cumple nombre fichero',Array('1111','image/jpeg',20000),'nuevo_foto_persona_format_name_file_KO'),
     Array('persona','nuevo_foto_persona',7,6,'ADD','type_file',Array('nombrejpg','img/pdf',20000),'nuevo_foto_persona_type_file_KO'),
- */   Array('persona','nuevo_foto_persona',8,8,'ADD','max_size_name',Array({format_name_file:'nombrejpg.jpg'},{type_file:'image/jpg'},{max_size_file:2000000000}),'nuevo_foto_persona_max_size_file_KO'),
+ */   ['persona','nuevo_foto_persona',8,8,'ADD','max_size_name',Array({format_name_file:'nombrejpg.jpg'},{type_file:'image/jpg'},{max_size_file:2000000000}),'nuevo_foto_persona_max_size_file_KO'],
  Array('persona','nuevo_foto_persona',11,9,'ADD','max_size_name',Array({format_name_file:'nombrejpg.jpg'},{type_file:'image/jpg'},{max_size_file:200}),true),
  /*   Array('persona','nuevo_foto_persona',9,9,'ADD','min_size_name',Array('g','image/jpeg',20000),'nuevo_foto_persona_min_size_name_KO'),
     Array('persona','nuevo_foto_persona',10,10,'ADD','max_size_name',Array('a'.repeat(101),'image/jpeg',20000),'nuevo_foto_persona_max_size_name_KO'),
