@@ -95,8 +95,6 @@ class Validations{
 		}
 		return true;
 	}
-
-
 	/**
 	@param {string} id of html file element
 	@param {number} maxsize max size allowed for fiel
