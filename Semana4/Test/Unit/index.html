@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- css -->
+	<link rel="stylesheet" type="text/css" href="../../Base/css/IU.css" media="screen" />
+	<!-- clases generales -->
+	<script type="text/javascript" src="../../Core/Validations_Class.js"></script>
+	<!-- clases dom -->
+	<script type="text/javascript" src="../../Core/Dom_table_Class.js"></script>
+	<script type="text/javascript" src="../../Core/Dom_Class.js"></script>
+	<!-- clases entidades -->
+	<script type="text/javascript" src="../../app/persona_Class.js"></script>
+    <!-- clases test -->
+	<script type="text/javascript" src="./Unit_Test_Class.js"></script>
+
+</head>
+
+<body onload="var entidad=new Unit_Test()">
+	
+	<header id='header_page' class='bordeado'>Unit Test clase ENTIDAD</header>
+	<nav id="titulomenu" class='bordeado'><span onclick="switch_display_mode('div-menu','block');">Opciones de ménu</span>
+	</nav>
+	<aside id='div-menu'>
+		<ol>
+		    <li class="opcionmenu"><span onclick="entidad = new Unit_Test();">Test clase persona</span></li>
+	  	</ol>
+	</aside>
+	
+    <section id="IU_Test_result" class='bordeado'>
+	</section>
+    
+
+	<article class='bordeado'>Sección article</article>
+
+	<footer class='bordeado'>Pie de página</footer>
+
+    <script type="text/javascript" src="./init_indexhtml.js"></script>
+	
+</body>
+
+
+</html>

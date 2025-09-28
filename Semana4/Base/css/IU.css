@@ -1,0 +1,20 @@
+/*
+
+index.html
+divs
+
+*/
+	.bordeado{
+		border-width: 1;
+		border-style: solid;
+	}
+	#header_page{
+		font-size: 60;
+		text-align: center;
+	}
+
+	#tablaresultadostest tbody tr th{
+		width: 10%;
+		word-wrap: break-word;
+	}
+
