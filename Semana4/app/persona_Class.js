@@ -456,6 +456,11 @@ class persona extends Validations{
 
 	}
 
+	/**
+	 * el método realiza una petición de search al back pudiendo enviar un formulario con datos, enviando 
+	 * el nombre de la entidad del back y la acción a realizar sobre la misma.
+	 * los datos respondidos se usan para indicar o bien que no hay datos o mostrandolos en una tabla.
+	 */
 	async SEARCH(){
     
         await this.access_functions.peticionBackGeneral('form_iu', this.nombreentidad, 'SEARCH')

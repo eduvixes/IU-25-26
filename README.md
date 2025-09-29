@@ -59,6 +59,44 @@ El método de SEARCH invoca un metodo de acceso a back que tiene una promesa, po
 
 ``` js
 
+/**
+	 * el método realiza una petición de search al back pudiendo enviar un formulario con datos, enviando 
+	 * el nombre de la entidad del back y la acción a realizar sobre la misma.
+	 * los datos respondidos se usan para indicar o bien que no hay datos o mostrandolos en una tabla.
+	 */
+	async SEARCH(){
+    
+        await this.access_functions.peticionBackGeneral('form_iu', this.nombreentidad, 'SEARCH')
+        .then((respuesta) => {
+            
+            //limpiar el formulario
+			document.getElementById('IU_form').innerHTML = this.manual_form_creation();
+
+            if (respuesta['code'] == 'RECORDSET_DATOS'){
+				this.datos = respuesta['resource'];
+				this.atributos = Object.keys(this.datos[0]);
+				//crear la tabla de datos de la entidad del back
+            	this.crearTablaDatos(this.datos, this.mostrarespecial);
+				//rellenar el select de columnas a mostrar
+				//this.crearSeleccionablecolumnas(this.columnasamostrar, this.atributos);
+				//this.mostrarocultarcolumnas();
+            }
+            else{
+				document.getElementById("IU_manage_table").style.display = 'block';
+				document.getElementById('IU_manage_table').innerHTML = 'No se han encontrado elementos que coincidan con la búsqueda';
+                document.getElementById('IU_manage_table').className = 'RECORDSET_VACIO';
+            }
+
+			//setLang();
+
+        });
+    
+    }
+
+```
+
+``` js
+
 peticionBackGeneral(formulario, controlador, action, datosextra=null){
 
         var datos;
