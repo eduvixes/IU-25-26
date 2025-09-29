@@ -52,6 +52,53 @@ Creación de una clase para hacer test de valores de formulario de una clase
 
 ## Semana 4 ##
 
+Se modifica el index.html para incluir una tabla de muestra de filas de la entidad en el back junto con los botones de add, search y para cada fila edit, delete y showcurrent. Se incorpora tambien un seleccionable para elegir que columnas quieren que se muestren en la tabla, pudiendo poner visibles o invisibles en función de la elección en el seleccionable.
+Se introduce un div para poder colocar el nombre de la entidad a gestionar con el id text_title_page
+
+``` html
+
+<body>
+
+	<header id='header_page' class='bordeado'>texto titulo aplicación</header>
+	<nav class='bordeado'><span onclick="menu_work();">Opciones de ménu</span>
+	</nav>
+	<aside id='div-menu'>
+		<ol>
+		    <li class="opcionmenu"><span onclick="entidad = new persona();">Gestionar persona</span></li>
+		    <li class="opcionmenu"><span onclick="entidad = new entidad();">Gestionar otra entidad</span></li>
+	  	</ol>
+	</aside>
+	<section id="IU_manage_entity">
+		<section id="IU_manage_head">
+			<div id='title_page' class='bordeado'><span id = "text_title_page" class="">titulo de pagina de entidad</span>
+			</div>
+			<div id="add_search_columns">
+        		<img id="botonADD" src="./iconos/ADD.png" onclick="entidad.createForm_ADD();" />
+        		<img id="botonSEARCH" src="./iconos/SEARCH.png" onclick="entidad.createForm_SEARCH();"/>
+				
+				<label id="label_seleccioncolumnas">Columnas</label>
+				<select id="seleccioncolumnas" multiple>
+				</select>
+				
+        	</div>
+		</section>
+
+		<section id="IU_manage_table">
+
+		</section>
+
+	</section>
+	<section id="IU_form" class='bordeado'>
+		
+	</section>
+
+	<article class='bordeado'>Sección article</article>
+
+	<footer class='bordeado'>Pie de página</footer>
+
+
+```
+
 Implementación de la estructura de interfaz para la gestion de información de entidad en el index en un div en el cual se puede invocar ADD, EDIT, DELETE, SEARCH y SHOWCURRENT. Se incluye un boton add y un boton search, cada uno con su icono correspondiente y se le coloca un evento onclick para que se invoque al método createForm_ADD y createForm_SEARCH respectivamente para crear los formularios de add y search. Se muestra la tabla de las tuplas de la entidad y para cada tupla se incorpora un boton de edit, delete y showcurrent que invoca el createForm_accion correspondiente.
 Cuando se instancia la clase se inicializa una propiedad con el nombre de la entidad, otro con las columnas visibles y otro con los atributos cuyo valor pueden tener que ser modificados para presentarlo al usuario.
 Si la entidad no se instancia para test entonces se realiza una petición de SEARCH al back.
@@ -256,11 +303,13 @@ En el caso de que la respuesta del search traiga un code 'RECORDSET_DATOS' signi
 		/*
 		recorrer todas las filas de datos y cada atributo para si tiene una funcion de transformación de valor modificarlo en el momento
 		*/
-		for (var i=0;i<misdatos.length;i++){
-			for (var clave in misdatos[i]){
-					if (clave in mostrarespecial){
-						//misdatos[i][clave] = this.cambiarmostrarespecial(clave, misdatos[i][clave]);
-					}
+		if (mostrarespecial.length > 0){
+			for (var i=0;i<misdatos.length;i++){
+				for (var clave in misdatos[i]){
+						if (clave in mostrarespecial){
+							//misdatos[i][clave] = this.cambiarmostrarespecial(clave, misdatos[i][clave]);
+						}
+				}
 			}
 		}
 		// proceso los datos de la tabla para incluir en cada fila los tres botones conectados a createForm_ACCION()
@@ -284,9 +333,20 @@ En el caso de que la respuesta del search traiga un code 'RECORDSET_DATOS' signi
 	}
 
 ```
+En el método crearTablaDatos primero se recorren todas las filas y dentro de las filas todos los atributos para comprobar si alguno de ellos esta en la propiedad mostrarespecial. Si es asi, (se implementara mas adelante) se invoca un método de la clase que tendrá el nombre cambiarmostrarespecial() al cual se le pasan dos parametros (el atributo y el valor del atributo). Este método devolverá el valor modificado para su muestra en la tabla de datos.
 
-Creación de los datos para la tabla de SHOWALL a partir de consulta da la bd, incluyendo los datos de la fila para los EDIT, DELETE y SHOWCURRENT
-Creación de oculte muestra de atributos en la tabla de SHOWALL
+A continuación, se recorren todas las filas para incluir al final de las mismas tres elementos mas correspondientes a la información que quiere que se muestre al final de cada fila en la tabla sobre las acciones a realizar para esa fila. Para cada acción se incluye una imagen (img ) con lo siguiente:
+
+un id correspondiente a boton+ACCION
+
+un src correspondiente a un icono de la accion
+
+un evento onclick que invoca el metodo createForm_ACCION en donde se pasan los valores de las columnas de esa fila. Como estamos construyendo un string no podemos concatenar el objeto y por lo tanto serializamos el objeto para convertirlo en un string y poder concatenarlo en el evento.
+
+Se han construido los métodos createForm_ACCION	para verificar que se llega a los mismos y en el caso de las acciones de fila se invoca una propiedad de la fila (se muestra el dni) para verificar que tenemos el objeto de información de los atributos de fila.
+
+
+
 
 
 

@@ -352,11 +352,13 @@ class persona extends Validations{
 		/*
 		recorrer todas las filas de datos y cada atributo para si tiene una funcion de transformación de valor modificarlo en el momento
 		*/
-		for (var i=0;i<misdatos.length;i++){
-			for (var clave in misdatos[i]){
-					if (clave in mostrarespecial){
-						//misdatos[i][clave] = this.cambiarmostrarespecial(clave, misdatos[i][clave]);
-					}
+		if (mostrarespecial > 0){
+			for (var i=0;i<misdatos.length;i++){
+				for (var clave in misdatos[i]){
+						if (clave in mostrarespecial){
+							//misdatos[i][clave] = this.cambiarmostrarespecial(clave, misdatos[i][clave]);
+						}
+				}
 			}
 		}
 		// proceso los datos de la tabla para incluir en cada fila los tres botones conectados a createForm_ACCION()
