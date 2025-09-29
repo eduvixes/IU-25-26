@@ -429,7 +429,7 @@ class persona extends Validations{
 
 	/**
 	 * Modifica el array de columnas a mostrar al hacer click sobre el atributo en el select poniendolo como oculto o como visible
-	 * @param {*} atributo 
+	 * @param {string} atributo 
 	 */
 	modificarcolumnasamostrar(atributo){
 
