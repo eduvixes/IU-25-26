@@ -52,9 +52,59 @@ Creación de una clase para hacer test de valores de formulario de una clase
 
 ## Semana 4 ##
 
-Implementación de la estructura de interfaz para la gestion de información de entidad en el index en un div en el cual se puede invocar ADD, EDIT, DELETE, SEARCH y SHOWCURRENT. Se incluye un boton add y un boton search, cada uno con su icono correspondiente y se le coloca un evento onclick para que se invoque al método createForm_ADD y createForm_SEARCH respectivamente para crear los formularios de add y search. Se incluye tambien un select que será rellenado con los atributos de la tabla para poder elegir que columnas se muestran o se ocultan de la tabla. Para ello se crea una propiedad de la entidad (columnasamostrar) que tiene el array de atributos cuyas columnas en la tabla de muestra de datos se muestran por defecto. 
+Implementación de la estructura de interfaz para la gestion de información de entidad en el index en un div en el cual se puede invocar ADD, EDIT, DELETE, SEARCH y SHOWCURRENT. Se incluye un boton add y un boton search, cada uno con su icono correspondiente y se le coloca un evento onclick para que se invoque al método createForm_ADD y createForm_SEARCH respectivamente para crear los formularios de add y search. Se muestra la tabla de las tuplas de la entidad y para cada tupla se incorpora un boton de edit, delete y showcurrent que invoca el createForm_accion correspondiente.
+Cuando se instancia la clase se inicializa una propiedad con el nombre de la entidad, otro con las columnas visibles y otro con los atributos cuyo valor pueden tener que ser modificados para presentarlo al usuario.
+Si la entidad no se instancia para test entonces se realiza una petición de SEARCH al back.
+El método de SEARCH invoca un metodo de acceso a back que tiene una promesa, por eso se coloca una indicación de asíncrono y se espera su finalización con un await. La petición a back recibe como parametros un id de formulario (si no viene un id de formulario no se mandan datos de búsqueda), la entidad a la que se accede en el back, la acción que se quiere realizar en el back y si es necesario un array con datos extra a enviar. El metodo peticionBackGeneral() primero crea una variable de tipo FormData para poder enviar al back la información. La rellena con los datos del formulario si se le da un formulario válido, los datos de entidad y de accion y de datos extra si se le proporcionan. Después realiza una petición ajax contra una url, con un método http POST y unos datos. Si hay un error (al hacer la petición) lo muestra en un alert y si no lo hay lo devuelve y es procesado en el .then del método SEARCH.
 
-Se crea un método crearSeleccionablecolumnas(columnasamostrar,atributos), el cual a partir de todos los atributos de la entidad y los indicados en la propiedad columnas a mostrar construye los options del select y pone seleccionados los que estan visibles. A todos los options les coloca un onclick que permite cambiar su estado de visible a no visible y viceversa. Lo hace invocando un método modificarcolumnasamostrar(atributo).
+``` js
+
+peticionBackGeneral(formulario, controlador, action, datosextra=null){
+
+        var datos;
+        
+        if (formulario === ''){
+            datos = new FormData();
+        }
+        else{
+            var formulario = document.getElementById(formulario);
+            datos = new FormData(formulario);
+        }
+    
+        datos.append('controlador', controlador);
+        datos.append('action', action);
+    
+        if (datosextra==null){}
+        else{
+            for(var clave in datosextra){
+                datos.append(clave, datosextra[clave]);
+            }
+        }
+        
+        return new Promise(function(resolve) { 
+            $.ajax({
+                type :"POST",
+                url : "http://193.147.87.202/ET2/index.php",
+                data : datos,
+                processData : false,
+                contentType : false,
+            })
+            .done(res => {
+                resolve(res);
+            })
+            .fail(res => {
+                alert('error : '+res.status);
+            })
+    
+        });
+    
+    }
+
+```
+
+Se incluye en el index.html en el div donde están los botones de add y searcgh un select que será rellenado con los atributos de la tabla para poder elegir que columnas se muestran o se ocultan de la tabla. Para ello se crea una propiedad de la entidad (columnasamostrar) que tiene el array de atributos cuyas columnas en la tabla de muestra de datos se muestran por defecto. 
+
+Relacionado con el select se crea un método crearSeleccionablecolumnas(columnasamostrar,atributos), el cual a partir de todos los atributos de la entidad y los indicados en la propiedad columnas a mostrar construye los options del select y pone seleccionados los que estan visibles. A todos los options les coloca un onclick que permite cambiar su estado de visible a no visible y viceversa. Lo hace invocando un método modificarcolumnasamostrar(atributo).
 
 ``` js
 
@@ -83,6 +133,7 @@ Se crea un método crearSeleccionablecolumnas(columnasamostrar,atributos), el cu
 		//setLang();
 
 	}
+```
 
 El método modificarcolumasamostar lo que hace es modificar la propiedad columnas a mostrar incluyendo o excluyendo de la misma el atributo proporcionado. Si el atributo ya estaba en la propiedad es que era visible y se elimina pues de la propiedad. Si no estaba significa que no era visible y se incluye para que lo sea ahora.
 
@@ -107,6 +158,7 @@ El método modificarcolumasamostar lo que hace es modificar la propiedad columna
 		this.crearSeleccionablecolumnas(this.columnasamostrar, this.atributos);
 
 	}
+```
 
 El método mostrarocultarcolumnas() busca los elementos de la columna de un atributo a través de un class que se le coloca cuando se crea la tabla, que tiene la forma tabla-(tr/td)-atributo. Selecciona los elementos de la columna que son th y que son td para ocultarlo modificando su propiedad style.display.
 
@@ -138,7 +190,62 @@ El método mostrarocultarcolumnas() busca los elementos de la columna de un atri
 
 
 	}
+```
 
+Las peticiones al back siempre nos traeran la respuesta mediante un array de tres elementos principales que son:
+
+ok: (true/false) indica si la operación solicita en el back encontró un error o no
+
+code: devuelve un código de error o exito de la operación
+
+resource: en el caso de una acción SEARCH devuelve un array asociativo con las filas de tuplas que coincidan con la búsqueda y cada fila es un array asociativo con los valores de los atributos de la entidad. También se devuelve el número total de filas que coinciden con la búsqueda, la fila en la que empiezan los resultados del total de la búsqueda y cuantas filas se envian en el resource del total del resultado de la búsqueda. En caso de error de SQL en resource se envia el sql que ha dado el error.
+
+En el caso de que la respuesta del search traiga un code 'RECORDSET_DATOS' significa que se envian tuplas desde el back y se llama al método crearTablaDatos() para construir el objeto de datos que posteriormente se enviará al método de mostrar esos datos en una tabla en el navegador. Como parametros se envian los datos a mostrar y la propiedad que indica que datos de la tabla se modificarán en la tabla de muestra al usuario (esto se implementará la semana que viene).
+
+``` js
+
+/**
+	 * Recibe la información a mostrar en columnas y el array de columnas a las cuales se modificara su contenido para mostrarsele al usuario
+	 * Se le incluyen tres columnas mas a cada fila para poder tener un icono con la accion a realizar para esa fila y se le coloca un evento onclick
+	 * para poder llamar a los metodos createForm_accion pasando como parametros de esos metodos la información de la fila de datos
+	 * 
+	 * @param {Objeto} datos 
+	 * @param {Array} mostrarespecial 
+	 */
+	crearTablaDatos(datos, mostrarespecial){
+		
+		var misdatos = datos;
+		/*
+		recorrer todas las filas de datos y cada atributo para si tiene una funcion de transformación de valor modificarlo en el momento
+		*/
+		for (var i=0;i<misdatos.length;i++){
+			for (var clave in misdatos[i]){
+					if (clave in mostrarespecial){
+						//misdatos[i][clave] = this.cambiarmostrarespecial(clave, misdatos[i][clave]);
+					}
+			}
+		}
+		// proceso los datos de la tabla para incluir en cada fila los tres botones conectados a createForm_ACCION()
+		for (var i=0;i<misdatos.length;i++){
+			
+			var linedit = `<img id='botonEDIT' src='./iconos/EDIT.png' onclick='entidad.createForm_EDIT(`+JSON.stringify(misdatos[i])+`);'>`;
+			var lindelete = `<img id='botonDELETE' src='./iconos/DELETE.png' onclick='entidad.createForm_DELETE(`+JSON.stringify(misdatos[i])+`);'>`;
+			var linshowcurrent = `<img id='botonSHOWCURRENT' src='./iconos/SHOWCURRENT.png' onclick='entidad.createForm_SHOWCURRENT(`+JSON.stringify(misdatos[i])+`);'>`;
+			misdatos[i]['EDIT'] = linedit;
+			misdatos[i]['DELETE'] = lindelete;
+			misdatos[i]['SHOWCURRENT'] = linshowcurrent;
+
+		}
+		
+		//muestro datos en tabla
+		this.dom.showData('IU_manage_table', misdatos);
+		this.mostrarocultarcolumnas();
+		this.crearSeleccionablecolumnas(this.columnasamostrar, this.atributos);
+		
+
+	}
+
+```
 
 Creación de los datos para la tabla de SHOWALL a partir de consulta da la bd, incluyendo los datos de la fila para los EDIT, DELETE y SHOWCURRENT
 Creación de oculte muestra de atributos en la tabla de SHOWALL

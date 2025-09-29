@@ -336,7 +336,16 @@ class persona extends Validations{
 
 
 // candidatas dom
-	
+
+
+	/**
+	 * Recibe la información a mostrar en columnas y el array de columnas a las cuales se modificara su contenido para mostrarsele al usuario
+	 * Se le incluyen tres columnas mas a cada fila para poder tener un icono con la accion a realizar para esa fila y se le coloca un evento onclick
+	 * para poder llamar a los metodos createForm_accion pasando como parametros de esos metodos la información de la fila de datos
+	 * 
+	 * @param {Objeto} datos 
+	 * @param {Array} mostrarespecial 
+	 */
 	crearTablaDatos(datos, mostrarespecial){
 		
 		var misdatos = datos;
