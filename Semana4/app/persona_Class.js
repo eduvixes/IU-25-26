@@ -7,7 +7,6 @@ class persona extends Validations{
 		this.validations = new Validations();
 		this.access_functions = new ExternalAccess();
 
-		this.columnasamostrar = Array('dni','nombre_persona', 'foto_persona');
 		this.columnasamostrar = ['dni','nombre_persona', 'foto_persona'];
 		this.mostrarespecial = ['foto_persona'];
 		this.nombreentidad = 'persona';
@@ -456,16 +455,9 @@ class persona extends Validations{
             //limpiar el formulario
 			document.getElementById('IU_form').innerHTML = this.manual_form_creation();
 
-			//quito los class de la muestra de filas
-			//document.getElementById('muestradatostabla').removeAttribute('class');
-
-            //poner el div del formulario no visible
-            //document.getElementById("IU_form").style.display = 'none';
-
-            this.datos = respuesta['resource'];
-			this.atributos = Object.keys(this.datos[0]);
-
             if (respuesta['code'] == 'RECORDSET_DATOS'){
+				this.datos = respuesta['resource'];
+				this.atributos = Object.keys(this.datos[0]);
 				//crear la tabla de datos de la entidad del back
             	this.crearTablaDatos(this.datos, this.mostrarespecial);
 				//rellenar el select de columnas a mostrar
@@ -473,9 +465,9 @@ class persona extends Validations{
 				//this.mostrarocultarcolumnas();
             }
             else{
-				document.getElementById("id_tabla_datos").style.display = 'block';
-				document.getElementById('muestradatostabla').innerHTML = '';
-                document.getElementById('muestradatostabla').className = 'RECORDSET_VACIO';
+				document.getElementById("IU_manage_table").style.display = 'block';
+				document.getElementById('IU_manage_table').innerHTML = 'No se han encontrado elementos que coincidan con la búsqueda';
+                document.getElementById('IU_manage_table').className = 'RECORDSET_VACIO';
             }
 
 			//setLang();
