@@ -574,6 +574,10 @@ class persona extends Validations{
 		}
 	}
 
+	/**
+	 * 
+	 * @param {String} idform id del formulario en donde se van a colocar todos sus elementos a readlonly true
+	 */
 	colocartodosreadonly(idform){
 		let campos = document.forms[idform].elements;
         //recorrer todos los campos
