@@ -153,7 +153,7 @@ class persona extends Validations{
 	ADD_nuevo_foto_persona_validation(){
 
 		if (!(this.validations.not_exist_file('nuevo_foto_persona'))){
-			this.dom.mostrar_error_campo('nuevo_foto_persona','nuevo_foto_persona_empty_file_KO');
+			this.dom.mostrar_error_campo('nuevo_foto_persona','nuevo_foto_persona_not_exists_file_KO');
 			return "nuevo_foto_persona_not_exist_file_KO";
 		}
 		if (!(this.validations.max_size_file('nuevo_foto_persona',2000000))){
@@ -479,11 +479,11 @@ class persona extends Validations{
 		
 	}
 
-	
-
-
-
-
+	/**
+	 * 
+	 * @param {*} stringfecha 
+	 * @returns 
+	 */
 	cambiarformatoFecha(stringfecha){
 
 		var elementos = stringfecha.split('-');
@@ -567,10 +567,10 @@ class persona extends Validations{
 				evento = 'onchange';
 			}
 			
-			/*if (document.getElementById(campos[i].id).type == 'submit'){}
+			if (document.getElementById(campos[i].id).type == 'submit'){}
 			else{
 				document.getElementById(campos[i].id).setAttribute (evento,'entidad.'+accion+'_'+campos[i].id+'_validation'+'();');
-			}*/		        
+			}		        
 		}
 	}
 
@@ -718,7 +718,7 @@ class persona extends Validations{
             //limpiar el formulario
 			document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
 			this.dom.hide_element('Div_IU_form');
-
+			console.log(respuesta['code']);
             if (respuesta['code'] == 'RECORDSET_DATOS'){
 				this.datos = respuesta['resource'];
 				this.atributos = Object.keys(this.datos[0]);
