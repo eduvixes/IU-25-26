@@ -52,7 +52,10 @@ Creación de una clase para hacer test de valores de formulario de una clase
 
 ## Semana 4 ##
 
-Se modifica el index.html para incluir una tabla de muestra de filas de la entidad en el back junto con los botones de add, search y para cada fila edit, delete y showcurrent. Se incorpora tambien un seleccionable para elegir que columnas quieren que se muestren en la tabla, pudiendo poner visibles o invisibles en función de la elección en el seleccionable.
+Se modifica el index.html para incluir una tabla de muestra de filas de la entidad en el back junto con los botones de add, search y para cada fila edit, delete y showcurrent. 
+
+Se incorpora tambien un seleccionable para elegir que columnas quieren que se muestren en la tabla, pudiendo poner visibles o invisibles en función de la elección en el seleccionable.
+
 Se introduce un div para poder colocar el nombre de la entidad a gestionar con el id text_title_page
 
 ``` html
@@ -100,8 +103,11 @@ Se introduce un div para poder colocar el nombre de la entidad a gestionar con e
 ```
 
 Implementación de la estructura de interfaz para la gestion de información de entidad en el index en un div en el cual se puede invocar ADD, EDIT, DELETE, SEARCH y SHOWCURRENT. Se incluye un boton add y un boton search, cada uno con su icono correspondiente y se le coloca un evento onclick para que se invoque al método createForm_ADD y createForm_SEARCH respectivamente para crear los formularios de add y search. Se muestra la tabla de las tuplas de la entidad y para cada tupla se incorpora un boton de edit, delete y showcurrent que invoca el createForm_accion correspondiente.
+
 Cuando se instancia la clase se inicializa una propiedad con el nombre de la entidad, otro con las columnas visibles y otro con los atributos cuyo valor pueden tener que ser modificados para presentarlo al usuario.
+
 Si la entidad no se instancia para test entonces se realiza una petición de SEARCH al back.
+
 El método de SEARCH invoca un metodo de acceso a back que tiene una promesa, por eso se coloca una indicación de asíncrono y se espera su finalización con un await. La petición a back recibe como parametros un id de formulario (si no viene un id de formulario no se mandan datos de búsqueda), la entidad a la que se accede en el back, la acción que se quiere realizar en el back y si es necesario un array con datos extra a enviar. El metodo peticionBackGeneral() primero crea una variable de tipo FormData para poder enviar al back la información. La rellena con los datos del formulario si se le da un formulario válido, los datos de entidad y de accion y de datos extra si se le proporcionan. Después realiza una petición ajax contra una url, con un método http POST y unos datos. Si hay un error (al hacer la petición) lo muestra en un alert y si no lo hay lo devuelve y es procesado en el .then del método SEARCH.
 
 ``` js
