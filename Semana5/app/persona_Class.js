@@ -718,7 +718,7 @@ class persona extends Validations{
             //limpiar el formulario
 			document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
 			this.dom.hide_element('Div_IU_form');
-			console.log(respuesta['code']);
+
             if (respuesta['code'] == 'RECORDSET_DATOS'){
 				this.datos = respuesta['resource'];
 				this.atributos = Object.keys(this.datos[0]);
