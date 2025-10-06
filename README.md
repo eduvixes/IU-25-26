@@ -345,9 +345,71 @@ un evento onclick que invoca el metodo createForm_ACCION en donde se pasan los v
 
 Se han construido los métodos createForm_ACCION	para verificar que se llega a los mismos y en el caso de las acciones de fila se invoca una propiedad de la fila (se muestra el dni) para verificar que tenemos el objeto de información de los atributos de fila.
 
+## Semana 4 ##
+
+Esta semana se van a crear los formularios para cada accion a realizar. El código de la semana pasada dejaba una tabla con las tuplas de la entidad resultado de un SEARCH. Para cada tupla existe un icono que al hacer click sobre el llama al método createForm_accion correspondiente pasandole la fila de datos a la cual pertenece. 
+
+También crea un icono para las acciones de ADD y SEARCH que llaman a sus métodos correspondientes de createForm_accion pero sin datos como parámetros.
+
+``` js
+
+	createForm_EDIT(fila){
+
+		// limpiar y poner visible el formulario
+		document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
+		this.dom.show_element('Div_IU_form','block');
+
+		// rellenar onsubmit y action
+		this.dom.assign_property_value('form_iu','onsubmit','return entidad.EDIT_submit_'+this.nombreentidad);
+		this.dom.assign_property_value('form_iu', 'action', 'javascript:entidad.EDIT();');
+
+		//activar el link al fichero
+		this.dom.assign_property_value('link_foto_persona', 'href', 'http://193.147.87.202/ET2/filesuploaded/files_foto_persona/'+fila.foto_persona);
+		
+		// modificar presentacion (en este caso concreto para fecha)
+		fila.fechaNacimiento_persona = this.cambiarformatoFecha(fila.fechaNacimiento_persona);
+
+		// rellenar valores
+		this.rellenarvaloresform(fila);
+		
+		// poner las validaciones
+		this.colocarvalidaciones('EDIT');
+
+		// poner inactivos los campos correspondientes
+		this.dom.assign_property_value('dni','readonly','true');
+		this.dom.assign_property_value('foto_persona','readonly','true');
+
+		// colocar boton de submit
+		this.colocarboton('EDIT');
+
+	}
+
+```
+
+Proceso general y aplicado al EDIT
+
+limpiar
+(se ha dejado canonico y quitado el boton de submit)
+
+atributos del submit
+
+poner/quitar/modificar elementos del form
+
+modificar valores de presentacion si es necesario
+
+rellenar valores
+
+colocar validaciones
+
+poner inactivos
+
+poner boton de submit
 
 
 
+Se han creado metodos de dom para poder modificar el dom y abstraer de la clase
+
+ver los métodos
 
 
 
