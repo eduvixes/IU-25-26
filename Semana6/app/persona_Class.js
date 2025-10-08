@@ -16,6 +16,9 @@ class persona extends Validations{
 		else{
 			//visualizar seccion tabla y botones
 			//document.getElementById('IU_manage_entity').style.display = 'block';
+			document.getElementById('text_title_page').classList.add('text_titulo_page_'+this.nombreentidad);
+			document.getElementById('text_title_page').setAttribute('onclick','entidad = new persona();');
+
 			this.dom.show_element('IU_manage_entity', 'block');
 			
 			//crear el formulario vacio
@@ -153,7 +156,7 @@ class persona extends Validations{
 	ADD_nuevo_foto_persona_validation(){
 
 		if (!(this.validations.not_exist_file('nuevo_foto_persona'))){
-			this.dom.mostrar_error_campo('nuevo_foto_persona','nuevo_foto_persona_not_exists_file_KO');
+			this.dom.mostrar_error_campo('nuevo_foto_persona','nuevo_foto_persona_not_exist_file_KO');
 			return "nuevo_foto_persona_not_exist_file_KO";
 		}
 		if (!(this.validations.max_size_file('nuevo_foto_persona',2000000))){
@@ -335,9 +338,12 @@ class persona extends Validations{
 
 	createForm_EDIT(fila){
 
-		// limpiar y poner visible el formulario
+		// limpiar poner titulo y poner visible el formulario
 		document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
 		this.dom.show_element('Div_IU_form','block');
+
+		this.dom.remove_class_value('class_contenido_titulo_form', 'text_contenido_titulo_form');
+		this.dom.assign_class_value('class_contenido_titulo_form', 'text_contenido_titulo_form_persona_EDIT');
 
 		// rellenar onsubmit y action
 		this.dom.assign_property_value('form_iu','onsubmit','return entidad.EDIT_submit_'+this.nombreentidad);
@@ -362,6 +368,8 @@ class persona extends Validations{
 		// colocar boton de submit
 		this.colocarboton('EDIT');
 
+		setLang();
+
 	}
 
 	createForm_DELETE(fila){
@@ -369,6 +377,8 @@ class persona extends Validations{
 		// limpiar y poner visible el formulario
 		document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
 		this.dom.show_element('Div_IU_form','block');
+		this.dom.remove_class_value('class_contenido_titulo_form','text_contenido_titulo_form');
+		this.dom.assign_class_value('class_contenido_titulo_form', 'text_contenido_titulo_form_persona_DELETE');
 
 		// rellenar y action
 		this.dom.assign_property_value('form_iu', 'action', 'javascript:entidad.DELETE();');
@@ -389,12 +399,16 @@ class persona extends Validations{
 
 		// colocar boton de submit
 		this.colocarboton('DELETE');
+
+		setLang();
 	}
 
 	createForm_SHOWCURRENT(fila){
 		// limpiar y poner visible el formulario
 		document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
 		this.dom.show_element('Div_IU_form','block');
+		this.dom.remove_class_value('class_contenido_titulo_form', 'text_contenido_titulo_form');
+		this.dom.assign_class_value('class_contenido_titulo_form', 'text_contenido_titulo_form_persona_SHOWCURRENT');
 
 		// rellenar y action
 		//this.dom.assign_property_value('form_iu', 'action', 'javascript:entidad.DELETE();');
@@ -415,6 +429,7 @@ class persona extends Validations{
 		// colocar boton de submit
 		//this.colocarboton('SHOWCURRENT');
 
+		setLang();
 
 	}
 
@@ -425,6 +440,8 @@ class persona extends Validations{
 		// limpiar y poner visible el formulario
 		document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
 		this.dom.show_element('Div_IU_form','block');
+		this.dom.remove_class_value('class_contenido_titulo_form', 'text_contenido_titulo_form');
+		this.dom.assign_class_value('class_contenido_titulo_form', 'text_contenido_titulo_form_persona_ADD');
 
 		// poner onsubmit
 		this.dom.assign_property_value('form_iu','onsubmit','return entidad.ADD_submit_'+this.nombreentidad+'()');
@@ -447,6 +464,8 @@ class persona extends Validations{
 
 		// colocar boton de submit
 		this.colocarboton('ADD');
+
+		setLang();
 	}
 
 	createForm_SEARCH(){
@@ -456,6 +475,8 @@ class persona extends Validations{
 		// limpiar y poner visible el formulario
 		document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
 		this.dom.show_element('Div_IU_form','block');
+		this.dom.remove_class_value('class_contenido_titulo_form', 'text_contenido_titulo_form');
+		this.dom.assign_class_value('class_contenido_titulo_form', 'text_contenido_titulo_form_persona_SEARCH');
 
 		// poner onsubmit
 		this.dom.assign_property_value('form_iu','onsubmit','return entidad.SEARCH_submit_'+this.nombreentidad);
@@ -476,16 +497,15 @@ class persona extends Validations{
 		// colocar boton de submit
 		this.colocarboton('SEARCH');
 
+		setLang();
 		
 	}
 
-	/**
-	 * Modifica el formato del string de fecha recibido como parametro a la salida que queremos
-	 * recibe aaaa-mm-dd y devuelve dd/mm/aaaa
-	 * 
-	 * @param {*} stringfecha 
-	 * @returns fecha en formato dd/mm/aaaa
-	 */
+	
+
+
+
+
 	cambiarformatoFecha(stringfecha){
 
 		var elementos = stringfecha.split('-');
@@ -569,17 +589,10 @@ class persona extends Validations{
 				evento = 'onchange';
 			}
 			
-			if (document.getElementById(campos[i].id).type == 'submit'){}
-			else{
-				document.getElementById(campos[i].id).setAttribute (evento,'entidad.'+accion+'_'+campos[i].id+'_validation'+'();');
-			}		        
+					        
 		}
 	}
 
-	/**
-	 * 
-	 * @param {String} idform id del formulario en donde se van a colocar todos sus elementos a readlonly true
-	 */
 	colocartodosreadonly(idform){
 		let campos = document.forms[idform].elements;
         //recorrer todos los campos
@@ -625,7 +638,6 @@ class persona extends Validations{
 				}
 			}
 		}
-		
 		//muestro datos en tabla
 		this.dom.showData('IU_manage_table', misdatos);
 		this.mostrarocultarcolumnas();
@@ -681,7 +693,7 @@ class persona extends Validations{
 			else{
 				estadodisplay = 'none';
 			}
-			document.querySelector("th[class='tabla-th-"+columna+"']").style.display = estadodisplay;
+			document.querySelector("th[class~='tabla-th-"+columna+"']").style.display = estadodisplay;
 			let arraytds = document.querySelectorAll("td[class='tabla-td-"+columna+"']");
 			for (let i=0;i<arraytds.length;i++){
 				arraytds[i].style.display = estadodisplay;
@@ -728,19 +740,21 @@ class persona extends Validations{
             if (respuesta['code'] == 'RECORDSET_DATOS'){
 				this.datos = respuesta['resource'];
 				this.atributos = Object.keys(this.datos[0]);
+				this.dom.remove_class_value('IU_manage_table','RECORDSET_');
 				//crear la tabla de datos de la entidad del back
             	this.crearTablaDatos(this.datos, this.mostrarespecial);
-				//rellenar el select de columnas a mostrar
-				//this.crearSeleccionablecolumnas(this.columnasamostrar, this.atributos);
-				//this.mostrarocultarcolumnas();
+
             }
             else{
-				document.getElementById("IU_manage_table").style.display = 'block';
-				document.getElementById('IU_manage_table').innerHTML = 'No se han encontrado elementos que coincidan con la búsqueda';
-                document.getElementById('IU_manage_table').className = 'RECORDSET_VACIO';
+				this.dom.assign_property_value('IU_manage_table','style.display','block');
+				this.dom.remove_class_value('IU_manage_table','RECORDSET_');
+				this.dom.assign_class_value('IU_manage_table','RECORDSET_VACIO');
+				//document.getElementById("IU_manage_table").style.display = 'block';
+				//document.getElementById('IU_manage_table').innerHTML = 'No se han encontrado elementos que coincidan con la búsqueda';
+                //document.getElementById('IU_manage_table').className = 'RECORDSET_VACIO';
             }
 
-			//setLang();
+			setLang();
 
         });
     
@@ -757,6 +771,7 @@ class persona extends Validations{
         await this.access_functions.peticionBackGeneral('form_iu', this.nombreentidad, 'EDIT')
         .then((respuesta) => {
             
+
             if (respuesta['ok']){
             
 				//limpiar el formulario
