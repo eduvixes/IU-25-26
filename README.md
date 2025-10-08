@@ -423,18 +423,6 @@ Se ha modificado el método manual_form_creation(), para que sea una representac
 
 ```
 
-El Create Form Edit recibe como parámetro la fila de datos correspondiente a la dupla, en la cual hacemos la acción de editar. 
-
-Lo primero que hacemos en este método, es poner la versión limpia del formulario de la entidad en su div correspondiente y ponerlo visible. 
-
-A continuación, rellenamos los atributos action y onsubmit. Para no tener que estar accediendo al documento en la entidad, he creado un método (assign_property_value()). En él, indicándole el elemento HTML, la propiedad y el valor se le asigna fuera de la clase entidad con este método.
-
-Después, dado que es una acción Edit, y por lo tanto lleva tanto el elemento HTML de foto_persona como el elemento HTML de nuevo_foto_persona, tenemos que asignar un valor de hiperenlace al elemento HTML, que representa el link al fichero de foto_persona. Para ello, construimos el hiperenlace que tiene la base de la URL (http://193.147.87.202/ET2/filesuploaded/files_foto_persona/) y le concatenamos el contenido de foto_persona que viene en la fila de la tupla y con lo cual hemos creado un hiperenlace al fichero asociado a esta dupla.
-
-Después de ello modificamos la presentación de fechaNacimiento_persona. El atributo fechaNacimiento_persona viene de la base de datos en formato año-mes-día separado por guiones y queremos mostrarlo como día/mes/año separado por barras. Por eso antes de introducirlo en el formulario modificamos el objeto fila en su propiedad fechaNacimiento_persona por su valor cambiado de formato para hecho. Para eso se ha hecho un método (cambiarformatoFecha()) que estará en la propia clase, porque es dependiente de la entidad.
-
-
-
 
 ``` js
 
@@ -470,6 +458,40 @@ Después de ello modificamos la presentación de fechaNacimiento_persona. El atr
 	}
 
 ```
+
+El Create Form Edit recibe como parámetro la fila de datos correspondiente a la dupla, en la cual hacemos la acción de editar. 
+
+Lo primero que hacemos en este método, es poner la versión limpia del formulario de la entidad en su div correspondiente y ponerlo visible. 
+
+A continuación, rellenamos los atributos action y onsubmit. Para no tener que estar accediendo al documento en la entidad, he creado un método (assign_property_value()). En él, indicándole el elemento HTML, la propiedad y el valor se le asigna fuera de la clase entidad con este método.
+
+Después, dado que es una acción Edit, y por lo tanto lleva tanto el elemento HTML de foto_persona como el elemento HTML de nuevo_foto_persona, tenemos que asignar un valor de hiperenlace al elemento HTML, que representa el link al fichero de foto_persona. Para ello, construimos el hiperenlace que tiene la base de la URL (http://193.147.87.202/ET2/filesuploaded/files_foto_persona/) y le concatenamos el contenido de foto_persona que viene en la fila de la tupla y con lo cual hemos creado un hiperenlace al fichero asociado a esta dupla.
+
+Después de ello modificamos la presentación de fechaNacimiento_persona. El atributo fechaNacimiento_persona viene de la base de datos en formato año-mes-día separado por guiones y queremos mostrarlo como día/mes/año separado por barras. Por eso antes de introducirlo en el formulario modificamos el objeto fila en su propiedad fechaNacimiento_persona por su valor cambiado de formato para hecho. Para eso se ha hecho un método (cambiarformatoFecha()) que estará en la propia clase, porque es dependiente de la entidad.
+
+``` js
+
+/**
+	 * Modifica el formato del string de fecha recibido como parametro a la salida que queremos
+	 * recibe aaaa-mm-dd y devuelve dd/mm/aaaa
+	 * 
+	 * @param {*} stringfecha 
+	 * @returns fecha en formato dd/mm/aaaa
+	 */
+	cambiarformatoFecha(stringfecha){
+
+		var elementos = stringfecha.split('-');
+
+		var day = elementos[2];
+		var month = elementos[1];
+		var year = elementos[0];
+		
+		return day+'/'+month+'/'+year;
+
+	}
+
+```
+
 
 A continuación vamos a rellenar los elementos del formulario que permiten recoger información en cada uno de ellos. Le asignaremos el valor que tiene el atributo en la dupla a su correspondiente elemento HTML de introducción de información, en vez de poner los todos los valores de los elementos del formulario en el método createForm_EDIT, hemos creado un método (rellenarvaloresform()) que recorre todos los elementos del formulario que recogen valores y dependiendo de su Tag y de su tipo, introduce su valor dentro del elemento.
 
@@ -566,7 +588,10 @@ A continuación colocamos el boton de submit con la imagen adecuada para la acci
 ```
 
 
-delete y showcurrent
+En los createForm para DELETE y SHOWCURRENT a diferencia de los formularios anteriores es que en estos formularios todos los campos son presentados con su información, pero todos ellos se ponen desactivados para que el usuario no pueda modificarlos. En el caso del delete, se coloca el botón correspondiente a la acción, pero en el caso del Show current como la muestra de detalle de una tupla, no conlleva una acción en la base de datos y no se presenta botón de acción y se deja simplemente el botón de volver atrás.
+
+Se ha creado un método para poder recorrer todos los elementos del formulario y ponerlos todos con la propiedad readonly igual a true.
+
 
 ``` js
 	/**
@@ -583,10 +608,114 @@ delete y showcurrent
 
 ```
 
+Como puede verse, se han indicado en el código de la clase, qué métodos son susceptibles de ser llevados a la clase Dom, y cuáles son susceptibles de estar en una superclase de la de la clase de la entidad particular. Esto se hace así porque en el futuro veremos que es interesante que los métodos generales que están en la superclase y son usados por todas las entidades, pueden ser refactorizados en la clase de la entidad para personalizar su funcionamiento.
 
-Se han creado metodos de dom para poder modificar el dom y abstraer de la clase
+En el código de la semana anterior, creamos el método de la acción Search, que nos permitía llamar a la clase external Access a su método peticiónBackGeneral en donde se realizaba la acción. Si venían tuplas en la petición de Search, se mostraban en una tabla y si no venían tuplas se colocaba un texto de no existen tuplas en lugar de la tabla. Se han desarrollado los métodos correspondientes a la acción ADD, EDIT y DELETE, las cuales son acciones atómicas y que no devuelven nada. Por ello los tres métodos funcionan de forma similar, si la acción se ejecuta sin problema se elimina el formulario y se llaman Search() y si dan un error en el Back se muestra ese error mediante un modal. En la semana cinco como no está todavía incorporado el código de traducción de textos no se ve el texto del código de error, sino que se sitúa simplemente en el class de la ventana modal, que incorpora un boton de cerrar el modal.
 
-ver los métodos
+``` js
 
+/**
+	 * el método realiza una petición de ADD al back enviando un formulario con datos, enviando 
+	 * el nombre de la entidad del back y la acción a realizar sobre la misma.
+	 * los datos respondidos se usan para indicar si se realizo la accion con lo mostramos la
+	 * tabla de datos o bien se muestra el error proporcionado por el back
+	 */
+	async ADD(){
+    
+        await this.access_functions.peticionBackGeneral('form_iu', this.nombreentidad, 'ADD')
+        .then((respuesta) => {
+            
+            if (respuesta['ok']){
+            
+				//limpiar el formulario
+				document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
+
+	            //poner el div del formulario no visible
+				//limpiar titulo formulario
+
+	            this.dom.hide_element("Div_IU_form");
+
+	            this.SEARCH();
+
+	        }
+	        else{
+
+	        	// mostrar mensaje error accion
+	        	// alert('error : '+respuesta['code']);
+
+				// Usando modal
+				this.dom.abrirModalError(respuesta['code']);
+	        }
+
+			//setLang();
+
+        });
+    
+    }
+
+```
+
+## Semana 6 ##
+
+En el código correspondiente a la semana seis vamos a incluir un soporte multiidioma en nuestro interfaz de usuario. Para ello tenemos que identificar todos aquellos textos de nuestro código HTML, que se presentan en la interfaz y que son susceptibles de ser traducidos por cada idioma que incorporemos. El primer caso lo vemos en el index.html en el cual tenemos un título general de la aplicación. Después tenemos un título para las opciones de menú también tenemos un texto para cada una de las opciones del menú y una vez que se abre la gestión de una entidad, tenemos un título para la gestión de dicha entidad. Los textos relacionados con los nombres de los atributos que aparecen en la tabla de muestra de datos y los de los formularios los gestionaremos dinámicamente según la entidad que gestionemos.
+
+Tratemos cada uno de ellos por separado. Lo primero es colocar los elementos de traducción del index y que son estáticos y no varian al cambiar la entidad.
+
+``` html
+
+	<header id='header_page' class='bordeado'>
+		<span class='text_titulo_app'></span>
+		<img src="./iconos/Spain.png" onclick="setLang('ES');" />
+        <img src="./iconos/United-Kingdom.png" onclick="setLang('EN');" />
+	</header>
+	<nav class='bordeado'><span class = 'text_titulo_menu' onclick="menu_work();"></span>
+	</nav>
+	<aside id='div-menu'>
+		<ol>
+		    <li class="opcionmenu"><span class = 'text_menu_persona' onclick="entidad = new persona();"></span></li>
+		    <li class="opcionmenu"><span onclick="entidad = new entidad();">Gestionar otra entidad</span></li>
+	  	</ol>
+	</aside>
+	<section id="IU_manage_entity">
+		<section id="IU_manage_head">
+			<div id='title_page' class='bordeado'><span id = "text_title_page"></span>
+			</div>
+			<div id="add_search_columns">
+        		<img id="botonADD" src="./iconos/ADD.png" onclick="entidad.createForm_ADD();" />
+        		<img id="botonSEARCH" src="./iconos/SEARCH.png" onclick="entidad.createForm_SEARCH();"/>
+				
+				<label id="label_seleccioncolumnas" class ="label_seleccioncolumnas"></label>
+				<select id="seleccioncolumnas" multiple>
+				</select>
+				
+        	</div>
+		</section>
+
+```
+
+Como se puede observar los elementos textuales que tienen que ser traducidos, se van colocando en donde corresponde. Por ejemplo para el titulo de la página que está en el dentro del header en un span se le ha colocado una class = text_titulo_menú. Este class que se le coloca es el que está relacionado con el código de texto que vamos a introducir en el array de traducciones. Por lo tanto en el fichero textos_ES.js habrá un Array que contiene un código text_titulo_app y que tienen una traducción puede ser por ejemplo 'Interfaz ET2 IU'.
+
+``` js
+var textos_ES = {
+
+	// textos titulos generales
+	'text_titulo_app': 'Interfaz ET2 IU',
+	'text_titulo_menu': 'Opciones  Menú',
+	'text_titulo_pie': 'Pie de página',
+    'label_seleccioncolumnas': 'Seleccionar columnas',
+
+```
+
+Lo mismo hacemos por ejemplo con el título del menú. Al elemento: 
+
+``` js
+<nav class='bordeado'><span class = 'text_titulo_menu' onclick="menu_work();"></span>
+```
+
+se le ha colocado un class 'text_titulo_menu', que en función del idioma cambia el texto del span.
+
+Asi vamos colocando a todos los elementos con texto a mostrar un class con un código para poder cambiar el texto del elemento en función del idioma.
+
+La forma de realizar el cambio de idioma es a través de la función setLang(idioma = null). Está función 
 
 
