@@ -1,5 +1,13 @@
-
-// funcion de idioma
+/**
+ * funcion de idioma
+ * Si no hay idioma establecido lo establece por defecto
+ * crea la cookie del idioma seleccionado
+ * carga la variable de traducciones correspondiente al idioma seleccionado
+ * recorre todos los elementos buscando un class que exista en las traducciones
+ * para aplicar el texto de idioma
+ * 
+ * @param {String} lang Indicación del idioma mediante dos letras (ES, EN, GA..)
+ */
 function setLang(lang=''){
 
     if (lang=='') {

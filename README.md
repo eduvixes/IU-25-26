@@ -706,7 +706,7 @@ var textos_ES = {
 
 ```
 
-Lo mismo hacemos por ejemplo con el título del menú. Al elemento: 
+Lo mismo hacemos por ejemplo con el título del menú. Al elemento 
 
 ``` js
 <nav class='bordeado'><span class = 'text_titulo_menu' onclick="menu_work();"></span>
@@ -716,6 +716,104 @@ se le ha colocado un class 'text_titulo_menu', que en función del idioma cambia
 
 Asi vamos colocando a todos los elementos con texto a mostrar un class con un código para poder cambiar el texto del elemento en función del idioma.
 
-La forma de realizar el cambio de idioma es a través de la función setLang(idioma = null). Está función 
+La forma de realizar el cambio de idioma es a través de la función setLang(idioma = ''). Está función lo que hace es lo siguiente:
+
+- si no recibe un parámetro de dos letras que indica el idioma a seleccionar se comprueba si ya hay un idioma seleccionado mirando si existe una cookie de idioma. Si existe la cookie de idioma se establece ese idioma y si no existe se asigna un idioma por defecto. Si no existe cookie de idioma utiliza el que se pasa en la llamada como parámetro.
+
+- una vez establecido el idioma a usar, se crea una cookie de idioma con el idioma seleccionado y ademas se carga en una variable "traduccion" la variable que contiene todo el array de textos del idioma seleccionado.
+
+- Después de ello se recorren todos los elementos de la página buscando un class que coincida con un codigo del array de textos de idioma. Si lo encuentra cambia el contenido html del elemento.
+
+```js
+
+/**
+ * funcion de idioma
+ * Si no hay idioma establecido lo establece por defecto
+ * crea la cookie del idioma seleccionado
+ * carga la variable de traducciones correspondiente al idioma seleccionado
+ * recorre todos los elementos buscando un class que exista en las traducciones
+ * para aplicar el texto de idioma
+ * 
+ * @param {String} lang Indicación del idioma mediante dos letras (ES, EN, GA..)
+ */
+function setLang(lang=''){
+
+    if (lang=='') {
+        if (getCookie('lang') != '') {
+          lang = getCookie('lang');
+        } else {    
+            lang= 'ES';
+        }
+
+    }
+
+    setCookie('lang', lang, 1);
+    var traduccion;
+
+
+    switch(lang) {
+        case 'ES' : 
+           traduccion=textos_ES;
+        break;
+        case 'EN' :
+           traduccion=textos_EN;
+        break;
+        default:
+           traduccion=textos_ES;
+        break;
+    }
+
+       
+   //**Se recorre el array de traducciones buscando coincidencias una por una*/
+   for(var clave in traduccion) {
+
+ 		var elementos = document.getElementsByClassName(clave);
+        var etiquetas =document.getElementsByTagName('label');
+        var inputs = document.getElementsByTagName('input');
+        var imgs = document.getElementsByTagName('img');
+        var options = document.getElementsByTagName('option');
+
+        for (var elem in elementos) {
+            elementos[elem].innerHTML = traduccion[clave];
+        }
+
+        for (var i = 0; i < etiquetas.length; i++) {
+            if (etiquetas[i].htmlFor == clave) {
+                etiquetas[i].innerHTML = traduccion[clave];
+            }
+        }
+
+        for (var i = 0; i < inputs.length; i++) {
+            var list = inputs[i].classList;
+            for (var j = 0; j < list.length; j++) {
+                if (list[j] == clave) {
+                    inputs[i].placeholder = traduccion[clave];
+                    inputs[i].title = traduccion[clave];
+                }            
+            }
+        }
+
+        for (var i = 0; i < imgs.length; i++) {
+            var list = imgs[i].classList;
+            for (var j = 0; j < list.length; j++) {
+                 if (list[j] == clave) {
+                    imgs[i].alt = traduccion[clave]; // texto alternativo si no se ve la imagen
+                    imgs[i].title = traduccion[clave]; // texto superpuesto a la imagen al pasar sobre ella
+                }
+            } 
+        } 
+
+        for (var i = 0; i < options.length; i++) { 
+            if (options[i].className == clave) {
+                options[i].label = traduccion[clave];
+            }
+        }
+	}
+}
+
+```
+
+
+
 
 
