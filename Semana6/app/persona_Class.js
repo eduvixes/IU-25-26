@@ -578,9 +578,9 @@ class persona extends Validations{
 		
 		let evento;
 		//obtener campos del formulario
-        	let campos = document.forms[idform].elements;
+        let campos = document.forms[idform].elements;
         	//recorrer todos los campos
-        	for (let i=0;i<campos.length;i++) {
+        for (let i=0;i<campos.length;i++) {
 			if ((document.getElementById(campos[i].id).tagName == 'INPUT') && 
 				(document.getElementById(campos[i].id).type !== 'file')){
 		                evento = 'onblur';
@@ -589,6 +589,11 @@ class persona extends Validations{
 				evento = 'onchange';
 			}
 			
+
+			if (document.getElementById(campos[i].id).type == 'submit'){}
+			else{
+				document.getElementById(campos[i].id).setAttribute (evento,'entidad.'+accion+'_'+campos[i].id+'_validation'+'();');
+			}
 					        
 		}
 	}
