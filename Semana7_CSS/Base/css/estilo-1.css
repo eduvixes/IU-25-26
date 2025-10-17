@@ -1,0 +1,420 @@
+/*
+Estructura de selectores CSS y estilos:
+
+[selector] (, [selector] ... ) {
+    propiedad: valor;
+    propiedad: valor;
+    ...
+
+    & [selector_anidado] { 
+        // ¡El espacio (o su ausencia) entre el & y el selector es importante!
+        // Indica si seguimos en el mismo nivel o bajamos uno en la jerarquía
+
+        propiedad: valor;
+        propiedad: valor;
+        ...
+    }
+    ...
+}
+*/
+
+/* 
+    Selector :root - Nos permite definir variables CSS globales.
+    Así podemos cambiar los colores de toda la web fácilmente, por ejemplo.
+    
+    El formato para definir variables es:
+        --nombre-variable: valor;
+    El doble guion al inicio es obligatorio.
+    
+    Para usar una variable, se usa la función var():
+    color: var(--nombre-variable);
+*/
+:root {
+    --light-color: #EFFEFF;
+    --medium-color: #a1c2c5;
+    --dark-color: #0E2C31;
+    --emphasis-color-1: #5ba0a5;
+    --emphasis-color-2: #d0f1f4;
+}
+
+/* 
+    Selector universal * - Aplica estilos a todos los elementos de la página, 
+    individualmente (En ocasiones, los elementos también heredan estilos de sus padres,
+    pero en este caso forzamos la aplicación de estilos a cada uno individualmente).
+*/
+* {
+    color: var(--dark-color); /* Color de texto por defecto */
+    font-family: sans-serif; /* Fuente por defecto */
+}
+
+/*
+    Selectores de elementos HTML - Aplica estilos a todos los elementos de ese tipo.
+*/
+body {
+    /* Estilos del body */
+    background-color: var(--light-color); /* Color de fondo */
+    margin: 0; /* Elimina el margen por defecto del body */
+}
+
+/*
+    Selectores de ID (#id) - Aplica estilos al elemento con ese ID.
+*/
+#header_page {
+    display: flex; /* Distribución flexible de elementos */
+    flex-direction: row; /* Distribuye elementos en fila */
+    align-items: center; /* Centra verticalmente los elementos */
+    background-color: var(--dark-color); /* Color de fondo del header */
+    padding: 16pt; /* Relleno del header */
+    border: 0; /* Sin bordes */
+    user-select: none; /* Evita selección de texto */
+}
+
+/*
+    Selector de hijo directo (>) - Aplica estilos a los elementos 
+    que son hijos directos del elemento padre.
+*/
+#header_page > span {
+    transition: font-size 300ms; /* Transición suave al cambiar tamaño fuente */
+    flex-grow: 1; /* Crece para ocupar todo el ancho posible */
+    font-size: 40pt; /* Tamaño fuente título web */
+    text-align: left; /* Alinear título a la izquierda */
+    font-weight: bold; /* Negrita */
+    color: var(--light-color); /* Color de texto del header */
+}
+
+/*
+    Media query para pantallas pequeñas
+    Las medias queries permiten aplicar estilos CSS
+    dependiendo de las características del dispositivo,
+    ejemplo: tamaño de pantalla, orientación, resolución, etc.
+*/
+@media (max-width: 600pt) {
+    /* 
+        Si la pantalla es menor o igual a 600pt de ancho aplica este estilo, 
+        reduciendo el tamaño de la fuente del título de la web para que se vea bien.
+    */
+    #header_page > span {
+        font-size: 30pt; /* Tamaño fuente título web */
+
+        /* Formas de indicar tamaños:
+            - pt: puntos (1pt = 1/72 pulgadas)
+            - px: píxeles (1px = 1 píxel de la pantalla)
+            - em: unidades relativas al tamaño de fuente actual (1em = tamaño fuente actual)
+            - %: porcentaje relativo a su contenedor padre
+        */
+    }
+}
+
+/* Estilos para las banderas de idiomas en el header */
+#header_page > img {
+    width: 30pt; /* Ancho de las banderas */
+    height: 30pt; /* Alto de las banderas */
+    padding-left: 5pt; /* Relleno izquierdo de las banderas */
+    padding-right: 5pt; /* Relleno derecho de las banderas */
+    cursor: pointer; /* Usar el icono de cursor "pointer" */
+    transition-property: width, height, padding; /* Propiedades a animar */
+    transition-duration: 300ms; /* Duración de la animación */
+    user-select: none; /* Evita selección de imagen */
+    -webkit-user-drag: none; /* Impide arrastrar la imagen */
+
+    /* 
+        :hover - Estilos al pasar el ratón por encima
+
+        Pseudo-clases CSS: Permiten definir estilos para estados especiales de un elemento.
+        Formato: selector:pseudo-clase { ... }
+        Ejemplos comunes: :hover, :active, :focus, :visited, :first-child, :last-child, etc.
+    */
+    &:hover {
+        width: 40pt; /* Ancho de las banderas */
+        height: 40pt; /* Alto de las banderas */
+        padding: 0; /* Sustituye el padding por ancho y alto, para mantener el tamaño */
+    }
+
+    /* :active - Estilos al hacer clic en la imagen */
+    &:active {
+        width: 28pt; /* Ancho de las banderas */
+        height: 28pt; /* Alto de las banderas */
+        padding-left: 5pt; /* Relleno izquierdo de las banderas */
+        padding-right: 5pt; /* Relleno derecho de las banderas */
+    }
+}
+
+/* Estilos para la barra de navegación (Opciones)*/
+nav {
+    text-align: center; /* Alinear texto opciones al centro */
+    padding: 8pt; /* Añadir relleno */
+    font-size: 16pt; /* Tamaño fuente opciones */
+    background-color: var(--emphasis-color-1); /* Color de fondo */
+    border: 0; /* Sin bordes */
+    user-select: none; /* Evita selección de texto */
+}
+
+/* Estilos para el elemento clickable dentro de la barra de navegación */
+nav > span {
+    display: block; /* Mostrar como bloque para ocupar todo el ancho */
+    cursor: pointer; /* Usar el icono de cursor "pointer" */
+    text-transform: uppercase; /* Convertir texto a mayúsculas */
+    font-weight: bold; /* Negrita */
+
+    /* :hover - Estilos al pasar el ratón por encima */
+    &:hover {
+        text-decoration: underline; /* Subrayar el texto */
+    }
+}
+
+/* Estilos para las opciones del menú */
+#div-menu {
+    overflow: hidden; /* Ocultar contenido que sobresalga, para la animación */
+    padding: 0; /* Elimina padding */
+
+    /* Contenedor del menú */
+    & > ol {
+        margin: 0; /* Elimina margen */
+        padding: 0; /* Elimina padding */
+        border-left: var(--emphasis-color-1) 2pt solid; /* Borde izquierdo */
+        border-right: var(--emphasis-color-1) 2pt solid; /* Borde derecho */
+    }
+
+    /* Estilos para los elementos de la lista */
+    & li {
+        margin: 0; /* Elimina margen */
+        padding: 0; /* Elimina padding */
+        list-style-type: none; /* Elimina viñetas de la lista */
+    }
+
+    /* Estilos para los spans dentro de los elementos de la lista */
+    & li span {
+        display: block; /* Mostrar como bloque para ocupar todo el ancho */
+        height: 20pt; /* Altura del elemento */
+        line-height: 20pt; /* Alinear texto verticalmente haciendo la línea igual de alta */
+        
+        transition-property: height, padding-bottom, padding-top; /* Propiedades a animar */
+        transition-duration: 500ms; /* Duración de la animación */
+        overflow: hidden; /* Ocultar contenido que sobresalga, para la animación */
+        
+        margin: 0; /* Elimina margen */
+        padding-bottom: 8pt; /* Relleno inferior */
+        padding-top: 8pt; /* Relleno superior */
+        padding-left: 20pt; /* Relleno izquierdo */
+        border-bottom: var(--emphasis-color-1) 2pt solid; /* Borde inferior */
+        
+        cursor: pointer; /* Usar el icono de cursor "pointer" */
+        font-size: 14pt; /* Tamaño fuente */
+        user-select: none; /* Evita selección de texto */
+    }
+
+    /* Estilos especiales para el primer elemento de la lista */
+    & li:first-child span {
+        padding-top: 8pt; /* Relleno superior */
+    }
+
+    /* 
+        Estilos de span cuando el menú está oculto.
+        
+        Selector de clase (.hidden) - Aplica estilos a los elementos con esa clase.
+        Formato: .nombre-clase { ... }
+
+        Se puede combinar con otros selectores, como en este caso,
+        para aplicar estilos sólo cuando el elemento padre tiene esa clase.
+        Formato: selector.nombre-clase { ... }
+
+        Los espacios entre selectores son importantes:
+        - Sin espacio: el selector con clase es el mismo elemento
+        - Con espacio: el selector con clase es un hijo (en algún nivel) del elemento padre
+    */
+    &.hidden li span {
+        /* Colapsamos el menú */
+        height: 0; /* Altura del elemento */
+        padding-bottom: 0; /* Relleno inferior */
+        padding-top: 0; /* Relleno superior */
+        border: 0 /* Sin bordes */
+    }
+
+    /* Estilos de span al pasar el ratón por encima */
+    & li span:hover {
+        background-color: var(--emphasis-color-2); /* Color de fondo al pasar el ratón */
+    }
+
+    /* Estilos para elementos deshabilitados */
+    & li.disabled span {
+        cursor: not-allowed; /* Icono de cursor "not-allowed" */
+        background-color: lightgray; /* Color de fondo gris */
+        color: rgb(52, 52, 52); /* Color de texto gris oscuro */
+    }
+}
+
+/* Estilos para la sección de gestión de la IU */
+
+/* Estilos para el título de la página de gestión */
+#title_page {
+    text-align: center; /* Alinear texto al centro */
+    font-size: 20pt; /* Tamaño fuente */
+    text-decoration: underline; /* Subrayar texto */
+
+    padding: 10pt; /* Relleno */
+    border: 0; /* Sin bordes */
+    
+    user-select: none; /* Evita selección de texto */
+}
+
+/* Contenedor de cabecera de gestión (Incluye título y controles) */
+#IU_manage_head {
+    display: flex; /* Distribución flexible de elementos */
+    flex-direction: column; /* Distribuye elementos en columna */
+    
+    background-color: var(--emphasis-color-2); /* Color de fondo */
+    border: 2pt solid var(--emphasis-color-1); /* Borde */
+    border-top: 0; /* Sin borde superior */
+    padding: 10pt; /* Relleno */
+}
+
+/* Contenedor de controles de gestión */
+#add_search_columns {
+    display: grid; /* Distribución en cuadrícula */
+    grid-template-columns: 40pt 40pt 40pt 40pt auto 100pt; /* Definición de columnas */
+    /* Definición de áreas de la cuadrícula */
+    grid-template-areas: 
+        "add search test_unit test select_title select_cols";
+    row-gap: 10pt; /* Espacio entre filas */
+
+    place-items: center; /* Centrar elementos en sus celdas */
+
+    /* Estilos para el label del select */
+    & > label {
+        grid-area: select_title; /* Área de la cuadrícula */
+        text-align: right; /* Alinear texto a la derecha */
+        
+        width: 100%; /* Ocupa todo el ancho de su celda */
+        margin-right: 10pt; /* Margen derecho */
+        
+        font-weight: bold; /* Negrita */
+        user-select: none; /* Evita selección de texto */
+
+        /* 
+            Pseudo-elemento ::after - Permite añadir contenido después del elemento.
+            Formato: [selector]::after { ... }
+
+            Los pseudo-elementos son elementos virtuales que no existen en el HTML,
+            pero que podemos crear y estilizar con CSS.
+            Son diferentes de las pseudo-clases, que definen estados especiales de un elemento.
+
+            Los pseudo-elementos no tienen pseudo-clases, pero pueden combinarse con ellas.
+            Por ejemplo: [selector]:hover::after { ... }
+
+            Ejemplos de pseudo-elementos comunes: ::before, ::after, 
+            ::first-letter, ::first-line, etc.
+        */
+        &::after {
+            content: ":"; /* Añade dos puntos después del texto del label */
+        }
+    }
+
+    /* 
+        Posicionamiento relativo para que el select absoluto se posicione 
+        respecto a este contenedor y pueda crecer sin modificar el flujo del documento 
+    */
+    position: relative; 
+
+    /* Estilos para el select de columnas */
+    & > select {
+        grid-area: select_cols; /* Área de la cuadrícula */
+        
+        position: absolute; /* Posicionamiento absoluto */
+        top: 10pt; /* Separación superior */
+        
+        transition: height 0.3s; /* Transición suave al cambiar altura */
+        height: 16pt; /* Altura del select */
+        padding: 2pt; /* Relleno */
+        min-width: 105pt; /* Ancho mínimo del select */
+        overflow-y: scroll; /* Añade scroll vertical si es necesario */
+        z-index: 10; /* Asegura que el select esté por encima de otros elementos */
+
+        background-color: var(--light-color); /* Color de fondo */
+        border: 2pt solid var(--emphasis-color-1); /* Borde */
+        
+        user-select: none; /* Evita selección de texto */
+
+        /* Estilos al pasar el ratón por encima */
+        &:hover {
+            height: 100pt; /* Aumenta la altura para mostrar más opciones */
+        }
+    }
+
+    /* Estilos para los botones (Añadir, Buscar, y los de Test) */
+    & > img {
+        cursor: pointer; /* Usar el icono de cursor "pointer" */
+        transition: transform 0.3s; /* Transición suave al transformar */
+        user-select: none; /* Evita selección de imagen */
+        -webkit-user-drag: none; /* Impide arrastrar la imagen */
+
+        /* Estilos al pasar el ratón por encima */
+        &:hover {
+            transform: scale(1.2); /* Aumenta el tamaño al 120% */
+        }
+
+        /* Estilos al hacer clic en la imagen */
+        &:active {
+            transform: scale(0.9); /* Reduce el tamaño al 90% */
+        }
+    }
+}
+
+/* Estilos específicos para los botones de Test */
+#botonTEST_UNIT {
+    grid-area: test_unit; /* Área de la cuadrícula */
+    width: 30pt; /* Ancho del botón */
+    height: 30pt; /* Alto del botón */
+}
+
+/* Estilos específicos para el botón de búsqueda */
+#botonTEST {
+    grid-area: test; /* Área de la cuadrícula */
+}
+
+/* Estilos para los elementos artículo */
+article {
+    border: 2pt solid var(--emphasis-color-1); /* Borde */
+    border-top: 0; /* Sin borde superior */
+    text-align: center; /* Alinear texto al centro */
+    padding: 10pt; /* Relleno */
+
+    /* Estilo para el texto seleccionado dentro del artículo */
+    &::selection {
+        background-color: var(--dark-color); /* Color de fondo */
+        color: var(--light-color); /* Color de texto */
+    }
+}
+
+/* Estilos para los elementos footer */
+footer {
+    position: fixed; /* Posicionamiento fijo */
+    bottom: 0; /* Pegado al fondo de la ventana */
+    left: 0; /* Pegado al lado izquierdo de la ventana */
+    width: 100%; /* Ocupa todo el ancho de la ventana */
+    padding: 5pt; /* Relleno */
+    border: 0; /* Sin bordes */
+
+    background-color: var(--dark-color); /* Color de fondo */
+    color: var(--light-color); /* Color de texto */
+
+    text-align: center; /* Alinear texto al centro */
+    font-style: italic; /* Estilo de fuente en cursiva */
+    font-weight: bold; /* Negrita */
+    font-size: 10pt; /* Tamaño de fuente */
+    
+    user-select: none; /* Evita selección de texto */
+}
+
+/* 
+    Añadimos padding-bottom al body para evitar que el contenido
+    quede oculto tras el footer fijo.
+
+    Como podemos ver, es posible definir estilos para un selector
+    aunque ya tenga estilos definidos anteriormente.
+
+    En ese caso, se aplican ambos estilos, y si hay alguna
+    propiedad repetida, se aplica la última definida.
+*/
+body {
+    padding-bottom: 30pt; /* Para tener en cuenta el fixed footer */
+}
