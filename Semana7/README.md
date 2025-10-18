@@ -4,7 +4,7 @@
 
 Inclusión de los botones de test y modificación de las clases de test para su ejecución desde el index.html principal.
 Modificación de la clase persona para adaptarla a la ejecución de los test y sacar métodos no exclusivos de la entidad y llevarlos a clases accesorias
-
+Modificación de formato de valores en presentación de tabla (reutilizable para formularios)
 
 ## Inclusión de funcionalidad de test desde el index.html principal
 
@@ -51,6 +51,7 @@ En la invocación del test de unidad le pasabamos el string del nombre de la cla
 <img id="botonTEST_UNIT" src="./iconos/TEST_UNIT.png" onclick="test = new Unit_Test(entidad.nombreentidad)"/>
 <img id="botonTEST_DATA" src="./iconos/TEST.png" onclick="test = new Data_Test(eval(entidad.nombreentidad))"/>
 ```
+## Traslado de métodos desde la clase entidad (persona) a la clase dom_table
 
 Se han trasladado los métodos que estaban indicados en la clase persona como candidatos a dom a la clase dom_table. Por lo tanto en persona se han tenido que modificar las llamadas a los mismos de this.nombremetodo a this.dom.nombremetodo. Esto se aprecia sobre todo en los métodos createForm cuando se invoca a colocarboton, rellenarvaloresform, colocarvalidaciones, colocartodosreadonly y crearSeleccionablecolumnas.
 
@@ -61,6 +62,7 @@ Se han trasladado los métodos que estaban indicados en la clase persona como ca
 		// poner las validaciones
 		this.dom.colocarvalidaciones('form_iu','EDIT');
 ```
+## Creación de superclase para entidades y traslado de métodos comunes a todas las entidades
 
 Se ha creado una clase EntidadAbstracta para que contenga todos los métodos comunes a las entidades que se puedan necesitar y que las clases de estas entidades se extiendan de EntidadAbstracta. Al colocar los métodos comunes en ella no se modifica su invocación tal y como la teniamos pero si eliminamos complejidad y repeticiones en las clases de entidades dejando solo métodos que son especificos para esas clases.
 Entre estos métodos están crearTablaDatos, mostrarocultarcolumnas, modificarcolumnasamostrar y todas las acciones contra back. 
@@ -88,6 +90,18 @@ Tambien se ha incluido en EntidadAbstracta un método que aún no se ha utilizad
 
 	}
 ```
+Al extender la clase EntidadAbstracta en cada entidad se ha dejado Validations como una clase que se instancia dentro de la entidad persona y solo se invocan sus métodos sin integrarla.
+
+```js
+class persona extends EntidadAbstracta{
+```
+
+También se ha incluido en el constructor de la entidad una propiedad this.nombreentidad para almacenar el nombre de la entidad que está manejando la clase. Podriamos extraerlo directamente del nombre de la clase que instancia el objeto también.
+
+```js
+this.nombreentidad = 'persona';
+```
+## Implementación de cambio de formato en presentación de valores de atributos
 
 Se ha implementado el cambio de formato en la muestra de valores que vienen del back. Como se habia indicado en Semanas anteriores existe una propiedad de la entidad llamada mostrarespecial que contiene un array con los atributos que son susceptibles de modificar su valor para hacerlo de forma automatica en el método que dibuja las tablas de datos resultado de SEARCH. El método para cambiar formato se denomina mostrarcambioatributo(atributo, valordelatributo)
 
@@ -149,15 +163,4 @@ if (mostrarespeciales.length > 0){
 		fila.fechaNacimiento_persona = this.mostrarcambioatributo('fechaNacimiento_persona',fila.fechaNacimiento_persona);
 ```
 
-Al extender la clase EntidadAbstracta en cada entidad se ha dejado Validations como una clase que se instancia dentro de la entidad persona y solo se invocan sus métodos sin integrarla.
-
-```js
-class persona extends EntidadAbstracta{
-```
-
-También se ha incluido en el constructor de la entidad una propiedad this.nombreentidad para almacenar el nombre de la entidad que está manejando la clase. Podriamos extraerlo directamente del nombre de la clase que instancia el objeto también.
-
-```js
-this.nombreentidad = 'persona';
-```
 
