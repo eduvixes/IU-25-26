@@ -6,6 +6,7 @@ class ExternalAccess{
 
     peticionBackGeneral(formulario, controlador, action, datosextra=null){
 
+
         var datos;
         
         if (formulario === ''){

@@ -1,15 +1,18 @@
-class persona extends Validations{
+class persona extends EntidadAbstracta{
 
 	constructor(esTest){
 		super();
 		
+		this.nombreentidad = 'persona';
 		this.dom = new dom();
 		this.validations = new Validations();
 		this.access_functions = new ExternalAccess();
 
+		//definicion de atributos a mostrarn en la tabla de muestra de tuplas al entrar en la gestion de la entidad
 		this.columnasamostrar = ['dni','nombre_persona', 'foto_persona'];
-		this.mostrarespecial = ['foto_persona'];
-		this.nombreentidad = 'persona';
+		//definicion de atributos a cambiar su visualización
+		this.mostrarespecial = ['fechaNacimiento_persona','foto_persona'];
+		
 
 		// definicion de los atributos del formulario (Necesario para test de unidad)
 		this.attributes = [  'dni',
@@ -24,7 +27,8 @@ class persona extends Validations{
                             ];
 
 		
-							//init
+		// si se instancia para test no se muestra el componente de gestion de entidad ni se inicializa el formulario
+		// 
 		if (esTest == 'test'){}
 		else{
 			//visualizar seccion tabla y botones
@@ -366,20 +370,20 @@ class persona extends Validations{
 		this.dom.assign_property_value('link_foto_persona', 'href', 'http://193.147.87.202/ET2/filesuploaded/files_foto_persona/'+fila.foto_persona);
 		
 		// modificar presentacion (en este caso concreto para fecha)
-		fila.fechaNacimiento_persona = this.cambiarformatoFecha(fila.fechaNacimiento_persona);
+		fila.fechaNacimiento_persona = this.mostrarcambioatributo('fechaNacimiento_persona',fila.fechaNacimiento_persona);
 
 		// rellenar valores
-		this.rellenarvaloresform(fila);
+		this.dom.rellenarvaloresform(fila);
 		
 		// poner las validaciones
-		this.colocarvalidaciones('form_iu','EDIT');
+		this.dom.colocarvalidaciones('form_iu','EDIT');
 
 		// poner inactivos los campos correspondientes
 		this.dom.assign_property_value('dni','readonly','true');
 		this.dom.assign_property_value('foto_persona','readonly','true');
 
 		// colocar boton de submit
-		this.colocarboton('EDIT');
+		this.dom.colocarboton('EDIT');
 
 		setLang();
 
@@ -401,17 +405,17 @@ class persona extends Validations{
 		this.dom.assign_property_value('link_foto_persona', 'href', 'http://193.147.87.202/ET2/filesuploaded/files_foto_persona/'+fila.foto_persona);
 		
 		// modificar presentacion (en este caso concreto para fecha)
-		fila.fechaNacimiento_persona = this.cambiarformatoFecha(fila.fechaNacimiento_persona);
+		fila.fechaNacimiento_persona = this.mostrarcambioatributo('fechaNacimiento_persona',fila.fechaNacimiento_persona);
 
 		// rellenar valores
-		this.rellenarvaloresform(fila);
+		this.dom.rellenarvaloresform(fila);
 
 
 		// poner inactivos los campos correspondientes
-		this.colocartodosreadonly('form_iu');
+		this.dom.colocartodosreadonly('form_iu');
 
 		// colocar boton de submit
-		this.colocarboton('DELETE');
+		this.dom.colocarboton('DELETE');
 
 		setLang();
 	}
@@ -431,13 +435,13 @@ class persona extends Validations{
 		this.dom.assign_property_value('link_foto_persona', 'href', 'http://193.147.87.202/ET2/filesuploaded/files_foto_persona/'+fila.foto_persona);
 		
 		// modificar presentacion (en este caso concreto para fecha)
-		fila.fechaNacimiento_persona = this.cambiarformatoFecha(fila.fechaNacimiento_persona);
+		fila.fechaNacimiento_persona = this.mostrarcambioatributo('fechaNacimiento_persona',fila.fechaNacimiento_persona);
 
 		// rellenar valores
-		this.rellenarvaloresform(fila);
+		this.dom.rellenarvaloresform(fila);
 
 		// poner inactivos los campos correspondientes
-		this.colocartodosreadonly('form_iu');
+		this.dom.colocartodosreadonly('form_iu');
 
 		// colocar boton de submit
 		//this.colocarboton('SHOWCURRENT');
@@ -470,13 +474,13 @@ class persona extends Validations{
 		// en ADD no hay valores que rellenar
 
 		// poner las validaciones
-		this.colocarvalidaciones('form_iu','ADD');
+		this.dom.colocarvalidaciones('form_iu','ADD');
 
 		// poner inactivos los campos correspondientes
 		// en ADD no hay inactivos... si hubiese un autoincremental ya no se mostraria
 
 		// colocar boton de submit
-		this.colocarboton('ADD');
+		this.dom.colocarboton('ADD');
 
 		setLang();
 	}
@@ -505,396 +509,53 @@ class persona extends Validations{
 		// en SEARCH no hay valores que rellenar
 
 		// poner las validaciones
-		this.colocarvalidaciones('form_iu','SEARCH');
+		this.dom.colocarvalidaciones('form_iu','SEARCH');
 
 		// colocar boton de submit
-		this.colocarboton('SEARCH');
+		this.dom.colocarboton('SEARCH');
 
 		setLang();
 		
 	}
 
+	/**
+	 * modifica el formato de visualización de un atributo concreto y se devuelve el valor modificado
+	 * en el caso de solicitar cambio de formato para un atributo no implementado se lanza una alerta
+	 * 
+	 * @param {String} atributo string con el nombre del atributo a modificar su valor
+	 * @param {String} valorentrada string con el valor de entrada a modificar
+	 * @returns 
+	 */
+	mostrarcambioatributo(atributo, valorentrada){
+		
+		switch (atributo){
+			case 'fechaNacimiento_persona':
+				var elementos = valorentrada.split('-');
+
+				var day = elementos[2];
+				var month = elementos[1];
+				var year = elementos[0];
+				
+				return day+'/'+month+'/'+year;
+				break;
+			case 'foto_persona':
+				var link = 'error';
+				if (valorentrada !== ''){
+					link = valorentrada+`  <a id="link_foto_persona" href="http://193.147.87.202/ET2/filesuploaded/files_foto_persona/`+valorentrada+`"><img src="./iconos/FILE.png" /></a>`;
+				}
+				return link;
+				break;
+			case 'default':
+				alert('no existe mostrar especial para ese atributo');
+				break;
+		}
+
+	}
+
+
+
+
 	
-
-
-
-
-	cambiarformatoFecha(stringfecha){
-
-		var elementos = stringfecha.split('-');
-
-		var day = elementos[2];
-		var month = elementos[1];
-		var year = elementos[0];
-		
-		return day+'/'+month+'/'+year;
-
-	}
-
-// candidatas dom
-
-	/**
-	 * Construye un boton de submit con el icono correspondiente 
-	 * 
-	 * @param {String} accion accion a realizar
-	 */
-	colocarboton(accion){
-
-		let divboton = document.createElement('div');
-		divboton.id = 'div_boton';
-		//divboton.stype.display = 'block';
-		document.getElementById('form_iu').append(divboton);
-		let boton = document.createElement('button');
-		boton.id = 'submit_button';
-		boton.type = 'submit';
-		let img = document.createElement('img');
-		img.src = './iconos/'+accion+'.png';
-		boton.append(img);
-		document.getElementById('div_boton').append(boton);
-
-	}
-
-
-	/**
-	 * rellena cada elemento del formulario con el valor que viene en la fila
-	 * 
-	 * @param {Object} parametros el objeto con la información de la fila
-	 * trae por cada atributo su id y su valor
-	 */
-	rellenarvaloresform(parametros){
-		
-		//obtener campos del formulario
-        	let campos = document.forms['form_iu'].elements;
-        	//recorrer todos los campos
-        	for (let i=0;i<campos.length;i++) {
-				switch (document.getElementById(campos[i].id).type){
-					case 'file':
-						break;
-					case 'submit':
-						break;
-					case 'textarea':
-						document.getElementById(campos[i].id).innerHTML = parametros[campos[i].id];
-					default:
-						document.getElementById(campos[i].id).value = parametros[campos[i].id];
-				}
-        	}
-	}
-
-	/**
-	 * Coloca en el formulario para cada elemento de entrada un evento (dependiente
-	 * del tipo de elemento) al cual enlaza la validacion de ese campo para la accion
-	 * que se le indica
-	 * 
-	 * @param {String} accion  accion a realizar en el formulario
-	 */
-	colocarvalidaciones(idform, accion){
-		
-		let evento;
-		//obtener campos del formulario
-        let campos = document.forms[idform].elements;
-        	//recorrer todos los campos
-        for (let i=0;i<campos.length;i++) {
-			if ((document.getElementById(campos[i].id).tagName == 'INPUT') && 
-				(document.getElementById(campos[i].id).type !== 'file')){
-		                evento = 'onblur';
-			}
-			else{
-				evento = 'onchange';
-			}
-			
-
-			if (document.getElementById(campos[i].id).type == 'submit'){}
-			else{
-				document.getElementById(campos[i].id).setAttribute (evento,'entidad.'+accion+'_'+campos[i].id+'_validation'+'();');
-			}
-					        
-		}
-	}
-
-	colocartodosreadonly(idform){
-		let campos = document.forms[idform].elements;
-        //recorrer todos los campos
-        for (let i=0;i<campos.length;i++) {
-			document.getElementById(campos[i].id).setAttribute('readonly',true);
-		}
-	}
-
-
-	/**
-	 * Recibe la información a mostrar en columnas y el array de columnas a las cuales se modificara su contenido para mostrarsele al usuario
-	 * Se le incluyen tres columnas mas a cada fila para poder tener un icono con la accion a realizar para esa fila y se le coloca un evento onclick
-	 * para poder llamar a los metodos createForm_accion pasando como parametros de esos metodos la información de la fila de datos
-	 * 
-	 * @param {Objeto} datos 
-	 * @param {Array} mostrarespecial 
-	 */
-	crearTablaDatos(datos, mostrarespecial){
-		
-		var misdatos = datos;
-		
-		// proceso los datos de la tabla para incluir en cada fila los tres botones conectados a createForm_ACCION()
-		for (var i=0;i<misdatos.length;i++){
-			
-			var linedit = `<img id='botonEDIT' src='./iconos/EDIT.png' onclick='entidad.createForm_EDIT(`+JSON.stringify(misdatos[i])+`);'>`;
-			var lindelete = `<img id='botonDELETE' src='./iconos/DELETE.png' onclick='entidad.createForm_DELETE(`+JSON.stringify(misdatos[i])+`);'>`;
-			var linshowcurrent = `<img id='botonSHOWCURRENT' src='./iconos/SHOWCURRENT.png' onclick='entidad.createForm_SHOWCURRENT(`+JSON.stringify(misdatos[i])+`);'>`;
-			misdatos[i]['EDIT'] = linedit;
-			misdatos[i]['DELETE'] = lindelete;
-			misdatos[i]['SHOWCURRENT'] = linshowcurrent;
-
-		}
-
-		/*
-		recorrer todas las filas de datos y cada atributo para si tiene una funcion de transformación de valor modificarlo en el momento
-		*/
-		if (mostrarespecial > 0){
-			for (var i=0;i<misdatos.length;i++){
-				for (var clave in misdatos[i]){
-						if (clave in mostrarespecial){
-							//misdatos[i][clave] = this.cambiarmostrarespecial(clave, misdatos[i][clave]);
-						}
-				}
-			}
-		}
-		//muestro datos en tabla
-		this.dom.showData('IU_manage_table', misdatos);
-		this.mostrarocultarcolumnas();
-		this.crearSeleccionablecolumnas(this.columnasamostrar, this.atributos);
-		
-
-	}
-
-
-
-	/**
-	 * Redibuja el select en funcion del contenido de columnasamostrar
-	 * 
-	 * @param {*} columnasamostrar 
-	 * @param {*} atributos 
-	 */
-	crearSeleccionablecolumnas(columnasamostrar,atributos){
-
-		document.getElementById("seleccioncolumnas").innerHTML = '';
-		
-		for (let atributo of atributos){
-
-			var optionselect = document.createElement('option');
-			optionselect.className = atributo;
-			optionselect.innerHTML = atributo;
-			var textofuncion = "entidad.modificarcolumnasamostrar('"+atributo+"');";
-			optionselect.setAttribute("onclick",textofuncion);
-			if (columnasamostrar.includes(atributo)){
-				optionselect.selected = true;
-			}
-			document.getElementById("seleccioncolumnas").append(optionselect);
-		}
-		//setLang();
-
-	}
-
-// candidatas abstract
-
-	/**
-	 * muestra o no las columnas de la tabla segun indique columnasamostrar
-	 */
-	mostrarocultarcolumnas(){
-
-		var estadodisplay = '';
-		// recorro todos los atributos de la tabla
-		for (let columna of this.atributos){
-			// si el atributo esta en columnas a mostrar 
-			// lo dejo como esta
-			if (this.columnasamostrar.includes(columna)){
-				estadodisplay = '';
-			}
-			// si el atributo no esta en columnas a mostrar lo oculto
-			else{
-				estadodisplay = 'none';
-			}
-			document.querySelector("th[class~='tabla-th-"+columna+"']").style.display = estadodisplay;
-			let arraytds = document.querySelectorAll("td[class='tabla-td-"+columna+"']");
-			for (let i=0;i<arraytds.length;i++){
-				arraytds[i].style.display = estadodisplay;
-			}
-		}
-
-
-	}
-
-	/**
-	 * Modifica el array de columnas a mostrar al hacer click sobre el atributo en el select poniendolo como oculto o como visible
-	 * @param {string} atributo 
-	 */
-	modificarcolumnasamostrar(atributo){
-
-		if (this.columnasamostrar.includes(atributo)){
-			// borrar ese atributo
-			this.columnasamostrar = this.columnasamostrar.filter(columna => columna != atributo);
-		}
-		else{
-			// añadir
-			this.columnasamostrar.push(atributo);
-		}
-		
-		this.mostrarocultarcolumnas();
-		this.crearSeleccionablecolumnas(this.columnasamostrar, this.atributos);
-
-	}
-
-	/**
-	 * el método realiza una petición de search al back pudiendo enviar un formulario con datos, enviando 
-	 * el nombre de la entidad del back y la acción a realizar sobre la misma.
-	 * los datos respondidos se usan para indicar o bien que no hay datos o mostrandolos en una tabla.
-	 */
-	async SEARCH(){
-    
-        await this.access_functions.peticionBackGeneral('form_iu', this.nombreentidad, 'SEARCH')
-        .then((respuesta) => {
-            
-            //limpiar el formulario
-			document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
-			this.dom.hide_element('Div_IU_form');
-
-            if (respuesta['code'] == 'RECORDSET_DATOS'){
-				this.datos = respuesta['resource'];
-				this.atributos = Object.keys(this.datos[0]);
-				this.dom.remove_class_value('IU_manage_table','RECORDSET_');
-				//crear la tabla de datos de la entidad del back
-            	this.crearTablaDatos(this.datos, this.mostrarespecial);
-
-            }
-            else{
-				this.dom.assign_property_value('IU_manage_table','style.display','block');
-				this.dom.remove_class_value('IU_manage_table','RECORDSET_');
-				this.dom.assign_class_value('IU_manage_table','RECORDSET_VACIO');
-				//document.getElementById("IU_manage_table").style.display = 'block';
-				//document.getElementById('IU_manage_table').innerHTML = 'No se han encontrado elementos que coincidan con la búsqueda';
-                //document.getElementById('IU_manage_table').className = 'RECORDSET_VACIO';
-            }
-
-			setLang();
-
-        });
-    
-    }
-
-	/**
-	 * el método realiza una petición de ADD al back enviando un formulario con datos, enviando 
-	 * el nombre de la entidad del back y la acción a realizar sobre la misma.
-	 * los datos respondidos se usan para indicar si se realizo la accion con lo mostramos la
-	 * tabla de datos o bien se muestra el error proporcionado por el back
-	 */
-	async EDIT(){
-    
-        await this.access_functions.peticionBackGeneral('form_iu', this.nombreentidad, 'EDIT')
-        .then((respuesta) => {
-            
-
-            if (respuesta['ok']){
-            
-				//limpiar el formulario
-				document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
-
-	            //poner el div del formulario no visible
-				//limpiar titulo formulario
-
-	            this.dom.hide_element("Div_IU_form");
-
-	            this.SEARCH();
-
-	        }
-	        else{
-
-	        	// mostrar mensaje error accion
-	        	// alert('error : '+respuesta['code']);
-
-				// Usando modal
-				this.dom.abrirModalError(respuesta['code']);
-	        }
-
-			//setLang();
-
-        });
-    
-    }
-
-	/**
-	 * el método realiza una petición de ADD al back enviando un formulario con datos, enviando 
-	 * el nombre de la entidad del back y la acción a realizar sobre la misma.
-	 * los datos respondidos se usan para indicar si se realizo la accion con lo mostramos la
-	 * tabla de datos o bien se muestra el error proporcionado por el back
-	 */
-	async ADD(){
-    
-        await this.access_functions.peticionBackGeneral('form_iu', this.nombreentidad, 'ADD')
-        .then((respuesta) => {
-            
-            if (respuesta['ok']){
-            
-				//limpiar el formulario
-				document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
-
-	            //poner el div del formulario no visible
-				//limpiar titulo formulario
-
-	            this.dom.hide_element("Div_IU_form");
-
-	            this.SEARCH();
-
-	        }
-	        else{
-
-	        	// mostrar mensaje error accion
-	        	// alert('error : '+respuesta['code']);
-
-				// Usando modal
-				this.dom.abrirModalError(respuesta['code']);
-	        }
-
-			//setLang();
-
-        });
-    
-    }
-
-	/**
-	 * el método realiza una petición de ADD al back enviando un formulario con datos, enviando 
-	 * el nombre de la entidad del back y la acción a realizar sobre la misma.
-	 * los datos respondidos se usan para indicar si se realizo la accion con lo mostramos la
-	 * tabla de datos o bien se muestra el error proporcionado por el back
-	 */
-	async DELETE(){
-    
-        await this.access_functions.peticionBackGeneral('form_iu', this.nombreentidad, 'DELETE')
-        .then((respuesta) => {
-            
-            if (respuesta['ok']){
-            
-				//limpiar el formulario
-				document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
-
-	            //poner el div del formulario no visible
-				//limpiar titulo formulario
-
-	            this.dom.hide_element("Div_IU_form");
-
-	            this.SEARCH();
-
-	        }
-	        else{
-
-	        	// mostrar mensaje error accion
-	        	// alert('error : '+respuesta['code']);
-
-				// Usando modal
-				this.dom.abrirModalError(respuesta['code']);
-	        }
-
-			//setLang();
-
-        });
-    
-    }
 
 	//
 	//ADD
