@@ -84,7 +84,8 @@ class Data_Test {
 
             // recupero el test correspondiente a la prueba que realizo
             var def = this.devolver_def(resultadopruebas.NumDef);
-            resultadopruebas.descripcion = def[3];
+            resultadopruebas.descripcion = def[4];
+            var tipoelemento = def[2];
 
             // creo objeto html sino tengo cargado el formulario (para crear cada elemento dinamicamente dentro del form)           
             
@@ -95,8 +96,28 @@ class Data_Test {
                 
                     var nombrecampo = clave;
                     var valorcampo = pruebas[i][5][j][nombrecampo];
-                    document.getElementById(nombrecampo).value = valorcampo;
 
+                    switch (tipoelemento){
+                        case 'textarea':
+                            document.getElementById(nombrecampo).innerText = valorcampo;
+                            break;
+                        case 'input':
+                            document.getElementById(nombrecampo).value = valorcampo;
+                            break;
+                        case 'select':
+                            this.rellenarvalorselect(nombrecampo, valorcampo);
+                            break;
+                        case 'checkbox':
+                            this.rellenarvalorcheckbox(nombrecampo, valorcampo)
+                            break;
+                        case 'radio':
+                            this.rellenarvalorradio(nombrecampo, valorcampo);
+                            break;
+                        default:
+                            alert('no hay tipo de elemento definido en el test '+resultadopruebas.NumDef);
+
+                    }
+                    
                 }
 
             }
@@ -281,10 +302,131 @@ class Data_Test {
 
     }
 
+    /**
+     * Rellenado de un select de elección única
+     * UPDATE: pendiente la modificación para select multiple
+     * @param {String} id id del elemento html select
+     * @param {String} valor valor con el que inicializar el elemento. Si ya existe se pone como selected, sino existe
+     * se crea como option, se pone el valor y se pone como selected.
+     */
+    rellenarvalorselect(id, valor){
+
+        var opciones = document.getElementById(id).options;
+
+        // comprobar si existe el valor en el select
+        // si existe se pone como seleccionado
+        var indexvalor = -1;
+        for (var i=0;i<opciones.length;i++){
+            if (opciones[i].value == valor){
+                opciones.selectedIndex = i;
+                indexvalor = i;
+            }
+        }
+        
+        // si no existe se crea un option con ese valor y se coloca como seleccionado
+        if (indexvalor == -1){
+            var mioption = document.createElement('option');
+            mioption.value = valor;
+            opciones[opciones.length] = mioption;
+            opciones.selectedIndex = opciones.length;
+        }
+
+    }
+
+    /**
+     * se recorren todos los elementos checkbox con el mismo nombre
+     * si el valor esta en uno de los elementos se coloca como seleccionado
+     * si no esta el valor se crea un elemento con ese valor y se coloca como seleccionado
+     * UPDATE: pendiente realizar modificacion para admitir eleccion multiple
+     * @param {String} name valor del parametro name que deben tener todos los elementos del checkbox 
+     * @param {String} valor a comprobar en el checkbox
+     */
+    rellenarvalorcheckbox(name, valor){
+
+        // se obtiene el elemento de check si existe en el formulario cargado
+        var opcionescheck = document.getElementsByName(name);
+        // si hay un solo elemento con ese nombre
+        if (opcionescheck.length == 1){
+            opcionescheck.value = valor;
+            opcionescheck.checked = true;
+        }
+        // si hay mas de un elemento con ese nombre
+        // comprobamos si el valor esta y si esta lo ponemos como checked
+        // si no esta lo creamos y lo ponemos checked
+        else{
+            var encontrado = false;
+            for (var i=0;i<opcionescheck.length;i++){
+                // si recibiesemos un array de valores deberiamos comprobarlos todos 
+                // posiblemente con un (opcionescheck.includes(valor))
+                if (opcionescheck[i].value == valor){
+                    opcionescheck[i].checked = true;
+                    encontrado = true;
+                }
+                else{
+                    opcionescheck[i].checked = false;
+                }
+            }
+            if (!encontrado){
+                var micheck = document.createElement('input');
+                micheck.type = 'checkbox';
+                micheck.name = name;
+                micheck.value = valor;
+                micheck.checked = true;
+                document.getElementById('form_iu').append(micheck);
+            }
+
+        }
+    }
+
+    /**
+     * se recorren todos los elementos radio con el mismo nombre
+     * si el valor esta en uno de los elementos se coloca como seleccionado
+     * si no esta el valor se crea un elemento con ese valor y se coloca como seleccionado
+     * @param {String} name valor del parametro name que deben tener todos los elementos del radio 
+     * @param {String} valor a comprobar en el radio
+     */
+    rellenarvalorradio(name, valor){
+
+        // se obtiene el elemento de check si existe en el formulario cargado
+        var opcionesradio = document.getElementsByName(name);
+        // si hay un solo elemento con ese nombre
+        if (opcionesradio.length == 1){
+            opcionesradio[0].value = valor;
+            opcionesradio[0].checked = true;
+        }
+        // si hay mas de un elemento con ese nombre
+        // comprobamos si el valor esta y si esta lo ponemos como checked
+        // si no esta lo creamos y lo ponemos checked
+        else{
+            var encontrado = false;
+            for (var i=0;i<opcionesradio.length;i++){
+                // si recibiesemos un array de valores deberiamos comprobarlos todos 
+                // posiblemente con un (opcionesradio.includes(valor))
+                if (opcionesradio[i].value == valor){
+                    opcionesradio[i].checked = true;
+                    encontrado = true;
+                }
+                else{
+                    opcionesradio[i].checked = false;
+                }
+            }
+            if (!encontrado){
+                var micheck = document.createElement('input');
+                micheck.type = 'radio';
+                micheck.name = name;
+                micheck.value = valor;
+                micheck.checked = true;
+                document.getElementById('form_iu').append(micheck);
+            }
+
+        }
+    }
+
+
     devolver_def(num_def){
 
         for (let i=0;i<this.array_def_tests.length;i++){
-            if (this.array_def_tests[i][2] == num_def){
+            if (this.array_def_tests[i][3] == num_def){
                 return this.array_def_tests[i];
             }
         }

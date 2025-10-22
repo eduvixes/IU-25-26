@@ -90,6 +90,31 @@ class persona extends EntidadAbstracta{
 				<span id="span_error_email_persona" ><a id="error_email_persona"></a></span>
 
 				<br>
+				<label class="label_titulacion_persona">Titulación</label>
+				<select id="titulacion_persona">
+					<option value="GREI">GREI</option>
+					<option value="GRIA">GRIA</option>
+					<option value="MEI">MEI</option>
+					<option value="MIA">MIA</option>
+					<option value="PCEO">PCEO</option>
+				</select>
+				<span id="span_error_titulacion_persona" ><a id="error_titulacion_persona"></a></span>
+
+				<br>
+				<label class="label_menu_persona">Menu </label>
+				Primer plato <input type="checkbox" name = "menu_persona" value="primero" /> 
+				Segundo plato <input type="checkbox" name = "menu_persona" value="segundo" /> 
+				Postre <input type="checkbox" name = "menu_persona" value="postre" /> 
+				<span id="span_error_menu_persona" ><a id="error_menu_persona"></a></span>
+
+				<br>
+				<label class="label_genero_persona">Menu </label>
+				Masculino <input type="radio" name = "genero_persona" value="Masculino" /> 
+				Femenino <input type="radio" name = "genero_persona" value="Femenino" /> 
+				Otro <input type="radio" name = "genero_persona" value="otro" /> 
+				<span id="span_error_genero_persona" ><a id="error_genero_persona"></a></span>
+
+				<br>
 				<label id="label_foto_persona" class="label_foto_persona">Foto Persona</label>
 				<input type='text' id='foto_persona' name='foto_persona'></input>
 				<span id="span_error_foto_persona"><a id="error_foto_persona"></a></span>
@@ -562,6 +587,42 @@ class persona extends EntidadAbstracta{
 	//
 	//ADD_dni_validation(){return true;}
 	//ADD_nombre_persona_validation(){return true;}
+	ADD_titulacion_persona_validation(){
+		if (document.getElementById('titulacion_persona').value == 'PCEO'){
+			return true;
+		}
+		else{
+			return 'titulacion_persona_valor_KO';
+		}
+	}
+	ADD_menu_persona_validation(){
+		var menu = document.getElementsByName('menu_persona');
+		var valores = ['primero', 'segundo', 'postre'];
+		for (var i=0;i<menu.length;i++){
+			if (menu[i].checked){
+				if (valores.includes(menu[i].value))
+				{
+					return true;
+				}
+			}
+		}
+		return 'menu_persona_valor_KO';
+		
+	}
+	ADD_genero_persona_validation(){
+		var menu = document.getElementsByName('genero_persona');
+		var valores = ['Masculino', 'Femenino', 'Otro'];
+		for (var i=0;i<menu.length;i++){
+			if (menu[i].checked){
+				if (valores.includes(menu[i].value))
+				{
+					return true;
+				}
+			}
+		}
+		return 'genero_persona_valor_KO';
+		
+	}
 	ADD_apellidos_persona_validation(){return true;}
 	ADD_fechaNacimiento_persona_validation(){return true;}
 	ADD_direccion_persona_validation(){return true;}

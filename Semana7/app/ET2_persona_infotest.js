@@ -1,28 +1,34 @@
 let persona_def_tests = Array(
     //campos no ficheros
-    Array('persona','nombre_persona',1,'cumple tamaño minimo','ADD','nombre_persona_min_size_KO','Tamaño muy corto. Debe estar entre 4 y 20 caracteres'),
-    Array('persona','nombre_persona',2,'cumple tamaño maximo','ADD','nombre_persona_max_size_KO','Tamaño muy grande. Debe estar entre 4 y 20 caracteres'),
-    Array('persona','nombre_persona',3,'cumple formato','ADD','nombre_persona_format_KO','Formato inválido. Debe estar entre 4 y 20 caracteres alfabéticos'),
-    Array('persona','nombre_persona',4,'es correcto','ADD',true,'Nombre persona correcto'),
-    ['persona','nombre_persona',5,'cumple tamaño minimo','EDIT','nombre_persona_min_size_KO','Tamaño muy corto. Debe estar entre 4 y 20 caracteres'],
-    ['persona','nombre_persona',6,'cumple tamaño maximo','EDIT','nombre_persona_max_size_KO','Tamaño muy grande. Debe estar entre 4 y 20 caracteres'],
-    ['persona','nombre_persona',7,'cumple formato','EDIT','nombre_persona_format_KO','Formato inválido. Debe estar entre 4 y 20 caracteres alfabéticos'],
-    ['persona','nombre_persona',8,'es correcto','EDIT',true,'Nombre persona correcto'],
+    Array('persona','nombre_persona','input',1,'cumple tamaño minimo','ADD','nombre_persona_min_size_KO','Tamaño muy corto. Debe estar entre 4 y 20 caracteres'),
+    Array('persona','nombre_persona','input',2,'cumple tamaño maximo','ADD','nombre_persona_max_size_KO','Tamaño muy grande. Debe estar entre 4 y 20 caracteres'),
+    Array('persona','nombre_persona','input',3,'cumple formato','ADD','nombre_persona_format_KO','Formato inválido. Debe estar entre 4 y 20 caracteres alfabéticos'),
+    Array('persona','nombre_persona','input',4,'es correcto','ADD',true,'Nombre persona correcto'),
+    ['persona','nombre_persona','input',5,'cumple tamaño minimo','EDIT','nombre_persona_min_size_KO','Tamaño muy corto. Debe estar entre 4 y 20 caracteres'],
+    ['persona','nombre_persona','input',6,'cumple tamaño maximo','EDIT','nombre_persona_max_size_KO','Tamaño muy grande. Debe estar entre 4 y 20 caracteres'],
+    ['persona','nombre_persona','input',7,'cumple formato','EDIT','nombre_persona_format_KO','Formato inválido. Debe estar entre 4 y 20 caracteres alfabéticos'],
+    ['persona','nombre_persona','input',8,'es correcto','EDIT',true,'Nombre persona correcto'],
+    ['persona','titulacion_persona','select',25,'no es correcto','ADD','titulacion_persona_valor_KO','Titulación persona incorrecto'],
+    ['persona','titulacion_persona','select',26,'es correcto','ADD',true,'Titulación persona correcto'],
+    ['persona','menu_persona','checkbox',27,'no es correcto','ADD','menu_persona_valor_KO','menu persona incorrecto'],
+    ['persona','menu_persona','checkbox',28,'es correcto','ADD',true,'menu persona correcto'],
+    ['persona','genero_persona','radio',29,'no es correcto','ADD','genero_persona_valor_KO','genero persona no correcto'],
+    ['persona','genero_persona','radio',30,'es correcto','ADD',true,'genero persona correcto'],
     // ficheros
-    Array('persona','nuevo_foto_persona',11,'existe fichero','ADD','nuevo_foto_persona_not_exist_file_KO','El fichero no existe. Debe subir una foto'),
-    Array('persona','nuevo_foto_persona',12,'cumple nombre fichero','ADD','nuevo_foto_persona_format_name_file_KO','el nombre de fichero no cumple formato.'),
-    Array('persona','nuevo_foto_persona',13,'cumple tipo fichero','ADD','nuevo_foto_persona_type_file_KO','el tipo de fichero no esta permitido'),
-    Array('persona','nuevo_foto_persona',14,'cumple tamaño maximo fichero','ADD','nuevo_foto_persona_max_size_file_KO','el tamaño del fichero es muy grande.'),
-    Array('persona','nuevo_foto_persona',15,'cumple tamaño minimo nombre fichero','ADD','nuevo_foto_persona_min_size_name_KO','el tamaño del nombre de fichero es muy pequeño'),
-    Array('persona','nuevo_foto_persona',16,'cumple tamaño maximo nombre fichero','ADD','nuevo_foto_persona_max_size_name_KO','el tamaño del nombre de fichero es muy grande.'),
-    Array('persona','nuevo_foto_persona',17,'fichero ok','ADD',true,'ok'),
-    Array('persona','nuevo_foto_persona',18,'no existe fichero','EDIT',true,'ok'),
-    Array('persona','nuevo_foto_persona',19,'cumple nombre fichero','EDIT','nuevo_foto_persona_format_name_file_KO','el nombre de fichero no cumple formato.'),
-    Array('persona','nuevo_foto_persona',20,'cumple tipo fichero','EDIT','nuevo_foto_persona_type_file_KO','el tipo de fichero no esta permitido'),
-    Array('persona','nuevo_foto_persona',21,'cumple tamaño maximo fichero','EDIT','nuevo_foto_persona_max_size_file_KO','el tamaño del fichero es muy grande.'),
-    Array('persona','nuevo_foto_persona',22,'cumple tamaño minimo nombre fichero','EDIT','nuevo_foto_persona_min_size_name_KO','el tamaño del nombre de fichero es muy pequeño'),
-    Array('persona','nuevo_foto_persona',23,'cumple tamaño maximo nombre fichero','EDIT','nuevo_foto_persona_max_size_name_KO','el tamaño del nombre de fichero es muy grande.'),
-    Array('persona','nuevo_foto_persona',24,'fichero ok','EDIT',true,'ok'),
+    Array('persona','nuevo_foto_persona','inputfile',11,'existe fichero','ADD','nuevo_foto_persona_not_exist_file_KO','El fichero no existe. Debe subir una foto'),
+    Array('persona','nuevo_foto_persona','inputfile',12,'cumple nombre fichero','ADD','nuevo_foto_persona_format_name_file_KO','el nombre de fichero no cumple formato.'),
+    Array('persona','nuevo_foto_persona','inputfile',13,'cumple tipo fichero','ADD','nuevo_foto_persona_type_file_KO','el tipo de fichero no esta permitido'),
+    Array('persona','nuevo_foto_persona','inputfile',14,'cumple tamaño maximo fichero','ADD','nuevo_foto_persona_max_size_file_KO','el tamaño del fichero es muy grande.'),
+    Array('persona','nuevo_foto_persona','inputfile',15,'cumple tamaño minimo nombre fichero','ADD','nuevo_foto_persona_min_size_name_KO','el tamaño del nombre de fichero es muy pequeño'),
+    Array('persona','nuevo_foto_persona','inputfile',16,'cumple tamaño maximo nombre fichero','ADD','nuevo_foto_persona_max_size_name_KO','el tamaño del nombre de fichero es muy grande.'),
+    Array('persona','nuevo_foto_persona','inputfile',17,'fichero ok','ADD',true,'ok'),
+    Array('persona','nuevo_foto_persona','inputfile',18,'no existe fichero','EDIT',true,'ok'),
+    Array('persona','nuevo_foto_persona','inputfile',19,'cumple nombre fichero','EDIT','nuevo_foto_persona_format_name_file_KO','el nombre de fichero no cumple formato.'),
+    Array('persona','nuevo_foto_persona','inputfile',20,'cumple tipo fichero','EDIT','nuevo_foto_persona_type_file_KO','el tipo de fichero no esta permitido'),
+    Array('persona','nuevo_foto_persona','inputfile',21,'cumple tamaño maximo fichero','EDIT','nuevo_foto_persona_max_size_file_KO','el tamaño del fichero es muy grande.'),
+    Array('persona','nuevo_foto_persona','inputfile',22,'cumple tamaño minimo nombre fichero','EDIT','nuevo_foto_persona_min_size_name_KO','el tamaño del nombre de fichero es muy pequeño'),
+    Array('persona','nuevo_foto_persona','inputfile',23,'cumple tamaño maximo nombre fichero','EDIT','nuevo_foto_persona_max_size_name_KO','el tamaño del nombre de fichero es muy grande.'),
+    Array('persona','nuevo_foto_persona','inputfile',24,'fichero ok','EDIT',true,'ok'),
    
     
 
@@ -37,9 +43,12 @@ let persona_tests_fields = Array(
     ['persona','nombre_persona',6,6,'EDIT',[{nombre_persona:'aaaaaaaaaaaaaaaaaaaaa'}],'nombre_persona_max_size_KO'],
     ['persona','nombre_persona',7,7,'EDIT',[{nombre_persona:'aaaaaa1'}],'nombre_persona_format_KO'],
     ['persona','nombre_persona',8,8,'EDIT',[{nombre_persona:'javi'}],true],
-    
-
-
+    ['persona','titulacion_persona',26,9,'ADD',[{titulacion_persona:'PCEO'}],true],
+    ['persona','titulacion_persona',25,10,'ADD',[{titulacion_persona:'lolo'}],'titulacion_persona_valor_KO'],
+    ['persona','menu_persona',28,11,'ADD',[{menu_persona:'primero'}],true],
+    ['persona','menu_persona',27,12,'ADD',[{menu_persona:'cuarto'}],'menu_persona_valor_KO'],
+    ['persona','genero_persona',30,13,'ADD',[{genero_persona:'Masculino'}],true],
+    ['persona','genero_persona',29,14,'ADD',[{genero_persona:'Angelical'}],'genero_persona_valor_KO'],
 
 );
 /*
