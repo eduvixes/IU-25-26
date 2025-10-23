@@ -131,7 +131,7 @@ class dom extends dom_table {
 
 }
 
-	/**
+/**
  * if id and mode switch the state of display of html element(id) to 'none' or 'block'/'inline'
  * if 'on'/'off' force html element (id) to show or hide
  * 
