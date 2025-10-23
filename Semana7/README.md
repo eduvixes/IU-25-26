@@ -337,3 +337,47 @@ En todos ellos, se comprueba si el valor para la prueba ya existe en los element
         }
     }
 ```
+Se ha tenido que modificar el método colocarvalidaciones para poder incluir en los formularios los elementos de form checkbox y radio, debido a que no utilizamos ids adhoc por cada elemento elegible en estos seleccionables. Asi pues su validación debe hacer mediante el name y no mediante id porque no tiene sentido colocarselo a menos que establezcamos algun estandar para nombres como colocar como id el nombreatributo_valor de elección.
+La modificación se basa en que aquellos elementos que no tienen id de los elementos del formulario no se les coloca la validación automáticamente y se debe colocar especificamente en el correspondiente createForm.
+
+```js
+/**
+	 * Coloca en el formulario para cada elemento de entrada (con id unico) un evento (dependiente
+	 * del tipo de elemento) al cual enlaza la validacion de ese campo para la accion
+	 * que se le indica
+	 * 
+	 * el id único no tiene significación en los elementos de formulario de tipo elección como checkbox y radio
+	 * Esto es debido a que 
+	 * 	en el caso de un radio es una elección excluyente (un único valor) de entre varios valores y todos tienen el mismo name
+	 * 	en el caso de un checkbox es una elección que puede ser multiple pero tambien tienen todos el mismo name (en cuyo caso se utiliza un tipo array 
+	 * para su envio pero no para su uso en el front para la validación)
+	 * 
+	 * @param {String} accion  accion a realizar en el formulario
+	 */
+	colocarvalidaciones(idform, accion){
+		
+		let evento;
+		//obtener campos del formulario
+        let campos = document.forms[idform].elements;
+        	//recorrer todos los campos
+        for (let i=0;i<campos.length;i++) {
+			if (campos[i].id !== ''){
+				if ((document.getElementById(campos[i].id).tagName == 'INPUT') && 
+					(document.getElementById(campos[i].id).type !== 'file')){
+							evento = 'onblur';
+				}
+				else{
+					evento = 'onchange';
+				}
+				
+
+				if (document.getElementById(campos[i].id).type == 'submit'){}
+				else{
+					document.getElementById(campos[i].id).setAttribute (evento,'entidad.'+accion+'_'+campos[i].id+'_validation'+'();');
+				}
+			}
+					        
+		}
+	}
+
+```
