@@ -141,23 +141,51 @@ class dom_table {
         	let campos = document.forms['form_iu'].elements;
         	//recorrer todos los campos
         	for (let i=0;i<campos.length;i++) {
-				switch (document.getElementById(campos[i].id).type){
-					case 'file':
+				switch (campos[i].tagName){
+					case 'INPUT':
+							switch (campos[i].type){
+								case 'text':
+									document.getElementById(campos[i].id).value = parametros[campos[i].id];
+									break;
+								case 'file':
+									break;
+								case 'submit':
+									break;
+								case 'checkbox':
+									this.rellenarvalorcheckbox(campos[i].name, parametros[campos[i].name]);
+									break;
+								case 'radio':
+									this.rellenarvalorradio(campos[i].name, parametros[campos[i].name]);
+									break;
+								default:
+									break;
+							}
+						
 						break;
-					case 'submit':
-						break;
-					case 'textarea':
+					case 'TEXTAREA':
 						document.getElementById(campos[i].id).innerHTML = parametros[campos[i].id];
+						break;
+					case 'SELECT':
+						this.rellenarvalorselect(campos[i].id, parametros[campos[i].id]);
+						break;
+					case 'RADIO':
+						break;
 					default:
-						document.getElementById(campos[i].id).value = parametros[campos[i].id];
+						break;
 				}
         	}
 	}
 
 	/**
-	 * Coloca en el formulario para cada elemento de entrada un evento (dependiente
+	 * Coloca en el formulario para cada elemento de entrada (con id unico) un evento (dependiente
 	 * del tipo de elemento) al cual enlaza la validacion de ese campo para la accion
 	 * que se le indica
+	 * 
+	 * el id único no tiene significación en los elementos de formulario de tipo elección como checkbox y radio
+	 * Esto es debido a que 
+	 * 	en el caso de un radio es una elección excluyente (un único valor) de entre varios valores y todos tienen el mismo name
+	 * 	en el caso de un checkbox es una elección que puede ser multiple pero tambien tienen todos el mismo name (en cuyo caso se utiliza un tipo array 
+	 * para su envio pero no para su uso en el front para la validación)
 	 * 
 	 * @param {String} accion  accion a realizar en el formulario
 	 */
@@ -168,18 +196,20 @@ class dom_table {
         let campos = document.forms[idform].elements;
         	//recorrer todos los campos
         for (let i=0;i<campos.length;i++) {
-			if ((document.getElementById(campos[i].id).tagName == 'INPUT') && 
-				(document.getElementById(campos[i].id).type !== 'file')){
-		                evento = 'onblur';
-			}
-			else{
-				evento = 'onchange';
-			}
-			
+			if (campos[i].id !== ''){
+				if ((document.getElementById(campos[i].id).tagName == 'INPUT') && 
+					(document.getElementById(campos[i].id).type !== 'file')){
+							evento = 'onblur';
+				}
+				else{
+					evento = 'onchange';
+				}
+				
 
-			if (document.getElementById(campos[i].id).type == 'submit'){}
-			else{
-				document.getElementById(campos[i].id).setAttribute (evento,'entidad.'+accion+'_'+campos[i].id+'_validation'+'();');
+				if (document.getElementById(campos[i].id).type == 'submit'){}
+				else{
+					document.getElementById(campos[i].id).setAttribute (evento,'entidad.'+accion+'_'+campos[i].id+'_validation'+'();');
+				}
 			}
 					        
 		}
@@ -227,7 +257,65 @@ class dom_table {
 
 	}
 
+	/**
+	 * DEBUG: ESTA TAMBIEN EN LA CLASE TEST, DEBERIA ESTAR EN UNA CLASE EXTERIOR A LAS DOS Y POSIBLEMENTE INVOCADO ESTATICAMENTE.
+     * Rellenado de un select de elección única
+     * UPDATE: pendiente la modificación para select multiple
+     * @param {String} id id del elemento html select
+     * @param {String} valor valor con el que inicializar el elemento. Si ya existe se pone como selected, sino existe
+     * se crea como option, se pone el valor y se pone como selected.
+     */
+    rellenarvalorselect(id, valor){
 
+        var opciones = document.getElementById(id).options;
+
+        // comprobar si existe el valor en el select
+        // si existe se pone como seleccionado
+        var indexvalor = -1;
+        for (var i=0;i<opciones.length;i++){
+            if (opciones[i].value == valor){
+                opciones.selectedIndex = i;
+                indexvalor = i;
+            }
+        }
+        
+        // si no existe se crea un option con ese valor y se coloca como seleccionado
+        if (indexvalor == -1){
+            var mioption = document.createElement('option');
+            mioption.value = valor;
+            opciones[opciones.length] = mioption;
+            opciones.selectedIndex = opciones.length;
+        }
+
+    }
+
+	/**
+	 * 
+	 * @param {String} name 
+	 * @param {String} valor 
+	 */
+	rellenarvalorcheckbox(name,valor){
+		var elementoscheckbox = document.getElementsByName(name);
+		for (var i=0;i<elementoscheckbox.length;i++){
+			if (elementoscheckbox[i].value == valor){
+				elementoscheckbox[i].checked = true;
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @param {String} name 
+	 * @param {String} valor 
+	 */
+	rellenarvalorradio(name,valor){
+		var elementosradio = document.getElementsByName(name);
+		for (var i=0;i<elementosradio.length;i++){
+			if (elementosradio[i].value == valor){
+				elementosradio[i].checked = true;
+			}
+		}
+	}
 
 }
 
