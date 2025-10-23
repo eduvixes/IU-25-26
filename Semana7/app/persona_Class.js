@@ -102,13 +102,13 @@ class persona extends EntidadAbstracta{
 
 				<br>
 				<label class="label_menu_persona">Menu </label>
-				Primer plato <input type="checkbox" name = "menu_persona" value="primero" /> 
-				Segundo plato <input type="checkbox" name = "menu_persona" value="segundo" /> 
-				Postre <input type="checkbox" name = "menu_persona" value="postre" /> 
+				Vegano <input type="checkbox" name = "menu_persona" value="Vegano" /> 
+				Celiaco <input type="checkbox" name = "menu_persona" value="Celiaco" /> 
+				Alergia Marisco <input type="checkbox" name = "menu_persona" value="Alergia Marisco" /> 
 				<span id="span_error_menu_persona" ><a id="error_menu_persona"></a></span>
 
 				<br>
-				<label class="label_genero_persona">Menu </label>
+				<label class="label_genero_persona">Genero </label>
 				Masculino <input type="radio" name = "genero_persona" value="Masculino" /> 
 				Femenino <input type="radio" name = "genero_persona" value="Femenino" /> 
 				Otro <input type="radio" name = "genero_persona" value="otro" /> 
@@ -399,6 +399,9 @@ class persona extends EntidadAbstracta{
 
 		// rellenar valores
 		this.dom.rellenarvaloresform(fila);
+
+		// rellenar valores que no se rellenan automaticamente
+		//this.dom.rellenarvalorcheckbox('menu_persona',fila.menu_persona);
 		
 		// poner las validaciones
 		this.dom.colocarvalidaciones('form_iu','EDIT');
