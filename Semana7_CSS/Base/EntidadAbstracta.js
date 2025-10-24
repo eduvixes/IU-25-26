@@ -255,7 +255,6 @@ class EntidadAbstracta{
 			}
 		}
 
-
 	}
 
 	/**
@@ -276,6 +275,7 @@ class EntidadAbstracta{
 		this.mostrarocultarcolumnas();
 		this.dom.crearSeleccionablecolumnas(this.columnasamostrar, this.atributos);
 
+		setLang();
 	}
     
 	
