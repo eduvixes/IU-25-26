@@ -1,0 +1,575 @@
+# SEMANA 8: CSS (Parte II)
+
+## Objetivo
+
+Esta es la segunda (y última) sesión de CSS de la asignatura, 
+en la que veremos algunos estilos adicionales, aplicados a la 
+tabla de gestión de las entidades, y a los formularios de 
+gestión de las mismas.
+
+![Aspecto al añadir estilo-1.css](README_IMGS/estilo2css.png)
+
+
+## Cambios menores en el fichero index.html
+
+Para poder incluir el fichero CSS de estilo (estilo-2.css), es necesario añadir una línea al fichero index.html:
+
+```html
+<head>
+    ...
+    
+    <link rel="stylesheet" type="text/css" href="./Base/css/estilo-2.css" media="screen" />
+    
+    ...
+</head>
+```
+
+En esta ocasión, no cambiamos nada más en el fichero index.
+
+## Cambios en persona_Class.js
+
+Para poder agrupar adecuadamente los menús de checkboxes y radio buttons en los formularios de persona, ajustamos el posicionamiento y los elementos HTML de dicha sección en el fichero persona_Class.js:
+
+### Antes
+
+```html
+<label class="label_menu_persona">Menu </label>
+Vegano <input type="checkbox" name = "menu_persona" value="Vegano" /> 
+Celiaco <input type="checkbox" name = "menu_persona" value="Celiaco" /> 
+Alergia Marisco <input type="checkbox" name = "menu_persona" value="Alergia Marisco" /> 
+<span id="span_error_menu_persona" ><a id="error_menu_persona"></a></span>
+
+<br>
+<label class="label_genero_persona">Genero </label>
+Masculino <input type="radio" name = "genero_persona" value="Masculino" /> 
+Femenino <input type="radio" name = "genero_persona" value="Femenino" /> 
+Otro <input type="radio" name = "genero_persona" value="otro" /> 
+<span id="span_error_genero_persona" ><a id="error_genero_persona"></a></span>
+```
+
+### Después
+
+```html
+<label class="label_menu_persona">Menu</label>
+
+<div class="checkbox_group">
+    <input type="checkbox" name = "menu_persona" value="Vegano" /> 
+    <span>Vegano</span>
+</div>
+
+<div class="checkbox_group">
+    <input type="checkbox" name = "menu_persona" value="Celiaco" /> 
+    <span>Celiaco</span>
+</div>
+
+<div class="checkbox_group">
+    <input type="checkbox" name = "menu_persona" value="Alergia Marisco" /> 
+    <span>Alergia Marisco</span>
+</div>
+
+<span id="span_error_menu_persona" ><a id="error_menu_persona"></a></span>
+
+<br>
+<label class="label_genero_persona">Genero</label>
+
+<div class="radio_group">
+    <input type="radio" name = "genero_persona" value="Masculino" />
+    <span>Masculino</span>
+</div>
+
+<div class="radio_group">
+    <input type="radio" name = "genero_persona" value="Femenino" />
+    <span>Femenino</span>
+</div>
+
+<div class="radio_group">
+    <input type="radio" name = "genero_persona" value="otro" />
+    <span>Otro</span>
+</div>
+
+<span id="span_error_genero_persona" ><a id="error_genero_persona"></a></span>
+```
+
+
+
+## Revisión de los estilos CSS aplicados en estilos-2.css
+
+### Estilos para la tabla de gestión
+
+A continuación, bajo un único conjunto de reglas CSS, encontramos todos los cambios de propiedades
+asociados a la tabla, su cabecera (`th`), filas (`tr`), celdas (`td`) y botones (`img`).
+
+```css
+#IU_manage_table {
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+    border: 2pt solid var(--emphasis-color-1); /* Borde */
+    border-top: 0; /* Sin borde superior */
+    box-sizing: border-box; /* Incluye el borde en el tamaño total */
+
+    overflow: auto; /* Añade scroll si el contenido desborda */
+
+    /* Estilos para la tabla dentro del contenedor */
+    & table {
+        width: 100%; /* Ocupa todo el ancho del contenedor */
+        border: 6pt solid var(--light-color); /* Borde exterior de la tabla */
+
+        /* Estilos para las celdas de encabezado */
+        & th {
+            padding: 10pt; /* Relleno */
+            background-color: var(--dark-color); /* Color de fondo */
+            color: var(--light-color); /* Color de texto */
+            user-select: none; /* Evita selección de texto */
+            
+            /* Estilos para el primer th */
+            &:first-child {
+                border-top-left-radius: 10pt; /* Bordes redondeados superiores izquierdos */
+            }
+
+            /* Estilos para el último th */
+            &:last-child {
+                border-top-right-radius: 10pt; /* Bordes redondeados superiores derechos */
+            }
+        }
+
+        /* Estilos para las filas de la tabla */
+        & tr {
+            /* Estilos para las celdas de datos */
+            & td {
+                text-align: center; /* Alinear texto al centro */
+                transition: background-color 0.1s; /* Transición suave al cambiar color fondo */
+
+                /* Estilos para las imágenes dentro de las celdas (Acciones) */
+                & img {
+                    transition: transform 0.3s; /* Transición suave al transformar */
+                    transform: scale(0.8); /* Escalar imagen al 80% */
+
+                    cursor: pointer; /* Usar el icono de cursor "pointer" */
+                    user-select: none; /* Evita selección de imagen */
+                    -webkit-user-drag: none; /* Impide arrastrar la imagen */
+                    
+                    /* Estilos al pasar el ratón por encima */
+                    &:hover {
+                        transform: scale(1.0); /* Escalar imagen al 100% */
+                    }
+
+                    /* Estilos al hacer clic en la imagen */
+                    &:active {
+                        transform: scale(0.72); /* Escalar imagen al 72% */
+                    }
+                }
+
+                position: relative; /* Posición relativa para contener el enlace absoluto */
+
+                /* Estilo para los enlaces a dentro de las celdas td */
+                & a {
+                    position: absolute; /* Posición absoluta */
+                    top: 1pt; /* Separación superior */
+                    right: 0; /* Alineado a la derecha */
+                }
+
+                /* Pseudo-clase :has() - Permite seleccionar un elemento si contiene un elemento 
+                descendiente que cumple una condición.
+                En este caso, se usa para añadir estilos a las celdas td que contienen un enlace a. */
+                &:has(a) {
+                    padding-right: 36pt; /* Relleno derecho extra si tiene un enlace */
+                }
+            }
+
+            /* Pseudo-clase - nth-child() - Permite seleccionar elementos en función de su posición entre sus hermanos.
+            En este caso, se usa para aplicar estilos alternos a las filas pares e impares. */
+            &:nth-child(even) {
+                background-color: var(--emphasis-color-2); /* Color de fondo para filas pares */
+            }
+
+            /* Estilo para las celdas cuando se pasa el ratón por encima DE LA FILA tr */
+            &:hover td {
+                background-color: var(--medium-color); /* Color de fondo */
+            }
+
+            /* Estilo para la última fila de la tabla */
+            &:last-child {
+                /* Estilo para la primera celda td */
+                & td:first-child {
+                    border-bottom-left-radius: 10pt; /* Bordes redondeados inferiores izquierdos */
+                }
+                
+                /* Estilo para la última celda td */
+                & td:last-child {
+                    border-bottom-right-radius: 10pt; /* Bordes redondeados inferiores derechos */
+                }
+            }
+
+            /* Estilo para el texto seleccionado dentro de las celdas */
+            &::selection {
+                background-color: var(--dark-color); /* Color de fondo */
+                color: var(--light-color); /* Color de texto */
+            }
+
+        }
+    }
+}
+```
+
+### Estilos de los formularios de gestión
+
+#### Estilos para el contenedor del formulario
+
+```css
+#Div_IU_form {
+    border: 0; /* Sin bordes */
+}
+```
+
+#### Estilos del contenido del formulario
+
+```css
+.contenidoForm {
+    display: flex; /* Distribución flexible de elementos */
+    flex-direction: column; /* Distribuye elementos en columna */
+    align-items: start; /* Alinea elementos al inicio (izquierda) */
+    justify-content: space-between; /* Espacio entre elementos */
+
+    border-radius: 20pt; /* Bordes redondeados */
+
+    width: min(600pt, 90%); /* Ancho máximo de 600pt o 90% del contenedor padre */
+    overflow: hidden; /* Oculta contenido que sobresalga, para que no se muestren barras de desplazamiento */
+    border-width: 2pt; /* Ancho del borde */
+
+    box-shadow: 0 4pt 8pt 0 rgba(0, 0, 0, 0.2); /* Sombra alrededor del contenedor */
+    /* Formato de las sombras: offset-x offset-y blur-radius spread-radius color */
+
+    background-color: var(--light-color); /* Color de fondo */
+
+    /* Estilos para el título del formulario */
+    & .class_titulo_form {
+        background-color: var(--dark-color); /* Color de fondo */
+        height: 15%; /* Altura del título, relativa al contenedor padre */
+        box-shadow: 0 4pt 8pt 0 rgba(0, 0, 0, 0.4); /* Sombra alrededor del título */
+
+        /* Estilos para el span dentro del título */
+        & span {
+            color: var(--light-color); /* Color de texto */
+            font-size: 18pt; /* Tamaño de fuente */
+            text-align: center; /* Alinear texto al centro */
+            font-weight: bold; /* Negrita */
+            user-select: none; /* Evita selección de texto */
+        }
+    }
+
+    /* Estilos para el contenedor del formulario */
+    & #contenedor_IU_form {
+        width: 100%; /* Ocupa todo el ancho del contenedor padre */
+        max-height: 72%; /* Altura máxima del contenedor, relativa al contenedor padre */
+        overflow: auto; /* Añade barras de desplazamiento si el contenido desborda */
+    }
+
+    /* Estilos para el formulario */
+    & form {
+        top: 0; /* Posición superior, ya que se ha modificado previamente en otro CSS */
+        left: 0; /* Posición izquierda, ya que se ha modificado previamente en otro CSS */
+
+        padding: 20pt; /* Relleno del formulario */
+        box-sizing: border-box; /* Incluye el padding en el tamaño total */
+        
+        display: flex; /* Distribución flexible de elementos */
+        flex-direction: column; /* Distribuye elementos en columna */
+        align-items: center; /* Centra horizontalmente los elementos */
+    }
+
+    /* Estilos para los labels dentro del formulario */
+    & label {
+        width: 100%; /* Ocupa todo el ancho del contenedor padre */
+        margin-top: 10pt; /* Margen superior */
+        margin-bottom: 5pt; /* Margen inferior */
+        
+        font-weight: bold; /* Negrita */
+        user-select: none; /* Evita selección de texto */
+
+        /* Pseudo-elemento ::after - Permite añadir contenido después del elemento. */
+        &::after {
+            content: ":"; /* Añade dos puntos después del texto del label */
+        }
+    }
+
+
+    /* Estilos para los inputs dentro del formulario */
+    & input {
+        width: 100%; /* Ocupa todo el ancho del contenedor padre */
+
+        padding: 5pt; /* Relleno */
+        padding-left: 15pt; /* Relleno izquierdo */
+        margin-top: 5pt; /* Margen superior */
+        margin-bottom: 5pt; /* Margen inferior */
+        
+        border: 2pt solid var(--emphasis-color-1); /* Borde */
+        border-radius: 20pt; /* Bordes redondeados */
+        box-sizing: border-box; /* Incluye el borde en el tamaño total */
+        
+        font-size: 14pt; /* Tamaño de fuente */
+
+        /*
+            Estilos específicos para los inputs de tipo file 
+
+            Selectores de atributo [atributo="valor"] - Aplica estilos a los elementos
+            que tienen ese atributo con ese valor. Se puede combinar con otros selectores.
+
+            Formato: [atributo="valor"] { ... }
+
+            Algunos selectores de atributo:
+            - [atributo]: Elementos que tienen el atributo (independientemente de su valor)
+            - [atributo="valor"]: Elementos cuyo atributo tiene exactamente ese valor
+            - [atributo~="valor"]: Elementos cuyo atributo contiene ese valor en una lista
+
+            Más: https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors
+        */
+        &[type="file"] {
+            padding-left: 10pt; /* Relleno izquierdo */
+            font-size: 12pt; /* Tamaño de fuente */
+            background-color: var(--light-color); /* Color de fondo */
+            
+            cursor: pointer; /* Usar el icono de cursor "pointer" */
+            user-select: none; /* Evita selección de texto */
+        }
+    }
+
+    /* Estilos para los textarea dentro del formulario */
+    & textarea {
+        width: 100%; /* Ocupa todo el ancho del contenedor padre */
+        padding: 5pt; /* Relleno */
+        padding-left: 15pt; /* Relleno izquierdo */
+        margin-top: 5pt; /* Margen superior */
+        margin-bottom: 5pt; /* Margen inferior */
+        
+        border: 2pt solid var(--emphasis-color-1); /* Borde */
+        border-radius: 20pt; /* Bordes redondeados */
+        box-sizing: border-box; /* Incluye el borde en el tamaño total */
+        
+        resize: vertical; /* Permite redimensionar sólo verticalmente */
+        font-size: 14pt; /* Tamaño de fuente */
+    }
+
+    & select {
+        width: 100%; /* Ocupa todo el ancho del contenedor padre */
+        padding: 5pt; /* Relleno */
+        padding-left: 15pt; /* Relleno izquierdo */
+        margin-top: 5pt; /* Margen superior */
+        margin-bottom: 5pt; /* Margen inferior */
+        
+        border: 2pt solid var(--emphasis-color-1); /* Borde */
+        border-radius: 20pt; /* Bordes redondeados */
+        box-sizing: border-box; /* Incluye el borde en el tamaño total */
+        
+        font-size: 14pt; /* Tamaño de fuente */
+    }
+
+    & .checkbox_group, .radio_group {
+        display: flex; /* Distribución flexible de elementos */
+        flex-direction: row; /* Distribuye elementos en columna */
+        align-items: center; /* Alinea elementos al inicio (izquierda) */
+        justify-content: flex-start; /* Alinea elementos al inicio (izquierda) */
+
+        width: 100%; /* Ocupa todo el ancho del contenedor padre */
+
+        margin-left: 30pt; /* Margen izquierdo */
+        margin-top: 10pt; /* Margen superior */
+
+        /* Estilos para los elementos dentro del grupo de checkboxes/radios */
+        & * {
+            width: auto; /* Ancho automático */
+        }
+
+        & input[type="checkbox"], input[type="radio"] {
+            /* Checkbox personalizado usando pseudo-elementos */
+            --size: 20pt; /* Tamaño del checkbox/radio */
+
+            margin: 0; /* Sin margen */
+            padding: 0; /* Sin relleno */
+            border: 0; /* Sin borde */
+
+            width: var(--size); /* Ancho del checkbox/radio */
+            height: var(--size); /* Alto del checkbox/radio */
+
+            appearance: none; /* Ocultar el checkbox/radio original */
+
+            transition: transform 0.3s; /* Transición suave al transformar */
+
+            position: relative; /* Posición relativa para los pseudo-elementos */
+
+            /* Pseudo-elemento ::before - Permite añadir contenido antes del elemento. 
+            En este caso será el recuadro de la checkbox/radio. */
+            &::before {
+                position: absolute; /* Posición absoluta */
+                content: ""; /* Contenido vacío */
+
+                top: 0; /* Alineación superior */
+                left: 0; /* Alineación izquierda */
+                width: var(--size); /* Ancho del checkmark */
+                height: var(--size); /* Alto del checkmark */
+                
+                box-sizing: border-box; /* Incluye el borde en el tamaño total */
+                border: 2pt solid var(--emphasis-color-1); /* Borde */
+
+            }
+            
+            &[type="checkbox"]::before {
+                border-radius: 4pt; /* Bordes redondeados */
+            }
+            &[type="radio"]::before {
+                border-radius: 50%; /* Bordes circulares */
+            }
+            
+            /* Pseudo-elemento ::after - Permite añadir contenido después del elemento. 
+            En este caso será el checkmark que se visualizará cuando la checkbox/radio esté pulsada */
+            &::after {
+                position: absolute; /* Posición absoluta */
+                content: "✓"; /* Contenido del checkmark */
+                text-align: center; /* Alinear texto al centro */
+               
+                top: 0; /* Alineación vertical */
+                left: 0; /* Alineación horizontal */
+                width: var(--size); /* Ancho del checkmark */
+                height: var(--size); /* Alto del checkmark */
+                
+                opacity: 0; /* Oculto por defecto */
+                z-index: -4; /* Mostramos el checkmark por debajo del recuadro */
+            }
+
+            &[type="checkbox"]::after {
+                content: "✓"; /* Contenido del checkmark */
+                font-size: calc(var(--size) - 6pt); /* Tamaño de fuente */
+
+                color: var(--light-color); /* Color de texto */
+                background-color: var(--emphasis-color-1); /* Color de fondo */
+                
+                border-radius: 4pt; /* Bordes redondeados */
+            }
+            &[type="radio"]::after {
+                content: "●"; /* Contenido del radio */
+                font-size: calc(var(--size) - 3.5pt); /* Tamaño de fuente */
+                
+                color: var(--emphasis-color-1);
+                background-color: var(--light-color); /* Color de fondo */
+                
+                border-radius: 50%; /* Bordes circulares */
+            }
+
+            /* Pseudo-clase :checked - Aplica estilos cuando el checkbox está marcado */
+            &:checked {
+                /* Estilos cuando el checkbox está marcado */
+                &::after {
+                    opacity: 1; /* Mostrar checkmark */
+                }
+            }
+
+            /* Pseudo-clase :focus - Aplica estilos cuando el checkbox está enfocado */
+            &:focus {
+                outline: none; /* Sin contorno al enfocar */
+                transform: scale(1.2); /* Escalar checkbox al 120% */
+
+                /* Estilos del recuadro al enfocar */
+                &::before {
+                    border-color: var(--dark-color); /* Cambia el color del borde al enfocar */
+                }
+            }
+
+            /* Pseudo-clase :hover - Aplica estilos cuando el ratón está sobre el checkbox */
+            &:hover {
+                transform: scale(1.2); /* Escalar checkbox al 120% */
+            }
+
+            /* Pseudo-clase :active - Aplica estilos cuando se hace clic en el checkbox */
+            &:active {
+                transform: scale(0.9); /* Escalar checkbox al 90% */
+            }
+        }
+
+        /* Estilos para los span dentro del grupo de checkboxes */
+        & span {
+            margin-left: 10pt; /* Margen izquierdo */
+            user-select: none; /* Evita selección de texto */
+        }
+    }
+
+    /* Estilo para elementos a (En este caso, descripciones de error de validaciones de campo) */
+    & a {
+        font-style: italic; /* Cursiva */
+        color: red; /* Color rojo */
+    }
+
+    /* Estilos para las imágenes dentro del formulario (Botón de cerrar) y el botón de ver imagen */
+    & > img, a:has(img) {
+        align-self: center; /* Centra la imagen horizontalmente */
+
+        background-color: var(--emphasis-color-2); /* Color de fondo */
+        box-shadow: 0 4pt 8pt 0 rgba(0, 0, 0, 0.2); /* Sombra alrededor del botón */
+
+        padding: 30pt; /* Relleno */
+        padding-bottom: 3pt; /* Relleno inferior */
+        padding-top: 0pt; /* Relleno superior */
+        margin-bottom: 10pt; /* Margen inferior */
+        border-radius: 10pt; /* Bordes redondeados */
+        
+        cursor: pointer; /* Usar el icono de cursor "pointer" */
+        user-select: none; /* Evita selección de imagen */
+        -webkit-user-drag: none; /* Impide arrastrar la imagen */
+        
+        transition: transform 0.3s; /* Transición suave al transformar */
+        
+        /* Estilos al pasar el ratón por encima */
+        &:hover {
+            transform: scale(1.1); /* Escalar imagen al 110% */
+        }
+    }
+
+    /* Estilo para el a que tiene una imagen y enlaza a la página de la foto de la persona */
+    & a:has(img) {
+        width: 50%;
+        display: flex; /* Distribución flexible de elementos */
+        justify-content: center; /* Centra horizontalmente los elementos */
+        align-items: center; /* Centra verticalmente los elementos */
+    }
+
+}
+```
+
+
+### Estilos para el contenedor del botón de confirmación de formulario
+
+```css
+#div_boton {
+    width: 100%; /* Ocupa todo el ancho del contenedor padre */
+
+    /* En este caso, usamos grid como un atajo para centrar 
+    el botón con un par de propiedades */
+
+    display: grid; /* Distribución en cuadrícula */
+    place-items: center; /* Centrar elementos en sus celdas */
+
+    /* Estilos para el botón dentro del contenedor */
+    & button {
+        width: 80%; /* Ocupa el 80% del ancho del contenedor padre */
+        border: 0; /* Sin bordes */
+        border-radius: 20pt; /* Bordes redondeados */
+        margin-top: 10pt; /* Margen superior */
+        
+        box-shadow: 0 4pt 8pt 0 rgba(0, 0, 0, 0.2); /* Sombra alrededor del botón */
+        background-color: var(--emphasis-color-2); /* Color de fondo */
+        cursor: pointer; /* Usar el icono de cursor "pointer" */
+        
+        transition: transform 0.3s; /* Transición suave al transformar */
+        
+        /* Estilos al pasar el ratón por encima */
+        &:hover {
+            transform: scale(1.03); /* Escalar botón al 103% */
+        }
+    }
+}
+```
+
+
+
+## Resumen final
+
+En esta sesión, hemos revisado un estilo aplicado a la página principal de nuestra aplicación de ejemplo, modificando el aspecto de la tabla de gestión de entidades y los formularios de gestión de las mismas.
+
+Con esta explicación, terminamos la última clase relacionada con CSS de la asignatura.
