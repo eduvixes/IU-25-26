@@ -3,17 +3,12 @@ class persona extends EntidadAbstracta{
 	constructor(esTest){
 		super();
 		
-		this.nombreentidad = 'persona';
-		this.dom = new dom();
-		this.validations = new Validations();
-		this.access_functions = new ExternalAccess();
 
 		//definicion de atributos a mostrarn en la tabla de muestra de tuplas al entrar en la gestion de la entidad
-		this.columnasamostrar = ['dni','nombre_persona', 'foto_persona'];
+		this.columnasamostrar = ['dni','titulacion_persona', 'menu_persona','genero_persona'];
 		//definicion de atributos a cambiar su visualización
 		this.mostrarespecial = ['fechaNacimiento_persona','foto_persona'];
 		
-
 		// definicion de los atributos del formulario (Necesario para test de unidad)
 		this.attributes = [  'dni',
                                 'nombre_persona',
@@ -25,25 +20,6 @@ class persona extends EntidadAbstracta{
                                 'foto_persona',
                                 'nuevo_foto_persona'
                             ];
-
-		
-		// si se instancia para test no se muestra el componente de gestion de entidad ni se inicializa el formulario
-		// 
-		if (esTest == 'test'){}
-		else{
-			//visualizar seccion tabla y botones
-			//document.getElementById('IU_manage_entity').style.display = 'block';
-			document.getElementById('text_title_page').classList.add('text_titulo_page_'+this.nombreentidad);
-			document.getElementById('text_title_page').setAttribute('onclick','entidad = new persona();');
-
-			this.dom.show_element('IU_manage_entity', 'block');
-			
-			//crear el formulario vacio
-			document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
-
-			//invocar busqueda en back con el formulario vacio
-			this.SEARCH();
-		}
 
 	}	
 
@@ -91,7 +67,7 @@ class persona extends EntidadAbstracta{
 
 				<br>
 				<label class="label_titulacion_persona">Titulación</label>
-				<select id="titulacion_persona">
+				<select id="titulacion_persona" name='titulacion_persona'>
 					<option value="GREI">GREI</option>
 					<option value="GRIA">GRIA</option>
 					<option value="MEI">MEI</option>
@@ -101,17 +77,23 @@ class persona extends EntidadAbstracta{
 				<span id="span_error_titulacion_persona" ><a id="error_titulacion_persona"></a></span>
 
 				<br>
-				<label class="label_menu_persona">Menu </label>
-				Vegano <input type="checkbox" name = "menu_persona" value="Vegano" /> 
-				Celiaco <input type="checkbox" name = "menu_persona" value="Celiaco" /> 
-				Alergia Marisco <input type="checkbox" name = "menu_persona" value="Alergia Marisco" /> 
+				<label id="label_menu_persona" class="label_menu_persona">Menu </label><br>
+				<label id='label_Vegano' class="label_Vegano">Vegano</label>
+				<input type="checkbox" name = "menu_persona" value="Vegano" /> 
+				<label id='label_Celiaco' class="label_Celiaco">Celiaco</label>
+				<input type="checkbox" name = "menu_persona" value="Celiaco" />
+				<label id='label_AlergiaMarisco' class="label_AlergiaMarisco">AlergiaMarisco</label> 
+				<input type="checkbox" name = "menu_persona" value="AlergiaMarisco" /> 
 				<span id="span_error_menu_persona" ><a id="error_menu_persona"></a></span>
 
 				<br>
-				<label class="label_genero_persona">Genero </label>
-				Masculino <input type="radio" name = "genero_persona" value="Masculino" /> 
-				Femenino <input type="radio" name = "genero_persona" value="Femenino" /> 
-				Otro <input type="radio" name = "genero_persona" value="otro" /> 
+				<label id="label_genero_persona" class="label_genero_persona">Genero </label><br>
+				<label id='label_Masculino' class="label_Masculino">Masculino</label>
+				<input type="radio" name = "genero_persona" value="Masculino" /> 
+				<label id='label_Femenino' class="label_Femenino">Femenino</label>
+				<input type="radio" name = "genero_persona" value="Femenino" /> 
+				<label id='label_Otro' class="label_Otro">Otro</label>
+				<input type="radio" name = "genero_persona" value="Otro" /> 
 				<span id="span_error_genero_persona" ><a id="error_genero_persona"></a></span>
 
 				<br>
@@ -231,7 +213,8 @@ class persona extends EntidadAbstracta{
 		let result = (
 					(this.ADD_dni_validation()) &
 					(this.ADD_nombre_persona_validation()) &
-					(this.ADD_nuevo_foto_persona_validation())
+					(this.ADD_nuevo_foto_persona_validation()) &
+					(this.ADD_titulacion_persona_validation())
 					)
 		
 		result = Boolean(result);
@@ -399,9 +382,6 @@ class persona extends EntidadAbstracta{
 
 		// rellenar valores
 		this.dom.rellenarvaloresform(fila);
-
-		// rellenar valores que no se rellenan automaticamente
-		//this.dom.rellenarvalorcheckbox('menu_persona',fila.menu_persona);
 		
 		// poner las validaciones
 		this.dom.colocarvalidaciones('form_iu','EDIT');
@@ -421,6 +401,7 @@ class persona extends EntidadAbstracta{
 
 		// limpiar y poner visible el formulario
 		document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
+	
 		this.dom.show_element('Div_IU_form','block');
 		this.dom.remove_class_value('class_contenido_titulo_form','text_contenido_titulo_form');
 		this.dom.assign_class_value('class_contenido_titulo_form', 'text_contenido_titulo_form_persona_DELETE');
@@ -437,7 +418,6 @@ class persona extends EntidadAbstracta{
 
 		// rellenar valores
 		this.dom.rellenarvaloresform(fila);
-
 
 		// poner inactivos los campos correspondientes
 		this.dom.colocartodosreadonly('form_iu');
@@ -533,6 +513,14 @@ class persona extends EntidadAbstracta{
 		this.dom.hide_element_form('nuevo_foto_persona');
 		this.dom.hide_element('link_foto_persona');
 
+		// reemplazar enumerados por texto
+		// titulacion_persona que es un select
+		this.dom.replaceSelectXEmptyInput('titulacion_persona');
+		// menu_persona que es un checkbox
+		this.dom.replaceEnumNameXEmptyInput('menu_persona');
+		// genero_persona que es un radio
+		this.dom.replaceEnumNameXEmptyInput('genero_persona');
+		
 		// rellenar valores
 		// en SEARCH no hay valores que rellenar
 
@@ -644,6 +632,9 @@ class persona extends EntidadAbstracta{
 	EDIT_direccion_persona_validation(){return true;}
 	EDIT_telefono_persona_validation(){return true;}
 	EDIT_email_persona_validation(){return true;}
+	EDIT_titulacion_persona_validation(){return true;}
+	EDIT_menu_persona_validation(){return true;}
+	EDIT_genero_persona_validation(){return true;}
 	EDIT_foto_persona_validation(){return true;}
 	//EDIT_nuevo_foto_persona_validation(){return true;}
 
@@ -657,6 +648,9 @@ class persona extends EntidadAbstracta{
 	SEARCH_direccion_persona_validation(){return true;}
 	SEARCH_telefono_persona_validation(){return true;}
 	SEARCH_email_persona_validation(){return true;}
+	SEARCH_titulacion_persona_validation(){return true;}
+	SEARCH_menu_persona_validation(){return true;}
+	SEARCH_genero_persona_validation(){return true;}
 	SEARCH_foto_persona_validation(){return true;}
 	SEARCH_nuevo_foto_persona_validation(){return true;}
 

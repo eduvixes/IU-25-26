@@ -91,6 +91,8 @@ Tambien se ha incluido en EntidadAbstracta un método que aún no se ha utilizad
 ```
 ## Inclusión de funcionalidades que no estaban implementadas
 
+# mostrarcambiaratributo()
+
 Se ha implementado el cambio de formato en la muestra de valores que vienen del back. Como se habia indicado en Semanas anteriores existe una propiedad de la entidad llamada mostrarespecial que contiene un array con los atributos que son susceptibles de modificar su valor para hacerlo de forma automatica en el método que dibuja las tablas de datos resultado de SEARCH. El método para cambiar formato se denomina mostrarcambioatributo(atributo, valordelatributo)
 
 ```js
@@ -153,18 +155,78 @@ if (mostrarespeciales.length > 0){
 		fila.fechaNacimiento_persona = this.mostrarcambioatributo('fechaNacimiento_persona',fila.fechaNacimiento_persona);
 ```
 
+# EntidadAbstracta como superclase de entidades
+
 Al extender la clase EntidadAbstracta en cada entidad se ha dejado Validations como una clase que se instancia dentro de la entidad persona y solo se invocan sus métodos sin integrarla.
 
 ```js
 class persona extends EntidadAbstracta{
 ```
 
-También se ha incluido en el constructor de la entidad una propiedad this.nombreentidad para almacenar el nombre de la entidad que está manejando la clase. Podriamos extraerlo directamente del nombre de la clase que instancia el objeto también.
+Se ha pasado a EntidadAbstracta toda la información de inicialización de entidad que es común a todas las entidades.
+Se ha incorporado una propiedad para guardar el nombre de la entidad que se obtiene directamente del objeto creado.
 
 ```js
-this.nombreentidad = 'persona';
+Class EntidadAbstracta{
+
+	constructor(esTest){
+		
+		this.dom = new dom();
+		this.validations = new Validations();
+		this.access_functions = new ExternalAccess();
+		this.nombreentidad = this.constructor.name;
+
+		// si se instancia para test no se muestra el componente de gestion de entidad ni se inicializa el formulario
+		// 
+		if (esTest == 'test'){}
+		else{
+			//visualizar seccion tabla y botones
+			//document.getElementById('IU_manage_entity').style.display = 'block';
+			document.getElementById('text_title_page').classList.add('text_titulo_page_'+this.nombreentidad);
+			document.getElementById('text_title_page').setAttribute('onclick','entidad = new persona();');
+
+			this.dom.show_element('IU_manage_entity', 'block');
+			
+			//crear el formulario vacio
+			//document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
+
+			//invocar busqueda en back con el formulario vacio
+			this.SEARCH();
+		}
+	}
+	
 ```
-## Modificación de la clase de test de datos para permitir la inclusion de pruebas
+
+ Por lo tanto en el constructor de una entidad solo tenemos que definir la información especifica de la entidad
+
+ ```js
+class persona extends EntidadAbstracta{
+
+	constructor(esTest){
+		super();
+		
+
+		//definicion de atributos a mostrarn en la tabla de muestra de tuplas al entrar en la gestion de la entidad
+		this.columnasamostrar = ['dni','titulacion_persona', 'menu_persona','genero_persona'];
+		//definicion de atributos a cambiar su visualización
+		this.mostrarespecial = ['fechaNacimiento_persona','foto_persona'];
+		
+		// definicion de los atributos del formulario (Necesario para test de unidad)
+		this.attributes = [  'dni',
+                                'nombre_persona',
+                                'apellidos_persona',
+                                'fechaNacimiento_persona',
+                                'direccion_persona',
+                                'telefono_persona',
+                                'email_persona',
+                                'foto_persona',
+                                'nuevo_foto_persona'
+                            ];
+
+	}	
+ ```
+
+# Modificación de la clase de test de datos para permitir la inclusion de pruebas
 
 No se ha modificado la parte de pruebas de file porque la estructura de las pruebas no es la misma que las de field. En un futuro posiblemente se unifique la estructura de pruebas al estar ya definido que se esta probando en la parte de definición de test.
 
@@ -337,8 +399,11 @@ En todos ellos, se comprueba si el valor para la prueba ya existe en los element
         }
     }
 ```
+
+# Modificaciones en dom para adecuar a la posibilidad de select, checkbox y radio
+
 Se ha tenido que modificar el método colocarvalidaciones para poder incluir en los formularios los elementos de form checkbox y radio, debido a que no utilizamos ids adhoc por cada elemento elegible en estos seleccionables. Asi pues su validación debe hacer mediante el name y no mediante id porque no tiene sentido colocarselo a menos que establezcamos algun estandar para nombres como colocar como id el nombreatributo_valor de elección.
-La modificación se basa en que aquellos elementos que no tienen id de los elementos del formulario no se les coloca la validación automáticamente y se debe colocar especificamente en el correspondiente createForm.
+La modificación se basa en que aquellos elementos que no tienen id de los elementos del formulario no se les coloca la validación automáticamente y se debe colocar especificamente en el correspondiente createForm si asi se considera o en el submit.
 
 ```js
 /**
@@ -349,8 +414,9 @@ La modificación se basa en que aquellos elementos que no tienen id de los eleme
 	 * el id único no tiene significación en los elementos de formulario de tipo elección como checkbox y radio
 	 * Esto es debido a que 
 	 * 	en el caso de un radio es una elección excluyente (un único valor) de entre varios valores y todos tienen el mismo name
-	 * 	en el caso de un checkbox es una elección que puede ser multiple pero tambien tienen todos el mismo name (en cuyo caso se utiliza un tipo array 
-	 * para su envio pero no para su uso en el front para la validación)
+	 * 	en el caso de un checkbox es una elección que puede ser multiple pero tambien tienen todos el mismo name (en cuyo caso se utiliza un tipo array para su envio pero no para su uso en el front para la validación)
+     * 
+     * No se coloca validacion directamente en los checkbox ni en los radio pq no tienen id. Deben colocarse validacion en el submit
 	 * 
 	 * @param {String} accion  accion a realizar en el formulario
 	 */
@@ -381,3 +447,279 @@ La modificación se basa en que aquellos elementos que no tienen id de los eleme
 	}
 
 ```
+
+Se ha modificado el colocartodosreadonly para que no se puedan modificar los datos de seleccionables. Como no se puede poner un elemento seleccionable a readonly y si se coloca disabled no se envia en el formulario se ha optado por sustituir todos por un input text readonly. 
+Podriamos ponerlos disabled pq en delete solo hace falta el id para la accion pero por si otros back precisan el envio de todos los componentes de información se dejan colocados en un input text con el mismo name que el enumerado.
+
+Primero se dejan solo aquellos elementos de checkbox o radio que estan seleccionados y despues se coloca su valor en un input text que se crea dinamicamente y se eliminan del formulario los enumerados y sus labels.
+
+```js
+/**
+	 * recorre todos los elementos del formulario colocandolos a readonly
+	 * 
+	 * Si es un select se identifica el elemento option seleccionado y se borran todos los demas elementos option
+	 * @param {String} idform id del formulario
+	 */
+	colocartodosreadonly(idform){
+		
+		this.dejarsoloenumchecked(this.getNameCheck(idform,'checkbox'));
+		this.dejarsoloenumchecked(this.getNameCheck(idform,'radio'));
+
+		let campos = document.forms[idform].elements;
+
+        //recorrer todos los campos
+        for (let i=0;i<campos.length;i++) {
+			
+			if (campos[i].id !== ''){
+
+				if (campos[i].tagName !== 'SELECT'){
+					document.getElementById(campos[i].id).setAttribute('readonly',true);
+				}
+				else{
+					this.replaceSelectXReadOnlyText(campos[i]);
+				}
+			}
+			else{
+				if (campos[i].checked == true){
+					this.replaceEnumCheckedXReadOnlyText(campos[i]);
+					
+				}
+				else{
+					this.deleteEnumItem(campos[i]);
+				}
+			}
+		}
+	}
+```
+
+Para dejar solo los checkbox y radio que estan elegidos se crea el método dejarsoloenumchecked() al cual se pasa la lista de objetos checkbox en o bien la lista de objetos radio del formulario. Este método recorre todos los elementos y borra el elemento y su input si no estan seleccionados.
+
+```js
+/**
+	 * recibe un array de elemento checkbox o radio.
+	 * Si el elemento no esta seleccionado borrar su label y despues a si mismo.
+	 * 
+	 * @param {Array} listachecks array de elementos checkbox o radio del formulario 
+	 */
+	dejarsoloenumchecked(listachecks){
+		listachecks.forEach(element => {
+			var itemsnamecheck = document.getElementsByName(element);
+			var longitud = itemsnamecheck.length;
+			for (var i=longitud-1; i>=0; i--){
+				if (itemsnamecheck[i].checked !== true){	
+					document.getElementById('label_'+itemsnamecheck[i].value).remove();
+					itemsnamecheck[i].remove();
+				}
+			}
+
+		}); 
+	}
+```
+
+Una vez que solo existen en el formulario checkbox y radio seleccionados, se sustituyen por un elemento input text readonly con el mismo name y con su valor. No se incluye un label nuevo porque ya tiene el del atributo. Recordemos que cada checkbox o radio tienen un label de su valor.
+
+```js
+    /**
+	 * Se recibe un elemento del formulario y se sustituye con un replaceWith por un input text readonly
+	 * con el valor del elemento recibido para que ocupe el mismo sitio en el formulario 
+     * se elimina tambien su label de valor del formulario
+	 * 
+	 * @param {Objet} itemenumerado el elemento checkbox o radio a colocar como un input text readonly
+	 */
+	replaceEnumCheckedXReadOnlyText(itemenumerado){
+		var nuevoinput = document.createElement('input');
+		nuevoinput.name = itemenumerado.name;
+		nuevoinput.value = itemenumerado.value;
+		nuevoinput.readOnly = true; 
+		document.getElementById('label_'+itemenumerado.value).remove();
+		itemenumerado.replaceWith(nuevoinput);
+	}
+```
+
+Tambien se hacel lo mismo con el Select
+
+```js
+/**
+	 * Se recibe un elemento select del formulario y se sustituye con un replaceWith por un input text readonly
+	 * con el valor elegido del select recibido para que ocupe el mismo sitio en el formulario
+	 * 
+	 * @param {Objet} opcionseleccionada el elemento select como un input text readonly
+	 */
+	replaceSelectXReadOnlyText(opcionseleccionada){
+
+		// crear el input
+		// crear input, colocar id y name
+		var nuevoinput = document.createElement('input');
+		nuevoinput.name = opcionseleccionada.name;
+		nuevoinput.id = opcionseleccionada.id;
+		nuevoinput.value = opcionseleccionada.value;
+		nuevoinput.readOnly = true;
+
+		// reemplazar el select por el input
+		document.getElementById(opcionseleccionada.id).replaceWith(nuevoinput);
+	}
+```
+
+Se ha modificado rellenarvaloresform() para permitir rellenar dinamicamente select, checkbox y radio.
+Se han creado métodos para cada uno de ellos.
+
+```js
+/**
+	 * rellena cada elemento del formulario con el valor que viene en la fila
+	 * 
+	 * @param {Object} parametros el objeto con la información de la fila
+	 * trae por cada atributo su id y su valor
+	 */
+	rellenarvaloresform(parametros){
+		
+		//obtener campos del formulario
+        	let campos = document.forms['form_iu'].elements;
+        	//recorrer todos los campos
+        	for (let i=0;i<campos.length;i++) {
+				switch (campos[i].tagName){
+					case 'INPUT':
+							switch (campos[i].type){
+								case 'text':
+									document.getElementById(campos[i].id).value = parametros[campos[i].id];
+									break;
+								case 'file':
+									break;
+								case 'submit':
+									break;
+								case 'checkbox':
+									this.rellenarvalorcheckbox(campos[i].name, parametros[campos[i].name]);
+									break;
+								case 'radio':
+									this.rellenarvalorradio(campos[i].name, parametros[campos[i].name]);
+									break;
+								default:
+									break;
+							}
+						
+						break;
+					case 'TEXTAREA':
+						document.getElementById(campos[i].id).innerHTML = parametros[campos[i].id];
+						break;
+					case 'SELECT':
+						this.rellenarvalorselect(campos[i].id, parametros[campos[i].id]);
+						break;
+					default:
+						break;
+				}
+        	}
+	}
+```
+Para rellenar valores select se utiliza el mismo que para el test (no es valido para selects multiples).
+
+Se han creado métodos especificos para rellenar los valores de checkbox y radio.
+
+```js
+/**
+	 * le llega un nombre de variable checkbox y asigna checked a true al elemento que tenga el valor del segundo parametro
+	 * @param {String} name valor de la propiedad name del elemento checkbox
+	 * @param {String} valor valor con el que asignar el checked true al elemento que lo contenga
+	 */
+	rellenarvalorcheckbox(name,valor){
+		var elementoscheckbox = document.getElementsByName(name);
+		for (var i=0;i<elementoscheckbox.length;i++){
+			if (elementoscheckbox[i].value == valor){
+				elementoscheckbox[i].checked = true;
+			}
+			else{
+				elementoscheckbox[i].checked = false;
+			}
+		}
+	}
+```
+
+```js
+/**
+	 * le llega un nombre de variable radio y asigna checked a true al elemento que tenga el valor del segundo parametro
+	 * @param {String} name valor de la propiedad name del elemento radio
+	 * @param {String} valor valor con el que asignar el checked true al elemento que lo contenga
+	 */
+	rellenarvalorradio(name,valor){
+		var elementosradio = document.getElementsByName(name);
+		for (var i=0;i<elementosradio.length;i++){
+			if (elementosradio[i].value == valor){
+				elementosradio[i].checked = true;
+			}
+		}
+	}
+```
+
+Para el manejo de los select, checkbox y radio en el SEARCH se han creado dos métodos para sustituirlos. Estos deben ser invocados en el createForm del SEARCH.
+
+```js
+// reemplazar enumerados por texto
+		// titulacion_persona que es un select
+		this.dom.replaceSelectXEmptyInput('titulacion_persona');
+		// menu_persona que es un checkbox
+		this.dom.replaceEnumNameXEmptyInput('menu_persona');
+		// genero_persona que es un radio
+		this.dom.replaceEnumNameXEmptyInput('genero_persona');
+```
+
+Para el select se cambia el select por un input text vacio con el mismo nombre e id que el select.
+
+```js
+/**
+	 * recibe el nombre de un elemento select, crea un input text con el mismo nombre e id y reemplaza el elemento select con el input
+	 * text vacio
+	 * se usa en el SEARCH
+	 * @param {String} name Recibe el nombre (que coincide con el id) de un elemento select
+	 */
+	replaceSelectXEmptyInput(name){
+
+		// crear input, colocar id y name
+		var nuevoinput = document.createElement('input');
+		nuevoinput.name = name;
+		nuevoinput.id = name;
+
+		// reemplazar el select por el input
+		document.getElementById(name).replaceWith(nuevoinput);
+	}
+```
+
+Para los elementos checkbox y radio se recibe el nombre de los elementos, se eliminan todos menos uno y se sustituye ese por un input text vacio con el mismo nombre e id que tenian los checkbox y radio.
+
+```js
+/**
+	 * Recibe el nombre de un atributo, elimina todos sus valores excepto el primero y lo transforma en un input vacio 
+	 * Se usa para el SEARCH
+	 * @param {String} name del atributo enumerado que se quiere sustituir por un input text
+	 */
+	replaceEnumNameXEmptyInput(name){
+		// todos los items del multiple con un nombre
+		var itemsName = document.getElementsByName(name);
+
+		// recorrer y borrar todos los item enum y sus labels excepto el primero por si hubiera
+		for (var i=itemsName.length-1;i>0;i--){
+			document.getElementById("label_"+itemsName[i].value).remove();
+			itemsName[i].remove();
+		}
+		
+		// crear input, colocar id y name
+		var nuevoinput = document.createElement('input');
+		nuevoinput.name = name;
+		nuevoinput.id = name;
+
+		// quitar el label del valor del enum y sustituir item de enum por input
+		document.getElementById("label_"+itemsName[0].value).remove();
+		itemsName[0].replaceWith(nuevoinput);
+
+	}
+```
+
+## Resumen
+
+Se han incluido métodos en las clases accesorias para el manejo en formularios de elementos select, checkbox y radio.
+
+Se ha incluido una superclase para colocar todos los métodos comunes a las entidades a manejar.
+
+Se ha modificado la clase test data para soportar el nuevo formato de definiciones de test en los que se incluyen el tipo de elemento html para poder rellenar en la clase test data los elementos del formulario y poder invocar los test automaticos.
+
+Aunque en los formularios no tiene sentido hacer la validación por evento en cada uno de ellos si tiene que estar en el submit y si tiene que existir para ser invocada y que compruebe que los valores son correctos o existan si es el caso.
+
+
+
