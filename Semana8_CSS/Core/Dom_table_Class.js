@@ -31,13 +31,18 @@ class dom_table {
 	 * @param {object} marked [to implement] iterable object with information for changing the aspect of a column 
 	 */
 
-	showData(idcomponente, datatoshow, marked=null){
+	showData(idcomponente, datatoshow, marked=null, hideable=false){
 		
 		document.getElementById(idcomponente).innerHTML = '';
 		switch_display_mode(idcomponente,'block','on');
 		
 		var mitabla = document.createElement('table');
 		mitabla.id = 'tablaresultadostest';
+
+		if (hideable) {
+			const back_button = "<img src='./iconos/BACK.png' onclick=\"entidad.dom.hide_element('"+idcomponente+"');\" />"
+			document.getElementById(idcomponente).innerHTML += back_button;
+		}
 
 		document.getElementById(idcomponente).append(mitabla);
 		

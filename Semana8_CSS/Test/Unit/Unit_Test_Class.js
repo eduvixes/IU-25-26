@@ -16,7 +16,7 @@ class Unit_Test {
 					existe: {value:false, style:'background-color: red'}
         };
 
-        this.dom.showData('Div_IU_Test', test_result, marcados);
+        this.dom.showData('Div_IU_Test', test_result, marcados, true);
 
 
     }
