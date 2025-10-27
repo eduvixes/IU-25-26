@@ -168,8 +168,6 @@ class dom_table {
 					case 'SELECT':
 						this.rellenarvalorselect(campos[i].id, parametros[campos[i].id]);
 						break;
-					case 'RADIO':
-						break;
 					default:
 						break;
 				}
@@ -202,7 +200,7 @@ class dom_table {
 							evento = 'onblur';
 				}
 				else{
-					evento = 'onchange';
+					evento = 'onChange';
 				}
 				
 
@@ -218,14 +216,38 @@ class dom_table {
 
 	/**
 	 * recorre todos los elementos del formulario colocandolos a readonly
-	 * UPDATE: identificar el tipo de elemento porque no todos se desactivan con readonly y tenemos que usar un metodo que los mande al back
+	 * 
+	 * Si es un select se identifica el elemento option seleccionado y se borran todos los demas elementos option
 	 * @param {String} idform id del formulario
 	 */
 	colocartodosreadonly(idform){
+		
+		this.dejarsoloenumchecked(this.getNameCheck(idform,'checkbox'));
+		this.dejarsoloenumchecked(this.getNameCheck(idform,'radio'));
+
 		let campos = document.forms[idform].elements;
+
         //recorrer todos los campos
         for (let i=0;i<campos.length;i++) {
-			document.getElementById(campos[i].id).setAttribute('readonly',true);
+			
+			if (campos[i].id !== ''){
+
+				if (campos[i].tagName !== 'SELECT'){
+					document.getElementById(campos[i].id).setAttribute('readonly',true);
+				}
+				else{
+					this.replaceSelectXReadOnlyText(campos[i]);
+				}
+			}
+			else{
+				if (campos[i].checked == true){
+					this.replaceEnumCheckedXReadOnlyText(campos[i]);
+					
+				}
+				else{
+					this.deleteEnumItem(campos[i]);
+				}
+			}
 		}
 	}
 
@@ -290,9 +312,9 @@ class dom_table {
     }
 
 	/**
-	 * 
-	 * @param {String} name 
-	 * @param {String} valor 
+	 * le llega un nombre de variable checkbox y asigna checked a true al elemento que tenga el valor del segundo parametro
+	 * @param {String} name valor de la propiedad name del elemento checkbox
+	 * @param {String} valor valor con el que asignar el checked true al elemento que lo contenga
 	 */
 	rellenarvalorcheckbox(name,valor){
 		var elementoscheckbox = document.getElementsByName(name);
@@ -300,13 +322,16 @@ class dom_table {
 			if (elementoscheckbox[i].value == valor){
 				elementoscheckbox[i].checked = true;
 			}
+			else{
+				elementoscheckbox[i].checked = false;
+			}
 		}
 	}
 
 	/**
-	 * 
-	 * @param {String} name 
-	 * @param {String} valor 
+	 * le llega un nombre de variable radio y asigna checked a true al elemento que tenga el valor del segundo parametro
+	 * @param {String} name valor de la propiedad name del elemento radio
+	 * @param {String} valor valor con el que asignar el checked true al elemento que lo contenga
 	 */
 	rellenarvalorradio(name,valor){
 		var elementosradio = document.getElementsByName(name);
@@ -316,6 +341,129 @@ class dom_table {
 			}
 		}
 	}
+
+	getNameCheck(idform, type){
+		
+		var checks = document.querySelectorAll("input[type='"+type+"']");
+		var nombres = [];
+		for (var i=0;i<checks.length;i++){
+			if (nombres.includes(checks[i].name)){}
+			else{
+				nombres.push(checks[i].name);
+			}
+		}
+		return nombres;
+	}
+
+	/**
+	 * recibe un array de elemento checkbox o radio.
+	 * Si el elemento no esta seleccionado borrar su label y despues a si mismo.
+	 * 
+	 * @param {Array} listachecks array de elementos checkbox o radio del formulario 
+	 */
+	dejarsoloenumchecked(listachecks){
+		listachecks.forEach(element => {
+			var itemsnamecheck = document.getElementsByName(element);
+			var longitud = itemsnamecheck.length;
+			for (var i=longitud-1; i>=0; i--){
+				if (itemsnamecheck[i].checked !== true){	
+					document.getElementById('label_'+itemsnamecheck[i].value).remove();
+					itemsnamecheck[i].remove();
+				}
+			}
+
+		}); 
+	}
+
+	/**
+	 * Se recibe un elemento del formulario y se sustituye con un replaceWith por un input text readonly
+	 * con el valor del elemento recibido para que ocupe el mismo sitio en el formulario
+	 * se elimina tambien su label de valor del formulario
+	 * 
+	 * @param {Objet} itemenumerado el elemento checkbox o radio a colocar como un input text readonly
+	 */
+	replaceEnumCheckedXReadOnlyText(itemenumerado){
+		var nuevoinput = document.createElement('input');
+		nuevoinput.name = itemenumerado.name;
+		nuevoinput.value = itemenumerado.value;
+		nuevoinput.readOnly = true; 
+		document.getElementById('label_'+itemenumerado.value).remove();
+		itemenumerado.replaceWith(nuevoinput);
+	}
+
+	/**
+	 * recibe un objeto de tipo checkbox o radio y lo elimina del formulario junto con su label
+	 * @param {Object} itemenumerado elemento formulario de tipo checkbox o radio
+	 */
+	deleteEnumItem(itemenumerado){
+		document.getElementById('label_'+campos[i].value).remove();
+		campos[i].remove();
+	}
+
+	/**
+	 * Recibe el nombre de un atributo, elimina todos sus valores excepto el primero y lo transforma en un input vacio 
+	 * Se usa para el SEARCH
+	 * @param {String} name del atributo enumerado que se quiere sustituir por un input text
+	 */
+	replaceEnumNameXEmptyInput(name){
+		// todos los items del multiple con un nombre
+		var itemsName = document.getElementsByName(name);
+
+		// recorrer y borrar todos los item enum y sus labels excepto el primero por si hubiera
+		for (var i=itemsName.length-1;i>0;i--){
+			document.getElementById("label_"+itemsName[i].value).remove();
+			itemsName[i].remove();
+		}
+		
+		// crear input, colocar id y name
+		var nuevoinput = document.createElement('input');
+		nuevoinput.name = name;
+		nuevoinput.id = name;
+
+		// quitar el label del valor del enum y sustituir item de enum por input
+		document.getElementById("label_"+itemsName[0].value).remove();
+		itemsName[0].replaceWith(nuevoinput);
+
+	}
+
+	/**
+	 * recibe el nombre de un elemento select, crea un input text con el mismo nombre e id y reemplaza el elemento select con el input
+	 * text vacio
+	 * se usa en el SEARCH
+	 * @param {String} name Recibe el nombre (que coincide con el id) de un elemento select
+	 */
+	replaceSelectXEmptyInput(name){
+
+		// crear input, colocar id y name
+		var nuevoinput = document.createElement('input');
+		nuevoinput.name = name;
+		nuevoinput.id = name;
+
+		// reemplazar el select por el input
+		document.getElementById(name).replaceWith(nuevoinput);
+	}
+
+	/**
+	 * Se recibe un elemento select del formulario y se sustituye con un replaceWith por un input text readonly
+	 * con el valor elegido del select recibido para que ocupe el mismo sitio en el formulario
+	 * 
+	 * @param {Objet} opcionseleccionada el elemento select como un input text readonly
+	 */
+	replaceSelectXReadOnlyText(opcionseleccionada){
+
+		// crear el input
+		// crear input, colocar id y name
+		var nuevoinput = document.createElement('input');
+		nuevoinput.name = opcionseleccionada.name;
+		nuevoinput.id = opcionseleccionada.id;
+		nuevoinput.value = opcionseleccionada.value;
+		nuevoinput.readOnly = true;
+
+		// reemplazar el select por el input
+		document.getElementById(opcionseleccionada.id).replaceWith(nuevoinput);
+	}
+
+	
 
 }
 

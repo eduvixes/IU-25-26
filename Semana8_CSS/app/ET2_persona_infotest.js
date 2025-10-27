@@ -12,7 +12,7 @@ let persona_def_tests = Array(
     ['persona','titulacion_persona','select',26,'es correcto','ADD',true,'Titulación persona correcto'],
     ['persona','menu_persona','checkbox',27,'no es correcto','ADD','menu_persona_valor_KO','menu persona incorrecto'],
     ['persona','menu_persona','checkbox',28,'es correcto','ADD',true,'menu persona correcto'],
-    ['persona','genero_persona','radio',29,'no es correcto','ADD','genero_persona_valor_KO','genero persona no correcto'],
+    ['persona','genero_persona','radio',29,'no es correcto','ADD','genero_persona_valor_KO','genero persona no correcto, debe ser Masculino, Femenino u Otro'],
     ['persona','genero_persona','radio',30,'es correcto','ADD',true,'genero persona correcto'],
     // ficheros
     Array('persona','nuevo_foto_persona','inputfile',11,'existe fichero','ADD','nuevo_foto_persona_not_exist_file_KO','El fichero no existe. Debe subir una foto'),
@@ -49,6 +49,7 @@ let persona_tests_fields = Array(
     ['persona','menu_persona',27,12,'ADD',[{menu_persona:'cuarto'}],'menu_persona_valor_KO'],
     ['persona','genero_persona',30,13,'ADD',[{genero_persona:'Masculino'}],true],
     ['persona','genero_persona',29,14,'ADD',[{genero_persona:'Angelical'}],'genero_persona_valor_KO'],
+    ['persona','genero_persona',29,14,'ADD',[{genero_persona:''}],'genero_persona_valor_KO'],
 
 );
 /*

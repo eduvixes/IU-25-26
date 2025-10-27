@@ -9,7 +9,10 @@ class ExternalAccess{
 
         var datos;
         
-        if (formulario === ''){
+        // caso de primera carga de SEARCH no depender del formulario manual
+        // se hace sin ningun filtro
+
+        if ((formulario === '') || (document.getElementById(formulario) == null)){
             datos = new FormData();
         }
         else{

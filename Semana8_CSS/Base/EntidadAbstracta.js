@@ -1,7 +1,29 @@
 class EntidadAbstracta{
 
-	constructor(){
+	constructor(esTest){
 		
+		this.dom = new dom();
+		this.validations = new Validations();
+		this.access_functions = new ExternalAccess();
+		this.nombreentidad = this.constructor.name;
+
+		// si se instancia para test no se muestra el componente de gestion de entidad ni se inicializa el formulario
+		// 
+		if (esTest == 'test'){}
+		else{
+			//visualizar seccion tabla y botones
+			//document.getElementById('IU_manage_entity').style.display = 'block';
+			document.getElementById('text_title_page').classList.add('text_titulo_page_'+this.nombreentidad);
+			document.getElementById('text_title_page').setAttribute('onclick','entidad = new persona();');
+
+			this.dom.show_element('IU_manage_entity', 'block');
+			
+			//crear el formulario vacio
+			//document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
+
+			//invocar busqueda en back con el formulario vacio
+			this.SEARCH();
+		}
 	}
 
 	
@@ -78,7 +100,7 @@ class EntidadAbstracta{
             if (respuesta['ok']){
             
 				//limpiar el formulario
-				document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
+				document.getElementById('contenedor_IU_form').innerHTML = '';
 
 	            //poner el div del formulario no visible
 				//limpiar titulo formulario
@@ -117,7 +139,7 @@ class EntidadAbstracta{
             if (respuesta['ok']){
             
 				//limpiar el formulario
-				document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
+				document.getElementById('contenedor_IU_form').innerHTML = '';
 
 	            //poner el div del formulario no visible
 				//limpiar titulo formulario
@@ -157,7 +179,7 @@ class EntidadAbstracta{
             if (respuesta['ok']){
             
 				//limpiar el formulario
-				document.getElementById('contenedor_IU_form').innerHTML = this.manual_form_creation();
+				document.getElementById('contenedor_IU_form').innerHTML = '';
 
 	            //poner el div del formulario no visible
 				//limpiar titulo formulario
@@ -275,7 +297,6 @@ class EntidadAbstracta{
 		
 		this.mostrarocultarcolumnas();
 		this.dom.crearSeleccionablecolumnas(this.columnasamostrar, this.atributos);
-		setLang();
 
 	}
     

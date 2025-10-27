@@ -398,9 +398,13 @@ Estructura de selectores CSS y estilos:
         }
 
         /* Estilos para los span dentro del grupo de checkboxes */
-        & span {
+        & label {
             margin-left: 10pt; /* Margen izquierdo */
             user-select: none; /* Evita selección de texto */
+        
+            &::after {
+                content: "";
+            }
         }
     }
 
