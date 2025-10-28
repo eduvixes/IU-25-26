@@ -73,6 +73,14 @@ var textos_ES = {
 	'email_persona_max_size_KO':'',
 	'email_persona_format_KO':'',
 
+	// titulacion persona
+
+	'titulacion_persona_format_KO' : 'Valor no permitido de titulacion. Debe ser uno de : (GREI, GRIA, MEI, MIA, PCEO)',
+
+	// menu_persona
+	'menu_persona_empty_KO': 'No  puede estar vacio. Selecciona una de las opciones',
+	'menu_persona_max_size_KO': 'No se puede seleccionar mas de una opcion',
+
 	// nuevo foto persona	
 	'nuevo_foto_persona_not_exist_file_KO':'El fichero no existe. Debe subir una foto',
 	'nuevo_foto_persona_max_size_file_KO':'',

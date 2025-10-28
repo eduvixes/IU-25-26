@@ -35,17 +35,31 @@ class dom extends dom_table {
 	}
 
 	mostrar_error_campo(id, codigoerror){
+
 		document.getElementById('span_error_'+id).style.display = 'inline';
 		document.getElementById('error_'+id).className = codigoerror;
-		document.getElementById(id).style.borderBlockColor = 'red';
+		if (document.getElementById(id) == null){
+			document.getElementById('label_'+id).style.border = 'solid red 2px';
+		}
+		else{
+			document.getElementById(id).style.border = 'solid red 2px';
+		}
 		document.getElementById('submit_button').focus();
 		setLang();
 	}
 
+	
+
 	mostrar_exito_campo(id){
 		document.getElementById('span_error_'+id).style.display = 'none';
 		document.getElementById('error_'+id).className = '';
-		document.getElementById(id).style.borderBlockColor = 'green';
+		if (document.getElementById(id) == null){
+			document.getElementById('label_'+id).style.border = 'solid green 2px';
+		}
+		else{
+			document.getElementById(id).style.border = 'solid green 2px';
+
+		}
 		setLang();
 	}
 

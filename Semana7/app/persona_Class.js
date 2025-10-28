@@ -177,6 +177,67 @@ class persona extends EntidadAbstracta{
 		return true;
 	}
 
+	ADD_titulacion_persona_validation(){
+
+		var titulaciones_permitidas = ['GREI','GRIA','MEI','MIA','PCEO'];
+		if (titulaciones_permitidas.includes(document.getElementById('titulacion_persona').value)){
+			this.dom.mostrar_exito_campo('titulacion_persona');
+			return true;
+		}
+		else{
+			this.dom.mostrar_error_campo('titulacion_persona','titulacion_persona_format_KO');
+			return 'titulacion_persona_valor_KO';
+		}
+	}
+
+	ADD_menu_persona_validation(){
+		var menu = document.getElementsByName('menu_persona');
+		var contador = 0;
+		var valores = ['Vegano','Celiaco', 'AlergiaMarisco'];
+		for (var i=0;i<menu.length;i++){
+			if (menu[i].checked){
+				if (valores.includes(menu[i].value))
+				{
+					contador++;
+				}
+			}
+		}
+		
+		var codeerror = '';
+
+		switch (contador){
+			case 0:
+				codeerror = 'menu_persona_empty_KO';
+				break;
+			case 1:
+				this.dom.mostrar_exito_campo('menu_persona');
+				console.log('exito');
+				return true;
+			default:
+				codeerror = 'menu_persona_max_size_KO';
+				break;
+		}
+		console.log('fallo')
+		this.dom.mostrar_error_campo('menu_persona',codeerror);
+		return codeerror;
+		
+	}
+
+	ADD_genero_persona_validation(){
+		var menu = document.getElementsByName('genero_persona');
+		var valores = ['Masculino', 'Femenino', 'Otro'];
+		for (var i=0;i<menu.length;i++){
+			if (menu[i].checked){
+				if (valores.includes(menu[i].value))
+				{
+					return true;
+				}
+			}
+		}
+		return 'genero_persona_valor_KO';
+		
+	}
+
 	ADD_nuevo_foto_persona_validation(){
 
 		if (!(this.validations.not_exist_file('nuevo_foto_persona'))){
@@ -214,10 +275,12 @@ class persona extends EntidadAbstracta{
 					(this.ADD_dni_validation()) &
 					(this.ADD_nombre_persona_validation()) &
 					(this.ADD_nuevo_foto_persona_validation()) &
-					(this.ADD_titulacion_persona_validation())
+					(this.ADD_titulacion_persona_validation()) &
+					(this.ADD_menu_persona_validation())
 					)
 		
 		result = Boolean(result);
+
 		
 		return result;	
 
@@ -284,15 +347,15 @@ class persona extends EntidadAbstracta{
 
 	personalize_dni_nie(){
 		
-		dni = document.getElementById('dni').value;
+		var midni = document.getElementById('dni').value;
 		if (this.personalize_dni_format() == true){
-			if (!(this.personalize_validate_dni(dni))){
+			if (!(this.personalize_validate_dni(midni))){
 				return "dni_validate_KO";
 			}
 		}
 		else{
 			if (this.personalize_nie_format() === true){
-					if (!(this.personalize_validate_nie(dni))){
+					if (!(this.personalize_validate_nie(midni))){
 						return "nie_validate_KO";
 					}
 			}
@@ -578,42 +641,7 @@ class persona extends EntidadAbstracta{
 	//
 	//ADD_dni_validation(){return true;}
 	//ADD_nombre_persona_validation(){return true;}
-	ADD_titulacion_persona_validation(){
-		if (document.getElementById('titulacion_persona').value == 'PCEO'){
-			return true;
-		}
-		else{
-			return 'titulacion_persona_valor_KO';
-		}
-	}
-	ADD_menu_persona_validation(){
-		var menu = document.getElementsByName('menu_persona');
-		var valores = ['primero', 'segundo', 'postre'];
-		for (var i=0;i<menu.length;i++){
-			if (menu[i].checked){
-				if (valores.includes(menu[i].value))
-				{
-					return true;
-				}
-			}
-		}
-		return 'menu_persona_valor_KO';
-		
-	}
-	ADD_genero_persona_validation(){
-		var menu = document.getElementsByName('genero_persona');
-		var valores = ['Masculino', 'Femenino', 'Otro'];
-		for (var i=0;i<menu.length;i++){
-			if (menu[i].checked){
-				if (valores.includes(menu[i].value))
-				{
-					return true;
-				}
-			}
-		}
-		return 'genero_persona_valor_KO';
-		
-	}
+	
 	ADD_apellidos_persona_validation(){return true;}
 	ADD_fechaNacimiento_persona_validation(){return true;}
 	ADD_direccion_persona_validation(){return true;}
