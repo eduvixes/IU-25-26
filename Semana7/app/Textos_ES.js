@@ -45,7 +45,19 @@ var textos_ES = {
 	'label_telefono_persona': 'Teléfono',
 	'label_email_persona': 'Correo Electrónico',
 	'label_foto_persona': 'Foto',
+	'label_titulacion_persona' : 'Titulacion',
+	'label_menu_persona' : 'Menu',
+	'label_genero_persona' : 'Género',
 	'label_nuevo_foto_persona': 'Nueva Foto',
+
+	// labels valores enum
+
+	'label_Vegano' : 'Vegano',
+	'label_Celiaco' : 'Celíaco',
+	'label_AlergiaMarisco' : 'AlergiaMarisco',
+	'label_Masculino' : 'Masculino',
+	'label_Femenino' : 'Femenino',
+	'label_Otro' : 'Otro',
 
 	// errores validaciones formulario
 	// ADD/EDIT
@@ -78,8 +90,12 @@ var textos_ES = {
 	'titulacion_persona_format_KO' : 'Valor no permitido de titulacion. Debe ser uno de : (GREI, GRIA, MEI, MIA, PCEO)',
 
 	// menu_persona
-	'menu_persona_empty_KO': 'No  puede estar vacio. Selecciona una de las opciones',
-	'menu_persona_max_size_KO': 'No se puede seleccionar mas de una opcion',
+	'menu_persona_empty_KO': 'El menu no puede estar vacio. Selecciona una de las opciones',
+	'menu_persona_max_size_KO': 'No se puede seleccionar mas de una opcion de menu',
+
+	// genero_persona
+	'genero_persona_empty_KO': 'El genero  puede estar vacio. Selecciona una de las opciones',
+
 
 	// nuevo foto persona	
 	'nuevo_foto_persona_not_exist_file_KO':'El fichero no existe. Debe subir una foto',

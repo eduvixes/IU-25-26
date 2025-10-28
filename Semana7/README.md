@@ -403,10 +403,10 @@ En todos ellos, se comprueba si el valor para la prueba ya existe en los element
 # Modificaciones en dom para adecuar a la posibilidad de select, checkbox y radio
 
 Se ha tenido que modificar el método colocarvalidaciones para poder incluir en los formularios los elementos de form checkbox y radio, debido a que no utilizamos ids adhoc por cada elemento elegible en estos seleccionables. Asi pues su validación debe hacer mediante el name y no mediante id porque no tiene sentido colocarselo a menos que establezcamos algun estandar para nombres como colocar como id el nombreatributo_valor de elección.
-La modificación se basa en que aquellos elementos que no tienen id de los elementos del formulario no se les coloca la validación automáticamente y se debe colocar especificamente en el correspondiente createForm si asi se considera o en el submit.
+La modificación se basa en que aquellos elementos que no tienen id de los elementos del formulario se les coloca la validacion utilizando el nombre y un evento onchange para que se compruebe la validación ante cada cambio en los enumerados.
 
 ```js
-/**
+	/**
 	 * Coloca en el formulario para cada elemento de entrada (con id unico) un evento (dependiente
 	 * del tipo de elemento) al cual enlaza la validacion de ese campo para la accion
 	 * que se le indica
@@ -414,9 +414,10 @@ La modificación se basa en que aquellos elementos que no tienen id de los eleme
 	 * el id único no tiene significación en los elementos de formulario de tipo elección como checkbox y radio
 	 * Esto es debido a que 
 	 * 	en el caso de un radio es una elección excluyente (un único valor) de entre varios valores y todos tienen el mismo name
-	 * 	en el caso de un checkbox es una elección que puede ser multiple pero tambien tienen todos el mismo name (en cuyo caso se utiliza un tipo array para su envio pero no para su uso en el front para la validación)
-     * 
-     * No se coloca validacion directamente en los checkbox ni en los radio pq no tienen id. Deben colocarse validacion en el submit
+	 * 	en el caso de un checkbox es una elección que puede ser multiple pero tambien tienen todos el mismo name 
+	 * 
+	 * En el caso de elementos del form que no tiene id se asume que son checkbox o radio y se coloca la validación de los mismos en cada
+	 * uno de los elementos con un evento onchange.
 	 * 
 	 * @param {String} accion  accion a realizar en el formulario
 	 */
@@ -433,7 +434,7 @@ La modificación se basa en que aquellos elementos que no tienen id de los eleme
 							evento = 'onblur';
 				}
 				else{
-					evento = 'onchange';
+					evento = 'onChange';
 				}
 				
 
@@ -442,9 +443,14 @@ La modificación se basa en que aquellos elementos que no tienen id de los eleme
 					document.getElementById(campos[i].id).setAttribute (evento,'entidad.'+accion+'_'+campos[i].id+'_validation'+'();');
 				}
 			}
+			else{
+				evento = 'onChange';
+				campos[i].setAttribute(evento,'entidad.'+accion+'_'+campos[i].name+'_validation'+'();')
+			}
 					        
 		}
 	}
+
 
 ```
 
@@ -719,7 +725,7 @@ Se ha incluido una superclase para colocar todos los métodos comunes a las enti
 
 Se ha modificado la clase test data para soportar el nuevo formato de definiciones de test en los que se incluyen el tipo de elemento html para poder rellenar en la clase test data los elementos del formulario y poder invocar los test automaticos.
 
-Aunque en los formularios no tiene sentido hacer la validación por evento en cada uno de ellos si tiene que estar en el submit y si tiene que existir para ser invocada y que compruebe que los valores son correctos o existan si es el caso.
+En el submit tienen que estar las validaciones de todos los campos y tiene que existir para ser invocada y que compruebe que los valores son correctos o existan si es el caso.
 
 
 

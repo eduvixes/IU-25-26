@@ -182,8 +182,10 @@ class dom_table {
 	 * el id único no tiene significación en los elementos de formulario de tipo elección como checkbox y radio
 	 * Esto es debido a que 
 	 * 	en el caso de un radio es una elección excluyente (un único valor) de entre varios valores y todos tienen el mismo name
-	 * 	en el caso de un checkbox es una elección que puede ser multiple pero tambien tienen todos el mismo name (en cuyo caso se utiliza un tipo array 
-	 * para su envio pero no para su uso en el front para la validación)
+	 * 	en el caso de un checkbox es una elección que puede ser multiple pero tambien tienen todos el mismo name 
+	 * 
+	 * En el caso de elementos del form que no tiene id se asume que son checkbox o radio y se coloca la validación de los mismos en cada
+	 * uno de los elementos con un evento onchange.
 	 * 
 	 * @param {String} accion  accion a realizar en el formulario
 	 */
@@ -208,6 +210,10 @@ class dom_table {
 				else{
 					document.getElementById(campos[i].id).setAttribute (evento,'entidad.'+accion+'_'+campos[i].id+'_validation'+'();');
 				}
+			}
+			else{
+				evento = 'onChange';
+				campos[i].setAttribute(evento,'entidad.'+accion+'_'+campos[i].name+'_validation'+'();')
 			}
 					        
 		}
@@ -275,7 +281,7 @@ class dom_table {
 			}
 			document.getElementById("seleccioncolumnas").append(optionselect);
 		}
-		//setLang();
+		setLang();
 
 	}
 

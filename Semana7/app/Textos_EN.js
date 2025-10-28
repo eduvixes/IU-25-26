@@ -34,6 +34,9 @@ var textos_EN = {
     'direccion_persona': 'Address',
     'telefono_persona': 'Phone',
     'email_persona': 'Email',
+	'titulacion_persona' : 'Degree',
+	'menu_persona' : 'Menu',
+	'genero_persona' :'Gender',
     'foto_persona': 'Photo',
 
 	// labels
@@ -45,7 +48,19 @@ var textos_EN = {
 	'label_telefono_persona': 'Phone',
 	'label_email_persona': 'Email',
 	'label_foto_persona': 'Photo',
+	'label_titulacion_persona' : 'Degree',
+	'label_menu_persona' : 'Menu',
+	'label_genero_persona' : 'Gender',
 	'label_nuevo_foto_persona': 'New Photo',
+
+	// labels valores enum
+
+	'label_Vegano' : 'Vegan',
+	'label_Celiaco' : 'Coeliac',
+	'label_AlergiaMarisco' : 'shellfishAllergic',
+	'label_Masculino' : 'Masculine',
+	'label_Femenino' : 'Feminine',
+	'label_Otro' : 'Other',
 
 	// errores validaciones formulario
 	// ADD/EDIT
@@ -73,6 +88,17 @@ var textos_EN = {
 	'email_persona_min_size_KO': '',
 	'email_persona_max_size_KO':'',
 	'email_persona_format_KO':'',
+
+	// titulacion persona
+
+	'titulacion_persona_format_KO' : 'Value not allowed. Must be one of  : (GREI, GRIA, MEI, MIA, PCEO)',
+
+	// menu_persona
+	'menu_persona_empty_KO': 'Menu can not be empty. Select one of the menu options',
+	'menu_persona_max_size_KO': 'Can not be selected more than one menu option',
+
+	// genero_persona
+	'genero_persona_empty_KO': 'Gender can not be empty. Select one of the gender options',
 
 	// nuevo foto persona	
 	'nuevo_foto_persona_not_exist_file_KO':'The file does not exist. A photo in jpg format must be uploaded.',

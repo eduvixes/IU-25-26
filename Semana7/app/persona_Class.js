@@ -211,13 +211,12 @@ class persona extends EntidadAbstracta{
 				break;
 			case 1:
 				this.dom.mostrar_exito_campo('menu_persona');
-				console.log('exito');
 				return true;
 			default:
 				codeerror = 'menu_persona_max_size_KO';
 				break;
 		}
-		console.log('fallo')
+
 		this.dom.mostrar_error_campo('menu_persona',codeerror);
 		return codeerror;
 		
@@ -225,16 +224,31 @@ class persona extends EntidadAbstracta{
 
 	ADD_genero_persona_validation(){
 		var menu = document.getElementsByName('genero_persona');
+		var contador = 0;
 		var valores = ['Masculino', 'Femenino', 'Otro'];
 		for (var i=0;i<menu.length;i++){
 			if (menu[i].checked){
 				if (valores.includes(menu[i].value))
 				{
-					return true;
+					contador++;
 				}
 			}
 		}
-		return 'genero_persona_valor_KO';
+
+		var codeerror = '';
+
+		switch (contador){
+			case 1:
+				this.dom.mostrar_exito_campo('genero_persona');
+				return true;
+			default:
+				codeerror = 'genero_persona_empty_KO';
+				break;
+		}
+
+		this.dom.mostrar_error_campo('genero_persona',codeerror);
+		return codeerror;
+
 		
 	}
 
@@ -276,7 +290,8 @@ class persona extends EntidadAbstracta{
 					(this.ADD_nombre_persona_validation()) &
 					(this.ADD_nuevo_foto_persona_validation()) &
 					(this.ADD_titulacion_persona_validation()) &
-					(this.ADD_menu_persona_validation())
+					(this.ADD_menu_persona_validation()) &
+					(this.ADD_genero_persona_validation())
 					)
 		
 		result = Boolean(result);
@@ -660,9 +675,9 @@ class persona extends EntidadAbstracta{
 	EDIT_direccion_persona_validation(){return true;}
 	EDIT_telefono_persona_validation(){return true;}
 	EDIT_email_persona_validation(){return true;}
-	EDIT_titulacion_persona_validation(){return true;}
-	EDIT_menu_persona_validation(){return true;}
-	EDIT_genero_persona_validation(){return true;}
+	EDIT_titulacion_persona_validation(){return this.ADD_titulacion_persona_validation();}
+	EDIT_menu_persona_validation(){return this.ADD_menu_persona_validation();}
+	EDIT_genero_persona_validation(){return this.ADD_genero_persona_validation();}
 	EDIT_foto_persona_validation(){return true;}
 	//EDIT_nuevo_foto_persona_validation(){return true;}
 
