@@ -45,7 +45,7 @@ let persona_tests_fields = Array(
     ['persona','nombre_persona',8,8,'EDIT',[{nombre_persona:'javi'}],true],
     ['persona','titulacion_persona',26,9,'ADD',[{titulacion_persona:'PCEO'}],true],
     ['persona','titulacion_persona',25,10,'ADD',[{titulacion_persona:'lolo'}],'titulacion_persona_valor_KO'],
-    ['persona','menu_persona',28,11,'ADD',[{menu_persona:'primero'}],true],
+    ['persona','menu_persona',28,11,'ADD',[{menu_persona:'Celiaco'}],true],
     ['persona','menu_persona',27,12,'ADD',[{menu_persona:'cuarto'}],'menu_persona_valor_KO'],
     ['persona','genero_persona',30,13,'ADD',[{genero_persona:'Masculino'}],true],
     ['persona','genero_persona',29,14,'ADD',[{genero_persona:'Angelical'}],'genero_persona_valor_KO'],

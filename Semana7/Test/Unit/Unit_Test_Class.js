@@ -16,7 +16,15 @@ class Unit_Test {
 					existe: {value:false, style:'background-color: red'}
         };
 
+        const newWindow = window.open("", "Nueva Ventana test Unit", "width=1100,height=800");
+        
         this.dom.showData('Div_IU_Test', test_result, marcados);
+
+        newWindow.document.body.innerHTML = document.getElementById('Div_IU_Test').innerHTML;
+        document.getElementById('Div_IU_Test').style.display = 'none';
+
+        newWindow.document.close();       
+
 
 
     }
@@ -176,7 +184,7 @@ class Unit_Test {
            
             
         //}
-console.log(output);
+
         return output;
     
     }

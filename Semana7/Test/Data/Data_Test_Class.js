@@ -291,12 +291,26 @@ class Data_Test {
 					pruebastatus: {value:'INCORRECTO', style:'background-color: red'}
         };
         
+        const newWindow = window.open("", "Nueva Ventana", "width=1100,height=800");
+        //newWindow.document.write(salidapruebasnofile);
+        
+        
         this.dom.showData('IU_Test_result_nofile', salidapruebasnofile, marcados);
-       
+
+        newWindow.document.body.innerHTML = document.getElementById('IU_Test_result_nofile').innerHTML;
+        document.getElementById('IU_Test_result_nofile').style.display = 'none';
+
+        
         var salidapruebasfile = this.data_test_data_file();
        
         // se invoca la muestra del resultado de las pruebas
+        
         this.dom.showData('IU_Test_result_file', salidapruebasfile, marcados);
+        
+        newWindow.document.body.innerHTML += document.getElementById('IU_Test_result_file').innerHTML;
+        document.getElementById('IU_Test_result_file').style.display = 'none';
+
+        newWindow.document.close();
 
         return true;
 

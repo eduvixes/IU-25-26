@@ -200,6 +200,10 @@ class persona extends EntidadAbstracta{
 				{
 					contador++;
 				}
+				else{
+					this.dom.mostrar_error_campo('menu_persona','menu_persona_valor_KO');
+					return 'menu_persona_valor_KO';
+				}
 			}
 		}
 		
@@ -207,7 +211,7 @@ class persona extends EntidadAbstracta{
 
 		switch (contador){
 			case 0:
-				codeerror = 'menu_persona_empty_KO';
+				codeerror = 'menu_persona_vacio_KO';
 				break;
 			case 1:
 				this.dom.mostrar_exito_campo('menu_persona');
@@ -232,6 +236,10 @@ class persona extends EntidadAbstracta{
 				{
 					contador++;
 				}
+				else{
+					this.dom.mostrar_error_campo('genero_persona','genero_persona_valor_KO');
+					return 'genero_persona_valor_KO';
+				}
 			}
 		}
 
@@ -242,7 +250,7 @@ class persona extends EntidadAbstracta{
 				this.dom.mostrar_exito_campo('genero_persona');
 				return true;
 			default:
-				codeerror = 'genero_persona_empty_KO';
+				codeerror = 'genero_persona_vacio_KO';
 				break;
 		}
 
