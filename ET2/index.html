@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<!-- meta y configuracion global-->
+	<meta charset="UTF-8">
+	<!-- css -->
+	<link rel="stylesheet" type="text/css" href="./Base/css/IU.css" media="screen" />
+	<!-- clases generales -->
+	 <!-- idioma -->
+	<script type="text/javascript" src="./locale/idioma.js"></script> 
+	<script type="text/javascript" src="./app/Textos_ES.js"></script>
+	<script type="text/javascript" src="./app/Textos_EN.js"></script>
+	<script type="text/javascript" src="./Core/Validations_Class.js"></script>
+	<script type="text/javascript" src="./Core/ExternalAccess_class.js"></script>
+	<!-- clases dom -->
+	<script type="text/javascript" src="./Core/Dom_table_Class.js"></script>
+	<script type="text/javascript" src="./Core/Dom_Class.js"></script>
+	<script type="text/javascript" src="./Base/EntidadAbstracta.js"></script>
+	<!-- clases entidades -->
+	<script type="text/javascript" src="./app/alumnograduacion_Class.js"></script>
+	<script type="text/javascript" src="./app/articulo_Class.js"></script>
+	<script type="text/javascript" src="./app/ubicacion_Class.js"></script>
+	<!-- clases de test -->
+	<script type="text/javascript" src="./Test/Unit/Unit_Test_Class.js"></script>
+	<script type="text/javascript" src="./Test/Data/Data_Test_Class.js"></script>
+	<!-- ficheros de testing-->
+	
+	<script type="text/javascript" src="./app/ET2_infotest.js"></script>
+	<!-- este es el script que carga las librerias ajax que usamos para acceder al back -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+</head>
+
+<body>
+
+	<header id='header_page' class='bordeado'>
+		<span class='text_titulo_app'></span>
+		<img src="./iconos/Spain.png" onclick="setLang('ES');" />
+        <img src="./iconos/United-Kingdom.png" onclick="setLang('EN');" />
+	</header>
+	<nav class='bordeado'><span class = 'text_titulo_menu' onclick="menu_work();"></span>
+	</nav>
+	<aside id='div-menu'>
+		<ol>
+		    <li class="opcionmenu"><span class = 'text menu_alumnograduacion'onclick="entidad = new alumnograduacion();">ALUMNOGRADUACION</span></li>
+			<li class="opcionmenu"><span class = 'text menu_articulo'onclick="entidad = new articulo();">ARTICULO</span></li>
+			<li class="opcionmenu"><span class = 'text menu_ubicacion'onclick="entidad = new ubicacion();">UBICACION</span></li>
+	  	</ol>
+	</aside>
+	<section id="IU_manage_entity">
+		<section id="IU_manage_head">
+			<div id='title_page' class='bordeado'><span id = "text_title_page"></span>
+			</div>
+			<div id="add_search_columns">
+        		<img id="botonADD" src="./iconos/ADD.png" onclick="entidad.createForm_ADD();" />
+        		<img id="botonSEARCH" src="./iconos/SEARCH.png" onclick="entidad.createForm_SEARCH();"/>
+								
+				<label id="label_seleccioncolumnas" class ="label_seleccioncolumnas"></label>
+				<select id="seleccioncolumnas" multiple>
+				</select>
+				
+				<img id="botonTEST_UNIT" src="./iconos/TEST_UNIT.png" onclick="test = new Unit_Test(entidad.nombreentidad)"/>
+				<img id="botonTEST_DATA" src="./iconos/TEST.png" onclick="test = new Data_Test(eval(entidad.nombreentidad))"/>
+
+        	</div>
+		</section>
+
+		<section id="IU_manage_table">
+
+		</section>
+
+	</section>
+	<section id="Div_IU_form" class='div_IU_form bordeado'>
+		<div class = "contenidoForm" id="contenidoForm">
+			<div class = "class_titulo_form">
+				<span id="class_contenido_titulo_form"></span>
+			</div>
+		<div id="contenedor_IU_form">
+			
+		</div>
+			<br>
+			<img src="./iconos/BACK.png" onclick="entidad.dom.hide_element('Div_IU_form');" />
+		</div>
+	</section>
+
+	<section id="Div_IU_Test" class='div_IU_form bordeado'>
+		<div class = "contenidoForm" id="contenidoForm">
+			
+			<div id="contenedor_IU_Test">
+				
+			</div>
+			<br>
+			<img src="./iconos/BACK.png" onclick="entidad.dom.hide_element('Div_IU_Test');" />
+		</div>
+	</section>
+
+	<section id="IU_Test_result" >
+	
+		<section id="IU_Test_result_nofile" >
+
+		</section>
+		<section id="IU_Test_result_file" >
+			
+		</section>
+	</section>
+
+	<article class='bordeado'>Sección article</article>
+
+	<footer class='bordeado'>Pie de página</footer>
+
+	<!-- Overlay para acompañar el modal -->
+	<div id="modal_action_overlay"></div>
+
+	<!-- Modal para mostrar los errores de accion -->
+	<div id="error_action_modal">
+		<span id="error_action_msg"></span>
+		<!--<img src="./iconos/BACK.png" onclick="cerrarModalError();" />-->
+		<button onclick="entidad.dom.cerrarModalError()">X</button>
+	</div>
+	
+	<script type="text/javascript">
+		document.getElementById('div-menu').style.display = 'none';
+		
+		document.getElementById('Div_IU_form').style.display = 'none';
+		document.getElementById('IU_Test_result_nofile').style.display = 'none';
+		document.getElementById('IU_Test_result_file').style.display = 'none';
+		
+		document.getElementById('Div_IU_Test').style.display = 'none';
+		document.getElementById('IU_manage_entity').style.display = 'none';
+		
+		/*	hide the text error box if is necessary	
+		document.getElementById('span_error_name').style.display = 'none';
+		*/
+		function menu_work(){
+			if (document.getElementById('div-menu').style.display == 'none'){
+				document.getElementById('div-menu').style.display = 'block';
+			}
+			else{
+				document.getElementById('div-menu').style.display = 'none';
+			}
+		}
+
+		setLang();
+	</script>
+
+</body>
+
+
+</html>
