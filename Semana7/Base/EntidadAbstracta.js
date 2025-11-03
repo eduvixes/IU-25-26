@@ -13,7 +13,7 @@ class EntidadAbstracta{
 		else{
 			//visualizar seccion tabla y botones
 			//document.getElementById('IU_manage_entity').style.display = 'block';
-			document.getElementById('text_title_page').classList.add('text_titulo_page_'+this.nombreentidad);
+			document.getElementById('text_title_page').className = 'text_titulo_page_'+this.nombreentidad;
 			document.getElementById('text_title_page').setAttribute('onclick','entidad = new persona();');
 
 			this.dom.show_element('IU_manage_entity', 'block');

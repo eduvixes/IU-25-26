@@ -144,9 +144,6 @@ class dom_table {
 				switch (campos[i].tagName){
 					case 'INPUT':
 							switch (campos[i].type){
-								case 'text':
-									document.getElementById(campos[i].id).value = parametros[campos[i].id];
-									break;
 								case 'file':
 									break;
 								case 'submit':
@@ -158,6 +155,7 @@ class dom_table {
 									this.rellenarvalorradio(campos[i].name, parametros[campos[i].name]);
 									break;
 								default:
+									document.getElementById(campos[i].id).value = parametros[campos[i].id];
 									break;
 							}
 						
