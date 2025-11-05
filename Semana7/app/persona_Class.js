@@ -185,8 +185,14 @@ class persona extends EntidadAbstracta{
 			return true;
 		}
 		else{
-			this.dom.mostrar_error_campo('titulacion_persona','titulacion_persona_format_KO');
-			return 'titulacion_persona_valor_KO';
+			if (document.getElementById('titulacion_persona').value == ''){
+				this.dom.mostrar_error_campo('titulacion_persona','titulacion_persona_vacio_KO');
+				return 'titulacion_persona_vacio_KO';
+			}
+			else{
+				this.dom.mostrar_error_campo('titulacion_persona','titulacion_persona_valor_KO');
+				return 'titulacion_persona_valor_KO';
+			}
 		}
 	}
 
@@ -230,6 +236,8 @@ class persona extends EntidadAbstracta{
 		var menu = document.getElementsByName('genero_persona');
 		var contador = 0;
 		var valores = ['Masculino', 'Femenino', 'Otro'];
+		
+		
 		for (var i=0;i<menu.length;i++){
 			if (menu[i].checked){
 				if (valores.includes(menu[i].value))
@@ -237,8 +245,11 @@ class persona extends EntidadAbstracta{
 					contador++;
 				}
 				else{
-					this.dom.mostrar_error_campo('genero_persona','genero_persona_valor_KO');
-					return 'genero_persona_valor_KO';
+					if (menu[i].value == ''){}
+					else{
+						this.dom.mostrar_error_campo('genero_persona','genero_persona_valor_KO');
+						return 'genero_persona_valor_KO';
+					}
 				}
 			}
 		}

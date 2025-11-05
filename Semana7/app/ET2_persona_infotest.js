@@ -8,12 +8,14 @@ let persona_def_tests = Array(
     ['persona','nombre_persona','input',6,'cumple tamaño maximo','EDIT','nombre_persona_max_size_KO','Tamaño muy grande. Debe estar entre 4 y 20 caracteres'],
     ['persona','nombre_persona','input',7,'cumple formato','EDIT','nombre_persona_format_KO','Formato inválido. Debe estar entre 4 y 20 caracteres alfabéticos'],
     ['persona','nombre_persona','input',8,'es correcto','EDIT',true,'Nombre persona correcto'],
+    ['persona','titulacion_persona','select',24,'es vacio','ADD','titulacion_persona_vacio_KO','Titulación persona vacio'],
     ['persona','titulacion_persona','select',25,'no es correcto','ADD','titulacion_persona_valor_KO','Titulación persona incorrecto'],
     ['persona','titulacion_persona','select',26,'es correcto','ADD',true,'Titulación persona correcto'],
     ['persona','menu_persona','checkbox',27,'no es correcto','ADD','menu_persona_valor_KO','menu persona incorrecto'],
     ['persona','menu_persona','checkbox',28,'es correcto','ADD',true,'menu persona correcto'],
     ['persona','genero_persona','radio',29,'no es correcto','ADD','genero_persona_valor_KO','genero persona no correcto, debe ser Masculino, Femenino u Otro'],
-    ['persona','genero_persona','radio',30,'es correcto','ADD',true,'genero persona correcto'],
+    ['persona','genero_persona','radio',30,'es vacio','ADD','genero_persona_vacio_KO','genero persona vacio, debe ser Masculino, Femenino u Otro'],
+    ['persona','genero_persona','radio',31,'es correcto','ADD',true,'genero persona correcto'],
     // ficheros
     Array('persona','nuevo_foto_persona','inputfile',11,'existe fichero','ADD','nuevo_foto_persona_not_exist_file_KO','El fichero no existe. Debe subir una foto'),
     Array('persona','nuevo_foto_persona','inputfile',12,'cumple nombre fichero','ADD','nuevo_foto_persona_format_name_file_KO','el nombre de fichero no cumple formato.'),
@@ -43,13 +45,15 @@ let persona_tests_fields = Array(
     ['persona','nombre_persona',6,6,'EDIT',[{nombre_persona:'aaaaaaaaaaaaaaaaaaaaa'}],'nombre_persona_max_size_KO'],
     ['persona','nombre_persona',7,7,'EDIT',[{nombre_persona:'aaaaaa1'}],'nombre_persona_format_KO'],
     ['persona','nombre_persona',8,8,'EDIT',[{nombre_persona:'javi'}],true],
+    ['persona','titulacion_persona',25,10,'ADD',[{titulacion_persona:'GREIs'}],'titulacion_persona_valor_KO'],
+    ['persona','titulacion_persona',24,9,'ADD',[{titulacion_persona:''}],'titulacion_persona_vacio_KO'],
     ['persona','titulacion_persona',26,9,'ADD',[{titulacion_persona:'PCEO'}],true],
-    ['persona','titulacion_persona',25,10,'ADD',[{titulacion_persona:'lolo'}],'titulacion_persona_valor_KO'],
+    
     ['persona','menu_persona',28,11,'ADD',[{menu_persona:'Celiaco'}],true],
     ['persona','menu_persona',27,12,'ADD',[{menu_persona:'cuarto'}],'menu_persona_valor_KO'],
-    ['persona','genero_persona',30,13,'ADD',[{genero_persona:'Masculino'}],true],
+    ['persona','genero_persona',31,13,'ADD',[{genero_persona:'Masculino'}],true],
     ['persona','genero_persona',29,14,'ADD',[{genero_persona:'Angelical'}],'genero_persona_valor_KO'],
-    ['persona','genero_persona',29,14,'ADD',[{genero_persona:''}],'genero_persona_valor_KO'],
+    ['persona','genero_persona',30,14,'ADD',[{genero_persona:''}],'genero_persona_vacio_KO'],
 
 );
 /*
