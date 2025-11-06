@@ -207,8 +207,14 @@ class persona extends EntidadAbstracta{
 					contador++;
 				}
 				else{
-					this.dom.mostrar_error_campo('menu_persona','menu_persona_valor_KO');
-					return 'menu_persona_valor_KO';
+					if (menu[i].value == ''){
+						this.dom.mostrar_error_campo('menu_persona','menu_persona_vacio_KO');
+						return 'menu_persona_vacio_KO';
+					}
+					else{
+						this.dom.mostrar_error_campo('menu_persona','menu_persona_valor_KO');
+						return 'menu_persona_valor_KO';
+					}
 				}
 			}
 		}

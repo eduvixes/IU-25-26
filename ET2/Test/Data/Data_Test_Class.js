@@ -59,6 +59,10 @@ class Data_Test {
         
         for (let i=0;i<pruebas.length;i++){
 
+            // se crea el formulario oculto
+        document.getElementById('contenedor_IU_form').innerHTML = this.entidad.manual_form_creation();
+        this.dom.createElement('form_iu','submit_button','input','submit');
+
             resultadopruebas.entidad = pruebas[i][0];
             resultadopruebas.campo = pruebas[i][1];
             resultadopruebas.NumDef = pruebas[i][2];
@@ -352,7 +356,7 @@ class Data_Test {
             var mioption = document.createElement('option');
             mioption.value = valor;
             opciones[opciones.length] = mioption;
-            opciones.selectedIndex = opciones.length;
+            opciones.selectedIndex = opciones.length-1;
         }
 
     }

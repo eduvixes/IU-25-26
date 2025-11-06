@@ -48,12 +48,12 @@ let persona_tests_fields = Array(
     ['persona','titulacion_persona',25,10,'ADD',[{titulacion_persona:'GREIs'}],'titulacion_persona_valor_KO'],
     ['persona','titulacion_persona',24,9,'ADD',[{titulacion_persona:''}],'titulacion_persona_vacio_KO'],
     ['persona','titulacion_persona',26,9,'ADD',[{titulacion_persona:'PCEO'}],true],
-    
+    ['persona','menu_persona',28,11,'ADD',[{menu_persona:''}],'menu_persona_vacio_KO'],
     ['persona','menu_persona',28,11,'ADD',[{menu_persona:'Celiaco'}],true],
     ['persona','menu_persona',27,12,'ADD',[{menu_persona:'cuarto'}],'menu_persona_valor_KO'],
     ['persona','genero_persona',31,13,'ADD',[{genero_persona:'Masculino'}],true],
     ['persona','genero_persona',29,14,'ADD',[{genero_persona:'Angelical'}],'genero_persona_valor_KO'],
-    ['persona','genero_persona',30,14,'ADD',[{genero_persona:''}],'genero_persona_vacio_KO'],
+    ['persona','genero_persona',30,15,'ADD',[{genero_persona:''}],'genero_persona_vacio_KO'],
 
 );
 /*
